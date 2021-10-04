@@ -113,13 +113,14 @@ alias dnd="source ~/dnd/bin/activate"
 alias deact="deactivate"
 alias ping="grc ping"
 alias ps="grc ps"
-
+alias pgadmin="source ~/pgadmin4/bin/activate && pgadmin4"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export PATH=/home/telmar/.local/bin:/home/telmar/.local/share/gem/ruby/3.0.0/bin:$PATH
 export GPG_TTY=$(tty)
+export XDG_CONFIG_HOME=/home/telmar/.config
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh

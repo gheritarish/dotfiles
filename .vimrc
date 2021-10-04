@@ -39,7 +39,7 @@ let mapleader = ','
 " Plugins
 call plug#begin()
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'ggreer/the_silver_searcher'
     Plug 'preservim/nerdtree'
@@ -49,7 +49,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'ryanoasis/vim-devicons'
-    Plug 'jiangmiao/auto-pairs'
+    " Plug 'jiangmiao/auto-pairs'
 
     " Open several files in tabs
     Plug 'kyazdani42/nvim-web-devicons' " Recommended (for coloured icons)
@@ -68,23 +68,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'rakr/vim-one'
     Plug 'arcticicestudio/nord-vim'
 
-    " TypeScript
-    Plug 'leafgarland/typescript-vim'
-
-    " CoffeeScript
-    Plug 'kchmck/vim-coffee-script'
-    
-    " JavaScript
-    Plug 'pangloss/vim-javascript'
-    Plug 'maxmellon/vim-jsx-pretty'
-    Plug 'styled-components/vim-styled-components' 
-
-    " Go
-    Plug 'fatih/vim-go'
-
-    " Rust
-    Plug 'rust-lang/rust.vim'
-    
     " Python
     Plug 'dense-analysis/ale'
     Plug 'pixelneo/vim-python-docstring'
