@@ -199,3 +199,6 @@ input 1739:52710:DLL096D:01_06CB:CDE6_Touchpad {
 
 # Make PyCharm work
 exec wmname LG3D
+
+# Make notifications work
+exec mako
