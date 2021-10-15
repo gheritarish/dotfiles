@@ -1,0 +1,201 @@
+################################################################################
+###  VARIABLES
+################################################################################
+
+set $mod Mod4
+set $term alacritty
+set $file_man alacritty -e ranger
+set $menu rofi -show run
+set $browser opera
+set $alt_browser firefox
+set $audio_man pavucontrol
+set $email_client thunderbird
+
+# set $left t
+# set $down s
+# set $up r
+# set $right n
+
+################################################################################
+###  STARTUP
+################################################################################
+
+workspace 1
+exec $browser
+workspace 2
+exec $term
+workspace 3
+exec discord
+workspace 4
+exec $email_client
+workspace 1
+
+# Lock
+set $wallpaper /home/telmar/Pictures/lock.png
+set $lock swaylock -f -i $wallpaper -s fill
+bindsym $mod+L exec $lock
+
+################################################################################
+###  STYLING
+################################################################################
+
+default_border pixel 1
+client.focused          #81a1c1 #81a1c1 #81a1c1 #81a1c1 #81a1c1
+client.focused_inactive #282c34 #282c34 #282c34 #282c34 #282c34
+client.urgent           #e06c75 #e06c75 #e06c75 #e06c75 #e06c75
+client.unfocused        #282c34 #282c34 #282c34 #282c34 #282c34
+
+gaps inner 2
+gaps outer 2
+
+output * bg ~/Pictures/screen.jpg stretch
+
+################################################################################
+###  KEYBINDINGS
+################################################################################
+    
+## Applications:
+
+    bindsym $mod+Return exec $term
+    bindsym $mod+Shift+Return exec $file_man
+    bindsym $mod+Space exec $menu
+    bindsym $mod+b exec $browser
+    bindsym $mod+Shift+b exec $alt_browser
+
+    bindsym $mod+Alt+a exec $audio_man
+    bindsym $mod+Alt+b exec blueman-manager
+
+## Sway:
+
+    bindsym $mod+Shift+c kill
+    bindsym $mod+Shift+q exec swaymsg exit
+    bindsym $mod+q reload
+
+    floating_modifier $mod normal
+
+## Window Navigation:
+
+    # Move your focus around
+    bindsym $mod+left focus left
+    bindsym $mod+down focus down
+    bindsym $mod+up focus up
+    bindsym $mod+right focus right
+
+    # Move the focused window with the same, but add Shift
+    bindsym $mod+Shift+left move left
+    bindsym $mod+Shift+down move down
+    bindsym $mod+Shift+up move up
+    bindsym $mod+Shift+right move right
+
+## Workspaces:
+
+    # Switch to workspace
+    bindsym $mod+Shift+t workspace number 1
+    bindsym $mod+Shift+s workspace number 2
+    bindsym $mod+Shift+r workspace number 3
+    bindsym $mod+Shift+n workspace number 4
+    bindsym $mod+Shift+m workspace number 5
+    bindsym $mod+6 workspace number 6
+
+    # Move focused container to workspace
+    bindsym $mod+Alt+Shift+t move container to workspace number 1
+    bindsym $mod+Alt+Shift+s move container to workspace number 2
+    bindsym $mod+Alt+Shift+r move container to workspace number 3
+    bindsym $mod+Alt+Shift+n move container to workspace number 4
+    bindsym $mod+Alt+Shift+m move container to workspace number 5
+    bindsym $mod+Alt+6 move container to workspace number 6
+    bindsym $mod+Alt+7 move container to workspace number 7
+
+## Layout stuff:
+
+    # Switch layout style of current container
+    bindsym $mod+w layout tabbed
+   bindsym $mod+e layout toggle split
+
+    # bindsym $mod+space focus mode_toggle
+    bindsym $mod+f fullscreen
+    bindsym $mod+t floating toggle
+    bindsym $mod+a focus parent
+
+## Scratchpad:
+
+    bindsym $mod+Shift+minus move scratchpad
+    bindsym $mod+minus scratchpad show
+
+# Random Stuff:
+
+    bindsym $mod+p exec grim
+
+# Volume & brightness:
+
+    bindsym XF86AudioRaiseVolume exec pamixer -ui 5
+    bindsym XF86AudioLowerVolume exec pamixer -ud 5
+    bindsym XF86AudioMute exec pamixer --toggle-mute
+
+    bindsym XF86MonBrightnessUp exec brightnessctl set +5%
+    bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+
+    bindsym XF86AudioPlay exec playerctl play-pause
+
+mode "resize" {
+    bindsym left resize grow width 10px
+    bindsym up resize grow height 10px
+    bindsym down resize shrink height 10px
+    bindsym right resize shrink width 10px
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+#
+# Screen capture
+#
+set $screenshot 1 selected, 2 whole, 3 selected clipboard, 4 whole clipboard, 5 swappy
+mode "$screenshot" {
+    bindsym 1 exec 'grim -g "$(slurp)" ~/ps_$(date +"%Y%m%d%H%M%S").png', mode "default"
+    bindsym 2 exec 'grim ~/ps_$(date +"%Y%m%d%H%M%S").png', mode "default"
+    bindsym 3 exec 'grim -g "$(slurp)" - | wl-copy', mode "default"
+    bindsym 4 exec 'grim - | wl-copy', mode "default"
+    bindsym 5 exec 'grim -g "$(slurp)" - | swappy -f -', mode "default"
+
+# back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+Print mode "default"
+}
+
+bindsym $mod+Print mode "$screenshot"
+
+
+################################################################################
+###  GET GTK WORKING IN SWAY
+################################################################################
+
+exec_always import-gsettings
+
+################################################################################
+###  STATUS BAR
+################################################################################
+
+bar {
+        swaybar_command waybar
+    }
+}
+
+include /etc/sway/config.d/*
+
+
+# Change keyboard layout
+input * {
+    xkb_layout "fr"
+    xkb_variant "bepo"
+}
+
+input 1739:52710:DLL096D:01_06CB:CDE6_Touchpad {
+    tap enabled
+    natural_scroll enabled
+}
+
+# Make PyCharm work
+exec wmname LG3D
