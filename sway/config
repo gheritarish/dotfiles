@@ -31,7 +31,7 @@ exec $email_client
 workspace 1
 
 # Lock
-set $wallpaper /home/telmar/Pictures/lock.png
+set $wallpaper ./lock.png
 set $lock swaylock -f -i $wallpaper -s fill
 bindsym $mod+L exec $lock
 
@@ -48,7 +48,7 @@ client.unfocused        #282c34 #282c34 #282c34 #282c34 #282c34
 gaps inner 2
 gaps outer 2
 
-output * bg ~/Pictures/screen.jpg stretch
+output * bg ./screen.jpg stretch
 
 ################################################################################
 ###  KEYBINDINGS
