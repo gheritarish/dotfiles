@@ -1,0 +1,10 @@
+#
+# This file is parsed by pam_env module
+#
+# Syntax: simple "KEY=VAL" pairs on separate lines
+#
+if [ "$XDG_SESSION_DESKTOP" = "sway" ] ; then
+	export _JAVA_AWT_WM_NONREPARENTING=1
+fi
+
+export WINIT_UNIX_BACKEND="x11"
