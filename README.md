@@ -10,6 +10,7 @@
 * mako
 * waybar
 * ranger
+* rofi
 * brightnessctl
 * playerctl
 * grim, slurp, wl-clipboard, swappy
