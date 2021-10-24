@@ -36,6 +36,39 @@ set title
 " Change leader command
 let mapleader = ','
 
+" Bépo keyboard
+" [HJKL] -> [TSRN]
+" {tn} = left / right
+noremap t h
+noremap n l
+" {sr} = down / up
+noremap s j
+noremap r k
+" {SR} = down / up half-page
+noremap S <C-D>
+noremap R <C-U>
+" {TN} = beginning / end of line
+noremap T 0
+noremap N $
+" Manpage on $
+noremap $ K
+noremap <C-J> J
+
+" [TSNR] -> [HJKL]
+" {J} = jusqu'à
+noremap j t
+noremap J T
+" {H} = replace
+noremap h r
+noremap H R
+" {K} = substitute
+noremap k s
+noremap K S
+" {L} = next / previous
+noremap l n
+noremap L N
+
+
 " Plugins
 call plug#begin()
 
@@ -67,6 +100,9 @@ call plug#begin()
     Plug 'tckmn/hotdog.vim'
     Plug 'rakr/vim-one'
     Plug 'arcticicestudio/nord-vim'
+    
+    " VimWiki
+    " Plug 'vimwiki/vimwiki'
 
     " Python
     Plug 'dense-analysis/ale'
