@@ -114,14 +114,22 @@ alias deact="deactivate"
 alias ping="grc ping"
 alias ps="grc ps"
 alias pgadmin="source ~/pgadmin4/bin/activate && pgadmin4"
+alias sshgit="~/.git.sh"
+alias java11="sudo archlinux-java set java-11-openjdk"
+alias java8="sudo archlinux-java set java-8-openjdk"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-export PATH=/home/telmar/.local/bin:/home/telmar/.local/share/gem/ruby/3.0.0/bin:$PATH
+export PATH=/home/telmar/.local/bin:/home/telmar/.local/share/gem/ruby/3.0.0/bin:/home/telmar/.cargo/bin:/home/telmar/.dotnet:$PATH
 export GPG_TTY=$(tty)
 export XDG_CONFIG_HOME=/home/telmar/.config
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
 fi
+
+eval "$(ssh-agent -s)" > /dev/null
+
+export _JAVA_AWT_WM_NONREPARENTING=1
+export XDG_CURRENT_DESKTOP=sway
