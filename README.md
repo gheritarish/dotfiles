@@ -26,3 +26,8 @@
 ```
 nmcli connection modify name connection.autoconnect yes wifi-sec.psk-flags 0
 ```
+
+## Screen sharing
+In Gmeet: download Chromium, then in `chrome://flags`, set `WebRTC PipeWire Support` to enabled: it should work.
+
+For web apps, use webapp-manager to install them.
