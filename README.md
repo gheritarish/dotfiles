@@ -27,6 +27,11 @@
 nmcli connection modify name connection.autoconnect yes wifi-sec.psk-flags 0
 ```
 
+To try:
+```
+nmcli dev wifi connect network-ssid name "id" password "pass"
+```
+
 ## Screen sharing
 In Gmeet: download Chromium, then in `chrome://flags`, set `WebRTC PipeWire Support` to enabled: it should work.
 
