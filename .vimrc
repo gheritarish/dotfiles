@@ -116,7 +116,7 @@ call plug#begin()
 
 call plug#end()
 
-colorscheme onedark
+colorscheme moonfly
 
 let NERDTreeMinimalUI=1
 autocmd BufEnter * if tabpagenr('$') == 1
@@ -153,12 +153,13 @@ let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['webpack\.'] = 'ﰩ'
 let g:DevIconsEnableFoldersOpenClose = 1
 
 " vim-airlines
-let g:airline_theme='onedark'
+let g:airline_theme='dark'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#enabled = 1
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
+" let g:airline_left_alt_sep = ''
+let g:airline_left_sep = ''
+" let g:airline_right_alt_sep = ''
+let g:airline_right_sep = ''
 
 " fzf.vim
 let g:fzf_colors= {

@@ -111,41 +111,41 @@ label:focus {
 #custom-spotify {
     font-size: 17px;
     font-weight: 500;
-    color: #71c5f8;
+    color: #2bce98;
 }
 
 #pulseaudio {
-    color: #2c84b9;
+    color: #306bd1;
 }
 
 #pulseaudio.muted {
     background-color: #81a1c1;
-    color: #282c34;
+    color: #cb6d7b;
 }
 
 #backlight {
-    color: #71c5f8;
+    color: #f6b517;
 }
 
 #network {
-    color: #2279ae;
+    color: #306bd1;
 }
 
 #battery {
-    color: #2279ae;
+    color: #f6b517;
 }
 
 #battery.charged {
-    color: #156190;
+    color: #2bce98;
 }
 
 #battery.charging,
 #battery.plugged {
-    color: #3a9ad5;
+    color: #31c9d9;
 }
 
 #battery.critical:not(.charging) {
-    color: #e5c07b;
+    color: #7c3e8c;
     animation-name: blink;
     animation-duration: 0.5s;
     animation-timing-function: linear;
@@ -154,12 +154,12 @@ label:focus {
 }
 
 #clock {
-    color: #47adeb;
+    color: #306bd1;
 }
 
 #custom-off {
     margin-right: 16px;
     margin-left: 20px;
     font-size: 17px;
-    color: #e06c75;
+    color: #cb6d7b;
 }
