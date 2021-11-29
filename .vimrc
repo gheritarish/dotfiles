@@ -100,6 +100,8 @@ call plug#begin()
     Plug 'tckmn/hotdog.vim'
     Plug 'rakr/vim-one'
     Plug 'arcticicestudio/nord-vim'
+    Plug 'sonph/onehalf'
+    Plug 'rafi/awesome-vim-colorschemes'
     
     " VimWiki
     " Plug 'vimwiki/vimwiki'
@@ -116,7 +118,7 @@ call plug#begin()
 
 call plug#end()
 
-colorscheme moonfly
+colorscheme sonokai
 
 let NERDTreeMinimalUI=1
 autocmd BufEnter * if tabpagenr('$') == 1
@@ -196,7 +198,7 @@ let g:prettier#autoformat_require_pragma = 0
 let g:prettier#config#print_width = '100'
 
 " Start NERDTree and put the cursor back in the other window.
-autocmd VimEnter * NERDTree | wincmd p
+" autocmd VimEnter * NERDTree | wincmd p
 
 " Ale config
 let g:ale_fix_on_save = 1

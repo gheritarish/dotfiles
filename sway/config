@@ -5,7 +5,7 @@
 set $mod Mod4
 set $term alacritty
 set $file_man alacritty -e ranger
-set $menu rofi -show run
+set $menu rofi -show drun
 set $browser opera
 set $alt_browser firefox
 set $audio_man pavucontrol
@@ -31,7 +31,7 @@ exec $email_client
 workspace 1
 
 # Lock
-set $wallpaper ./lock.png
+set $wallpaper /home/telmar/Pictures/lock.png
 set $lock swaylock -f -i $wallpaper -s fill
 bindsym $mod+L exec $lock
 
@@ -46,9 +46,9 @@ client.urgent           #e06c75 #e06c75 #e06c75 #e06c75 #e06c75
 client.unfocused        #282c34 #282c34 #282c34 #282c34 #282c34
 
 gaps inner 2
-gaps outer 2
+gaps outer 1
 
-output * bg ./screen.jpg stretch
+output * bg ~/Pictures/Whitestone.png fill
 
 ################################################################################
 ###  KEYBINDINGS
@@ -67,8 +67,6 @@ output * bg ./screen.jpg stretch
 
 ## Sway:
 
-    bindsym $mod+Shift+c kill
-    bindsym $mod+Shift+q exec swaymsg exit
     bindsym $mod+q reload
 
     floating_modifier $mod normal
@@ -110,7 +108,7 @@ output * bg ./screen.jpg stretch
 
     # Switch layout style of current container
     bindsym $mod+w layout tabbed
-   bindsym $mod+e layout toggle split
+    bindsym $mod+e layout toggle split
 
     # bindsym $mod+space focus mode_toggle
     bindsym $mod+f fullscreen
@@ -128,14 +126,15 @@ output * bg ./screen.jpg stretch
 
 # Volume & brightness:
 
-    bindsym XF86AudioRaiseVolume exec pamixer -ui 5
-    bindsym XF86AudioLowerVolume exec pamixer -ud 5
+    bindsym XF86AudioRaiseVolume exec pamixer -ui 2
+    bindsym XF86AudioLowerVolume exec pamixer -ud 2
     bindsym XF86AudioMute exec pamixer --toggle-mute
 
     bindsym XF86MonBrightnessUp exec brightnessctl set +5%
     bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
 
     bindsym XF86AudioPlay exec playerctl play-pause
+    bindsym $mod+m exec playerctl play-pause
 
 mode "resize" {
     bindsym left resize grow width 10px
@@ -202,3 +201,6 @@ exec wmname LG3D
 
 # Make notifications work
 exec mako
+
+# Trying to make screensharing work
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway

@@ -124,6 +124,7 @@ alias java8="sudo archlinux-java set java-8-openjdk"
 export PATH=/home/telmar/.local/bin:/home/telmar/.local/share/gem/ruby/3.0.0/bin:/home/telmar/.cargo/bin:/home/telmar/.dotnet:$PATH
 export GPG_TTY=$(tty)
 export XDG_CONFIG_HOME=/home/telmar/.config
+export PAGER=most
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh

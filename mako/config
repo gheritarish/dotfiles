@@ -1,4 +1,13 @@
 max-history=3
 
-font=MesloLGS NF
+font=Cantarell
 default-timeout=3000
+border-radius=4
+text-alignment=center
+
+background-color=#ab7bec
+text-color=#282828
+border-size=0
+anchor=top-center
+
+margin=2,0,0,0

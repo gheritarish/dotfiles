@@ -19,30 +19,30 @@ white:   '#c8ccd4'
 */
 
 * {
-    border: 0px solid rgba(40, 40, 40, 0);
-    border-radius: 2px;
+    /*border: 0px solid rgba(40, 40, 40, 0);*/
+    border: none;
+    border-radius: 6px;
     font-family: Iosevka Nerd Font, Font Awesome, Arial, sans-serif;
-    font-weight: 700;
-    font-size: 13px;
+    font-size: 12px;
     min-height: 0;
-    padding: 1px;
 }
 
 window#waybar {
-    background-color: #1f2227;
-    background: transparent;
-    color: #c8ccd4;
+    background-color: transparent;
+    /*background: transparent;
+    color: #c8ccd4;*/
+    color: #ffffff;
     transition-property: background-color;
     transition-duration: 0.5s;
     border-radius: 0;
 }
 
 window > box {
-    margin-top: 5px;
+    margin-top: 2px;
     margin-left: 4px;
     margin-right: 4px;
     background: #1f2227;
-    color: #c8ccd4;
+    /*color: #c8ccd4;*/
 }
 
 window#waybar.hidden {
@@ -80,7 +80,7 @@ label:focus {
 }
 
 #custom-launch {
-    margin-right: 20px;
+    margin-right: 10px;
     margin-left: 16px;
     font-size: 17px;
     color: #71c5f8;
@@ -109,7 +109,7 @@ label:focus {
 }
 
 #custom-spotify {
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 500;
     color: #2bce98;
 }
@@ -132,7 +132,7 @@ label:focus {
 }
 
 #battery {
-    color: #f6b517;
+    color: #2bce96;
 }
 
 #battery.charged {
