@@ -205,9 +205,13 @@ let g:ale_fix_on_save = 1
 let g:ale_linters = {'javascript': ['eslint'], 'python': ['flake8', 'mypy', 'pydocstyle']}
 let g:ale_fixers = {
 \ 'javascript': ['prettier'],
-\ 'python': ['black', 'isort'],
+\ 'python': ['isort'],
 \ 'rust': ['rustfmt'],
 \ 'go': ['gofmt']
 \ }
 
 let g:python_style = 'google'
+
+" Line lengths
+au BufRead,BufNewFile *.rst setlocal textwidth=90
+au BufRead,BufNewFile *.py setlocal textwidth=120
