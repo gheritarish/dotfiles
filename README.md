@@ -32,6 +32,11 @@ To try:
 nmcli dev wifi connect network-ssid name "id" password "pass"
 ```
 
+## Nice VIM stuff
+```
+:%s/\(pattern\)/`\1`/g  " will enclose the pattern with ` => \1 takes \(...\), if several, use 1, 2, ...
+```
+
 ## Screen sharing
 In Gmeet: download Chromium, then in `chrome://flags`, set `WebRTC PipeWire Support` to enabled: it should work.
 
