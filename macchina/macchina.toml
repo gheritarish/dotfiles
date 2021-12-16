@@ -1,0 +1,18 @@
+# Specifies the network interface to use for the LocalIP readout
+interface = "wlp9s0"
+
+# Lengthen uptime output
+long_uptime = true
+
+# Lengthen shell output
+long_shell = false
+
+# Lengthen kernel output
+long_kernel = false
+
+# Toggle between displaying the number of physical or logical cores of processor
+physical_cores = true
+
+theme = "Uranium"
+
+show = ["Host", "Kernel", "Packages", "Distribution", "WindowManager", "Resolution", "Backlight", "Terminal", "Uptime",  "ProcessorLoad"]
