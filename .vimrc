@@ -25,7 +25,8 @@ set smartcase
 " Text rendering
 set display+=lastline " to always show the last line of a paragraph
 set linebreak
-set scrolloff=3
+set cursorline
+set scrolloff=5
 
 " User interface options
 set laststatus=2
@@ -102,7 +103,7 @@ call plug#begin()
     Plug 'arcticicestudio/nord-vim'
     Plug 'sonph/onehalf'
     Plug 'rafi/awesome-vim-colorschemes'
-    
+
     " VimWiki
     " Plug 'vimwiki/vimwiki'
 
@@ -114,8 +115,7 @@ call plug#begin()
     " Prettifier
     Plug 'prettier/vim-prettier', {
       \ 'do': 'yarn install',
-      \ 'for': ['javascript', 'typescript'] }
-
+      \ 'for': ['javascript', 'typescript', 'markdown', 'python'] }
 call plug#end()
 
 colorscheme sonokai
@@ -215,3 +215,11 @@ let g:python_style = 'google'
 " Line lengths
 au BufRead,BufNewFile *.rst setlocal textwidth=90
 au BufRead,BufNewFile *.py setlocal textwidth=120
+au BufRead,BufNewFile *.md setlocal textwidth=100
+
+" Tab lengths
+au BufRead,BufNewFile *.md setlocal tabstop=2
+
+" Autocompletion
+set wildmenu
+set wildmode=list:longest
