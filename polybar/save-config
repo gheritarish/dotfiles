@@ -1,0 +1,189 @@
+; vim:ft=dosini
+;
+;  ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;  ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;  ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;  ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;  ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;  ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+
+[settings]
+screenchange-reload = true
+
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+
+[colors]
+background = ${xrdb:background} 
+foreground = ${xrdb:foreground}
+
+black = ${xrdb:color0}
+red = ${xrdb:color1}
+green = ${xrdb:color2}
+yellow = ${xrdb:color3}
+blue = ${xrdb:color4}
+magenta = ${xrdb:color5}
+cyan = ${xrdb:color6}
+white = ${xrdb:color7}
+
+brightBlack = ${xrdb:color8}
+brightRed = ${xrdb:color9}
+brightGreen = ${xrdb:color10}
+brightYellow = ${xrdb:color11}
+brightBlue = ${xrdb:color12}
+brightMagenta = ${xrdb:color13}
+brightCyan = ${xrdb:color14}
+brightWhite = ${xrdb:color15}
+
+accent = ${xrdb:accentColor}
+urgent = ${xrdb:urgentColor}
+
+
+# B A R S
+
+[bar/common]
+fixed-center = true
+
+width = 100%
+height = 20
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+padding = 1
+module-margin = 0
+
+font-0 = Iosevka Nerd Font:size=10:antialias=true;2
+
+modules-center = cmus
+modules-right = updates alsa cpu memory network date 
+
+separator = "·"
+separator-padding = 1
+separator-foreground = ${colors.brightBlack}
+
+tray-position = right
+tray-maxsize = 16
+tray-padding = 8
+
+cursor-click = pointer
+
+[bar/bspwm]
+inherit = bar/common
+modules-left = menu bspwm xwindow
+wm-restack = bspwm
+
+
+# M O D U L E S
+
+[module/alsa]
+type = internal/alsa
+interval = 5
+
+format-volume = <ramp-volume> <label-volume>
+format-muted-prefix = "ﱝ "
+format-muted-prefix-foreground = ${colors.accent}
+
+label-volume = %percentage:2%
+label-muted = %percentage:2%
+label-muted-foreground = ${colors.brightBlack}
+
+ramp-volume-0 = "奄"
+ramp-volume-1 = "奔"
+ramp-volume-2 = "墳"
+ramp-volume-foreground = ${colors.accent}
+
+
+[module/bspwm]
+type = internal/bspwm
+label-focused = "ﰉ "
+label-focused-foreground = ${colors.accent}
+label-occupied = ${self.label-focused}
+label-occupied-foreground = ${colors.brightBlack}
+label-urgent = ${self.label-focused}
+label-urgent-foreground = ${colors.urgent}
+label-empty = "ﰊ " 
+label-empty-foreground = ${colors.brightBlack}
+label-separator = " "
+
+[module/cmus]
+type = custom/script
+exec = ~/.config/polybar/scripts/cmus.sh
+exec-if = pgrep -x cmus
+interval = 1
+
+format-prefix = " "
+format-prefix-foreground = ${colors.accent}
+
+click-left = cmus-remote --next
+click-right = cmus-remote --prev
+click-middle = cmus-remote --pause
+scroll-up = cmus-remote --volume +10%
+scroll-down = cmus-remote --volume -10%
+
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+label = %percentage:2%
+format-prefix = " "
+format-prefix-foreground = ${colors.accent}
+
+
+[module/date]
+type = internal/date
+interval = 1
+date = "%a, %b %d %R"
+format-prefix = " "
+format-prefix-foreground = ${colors.accent}
+
+
+[module/memory]
+type = internal/memory
+interval = 2
+label = %percentage_used:2%
+format-prefix = "﬙ "
+format-prefix-foreground = ${colors.accent}
+
+
+[module/menu]
+type = custom/text
+content = " "
+content-foreground = ${colors.blue}
+click-left = ~/.scripts/dmenu_run.sh
+
+
+[module/network]
+type = internal/network
+interface = wlan0
+interval = 1
+
+format-connected = <ramp-signal> Online
+format-disconnected = Offline
+format-disconnected-prefix = " " 
+format-disconnected-prefix-foreground = ${colors.red}
+
+ramp-signal-0 = 
+ramp-signal-1 = ﯜ
+ramp-signal-2 = 
+ramp-signal-foreground = ${colors.accent}
+
+
+[module/updates]
+type = custom/script
+exec = ~/.config/polybar/scripts/updates-pacman-aurhelper.sh
+interval = 7200
+initial = 1
+format-prefix = " "
+format-prefix-foreground = ${colors.accent}
+click-left = st -e yay -Syu
+
+
+[module/xwindow]
+type = internal/xwindow
+label = %title%
+label-maxlen = 50
+
