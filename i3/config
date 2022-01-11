@@ -38,6 +38,9 @@ bindsym $mod+l "exec i3lock -i /home/telmar/Pictures/lock.png -F --indicator -k 
 # Wallpaper
 exec "feh --bg-scale /home/telmar/Pictures/Whitestone.png"
 
+# Cursor size
+exec xrdb ~/.Xresources
+
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
@@ -59,7 +62,7 @@ bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
 # floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec WINIT_X11_SCALE_FACTOR=1 alacritty --embed='telmar'
 
 # start ranger
 bindsym $mod+Shift+Return exec kitty -e ranger
@@ -132,7 +135,7 @@ set $ws2 "2:"
 set $ws3 "3:ﭮ"
 set $ws4 "4:"
 set $ws5 "5:"
-set $ws6 "6:",
+set $ws6 "6:"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
@@ -177,6 +180,10 @@ bindsym $mod+Mod1+7 move container to workspace number $ws7
 bindsym $mod+Mod1+8 move container to workspace number $ws8
 bindsym $mod+Mod1+9 move container to workspace number $ws9
 bindsym $mod+Mod1+0  move container to workspace number $ws10
+
+# Scratchpad
+bindsym $mod+Shift+equal move scratchpad
+bindsym $mod+equal scratchpad show
 
 # reload the configuration file
 bindsym $mod+Shift+x reload
@@ -241,8 +248,10 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 # Notifications & transparency
 exec_always --no-startup-id dunst
 exec_always picom --no-fading-openclose
+exec_always --no-startup-id setxkbmap fr bepo
+
 
 # Touchpad configuration
-exec xinput set-prop "DLL096D:01 06CB:CDE6 Touchpad" "libinput Tapping Enabled" 1
-exec xinput set-prop "DLL096D:01 06CB:CDE6 Touchpad" "libinput Natural Scrolling Enabled" 1
+exec_always --no-startup-id xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
+exec_always --no-startup-id xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
 

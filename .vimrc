@@ -33,6 +33,12 @@ set laststatus=2
 set ruler
 set noerrorbells
 set title
+set splitright " New tab open on the right
+set splitbelow " New tab open below
+set cmdheight=2 " Two lines for commands
+
+" Automatically strip trailing spaces on buffer write
+autocmd BufWritePre * :%s/\s\+$//e
 
 " Change leader command
 let mapleader = ','
@@ -202,7 +208,7 @@ let g:prettier#config#print_width = '100'
 
 " Ale config
 let g:ale_fix_on_save = 1
-let g:ale_linters = {'javascript': ['eslint'], 'python': ['flake8', 'mypy', 'pydocstyle']}
+let g:ale_linters = {'javascript': ['eslint'], 'python': ['flake8']}
 let g:ale_fixers = {
 \ 'javascript': ['prettier'],
 \ 'python': ['isort'],
