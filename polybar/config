@@ -39,7 +39,7 @@ module-margin-right = 1
 
 font-0 = "MesloLGS NF:pixelsize=9;1"
 
-modules-left = i3
+modules-left = i3 title
 modules-center = spotify
 modules-right = pulseaudio cpu backlight battery filesystem wlan eth date
 
@@ -371,6 +371,14 @@ animation-discharging-3 = 
 animation-discharging-4 = 
 ; Framerate in milliseconds
 animation-discharging-framerate = 500
+
+;-----------------------------------------------------------
+[module/title]
+type = internal/xwindow
+format-foreground = #ab7bec
+format = <label>
+label = %title%
+laber-maxlen = 50
 
 ;------------------------------------------------------------
 [settings]
