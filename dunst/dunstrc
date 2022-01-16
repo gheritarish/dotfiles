@@ -1,8 +1,11 @@
 [global]
 
 font = Cantarell
+origin = top-center
 timeout = 2
 alignment = center
+frame_width = 0
+corner_radius = 4
 
 [urgency_low]
 background = "#ab7bec"
@@ -12,9 +15,9 @@ timeout = 3
 [urgency_normal]
 background = "#ab7bec"
 foreground = "#282828"
-timeout = 3
+timeout = 4
 
 [urgency_critical]
 background = "#ab7bec"
 foreground = "#282828"
-timeout = 3
+timeout = 5
