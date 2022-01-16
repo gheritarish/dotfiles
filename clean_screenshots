@@ -1,0 +1,3 @@
+#!/bin/sh
+
+find . -maxdepth 1 -regextype posix-extended -regex '.*scrot[_]?[0-9]{3}?.png' -delete
