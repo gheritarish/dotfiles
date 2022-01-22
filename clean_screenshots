@@ -1,7 +1,12 @@
 #!/bin/sh
 
-if [[ $1 == "delete" ]]; then
-    find . -maxdepth 1 -regextype posix-extended -regex '.*scrot[_]?[0-9]{3}?.png' -delete
-else
-    find . -maxdepth 1 -regextype posix-extended -regex '.*scrot[_]?[0-9]{3}?.png'
-fi
+FILES=$(find . -maxdepth 1 -regextype posix-extended -regex '.*scrot[_]?[0-9]{3}?.png')
+
+for FILE in $FILES; do
+    if [[ $1 == "-d" || $1 == "--delete" ]]; then
+        rm $FILE
+        echo "Deleted: $FILE"
+    else
+        echo "To delete: $FILE"
+    fi
+done
