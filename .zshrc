@@ -77,9 +77,12 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git
-	zsh-autosuggestions
-	zsh-syntax-highlighting)
+plugins=(
+    fzf
+    git
+    colored-man-pages
+    zsh-autosuggestions
+    zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -117,6 +120,9 @@ alias pgadmin="source ~/pgadmin4/bin/activate && pgadmin4"
 alias sshgit="~/.git.sh"
 alias java11="sudo archlinux-java set java-11-openjdk"
 alias java8="sudo archlinux-java set java-8-openjdk"
+alias java17="sudo archlinux-java set java-17-openjdk"
+alias undesix="cd ~/Documents/JDR/DnD/Les_undésix/Undesix"
+alias pedestres="cd ~/Documents/JDR/Centrale/Dernier-Souffle/Dernier-souffle"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -125,6 +131,7 @@ export PATH=/home/telmar/.local/bin:/home/telmar/.local/share/gem/ruby/3.0.0/bin
 export GPG_TTY=$(tty)
 export XDG_CONFIG_HOME=/home/telmar/.config
 export PAGER=most
+export EDITOR=vim
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
