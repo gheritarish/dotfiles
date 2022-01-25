@@ -123,6 +123,7 @@ alias java8="sudo archlinux-java set java-8-openjdk"
 alias java17="sudo archlinux-java set java-17-openjdk"
 alias undesix="cd ~/Documents/JDR/DnD/Les_undésix/Undesix"
 alias pedestres="cd ~/Documents/JDR/Centrale/Dernier-Souffle/Dernier-souffle"
+alias clscr="~/clean_screenshots"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
