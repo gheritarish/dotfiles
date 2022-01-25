@@ -161,7 +161,7 @@ let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['webpack\.'] = 'ﰩ'
 let g:DevIconsEnableFoldersOpenClose = 1
 
 " vim-airlines
-let g:airline_theme='dark'
+let g:airline_theme='sonokai'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#enabled = 1
 " let g:airline_left_alt_sep = ''
