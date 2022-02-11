@@ -13,6 +13,10 @@ env:
   TERM: xterm-256color
 
 window:
+  # Window opacity as a floating point number from `0.0` to `1.0`.
+  # The value `0.0` is completely transparent and `1.0` is opaque.
+  opacity: 0.95
+
   # Window dimensions (changes require restart)
   #
   # Specified in number of columns/lines, not pixels.
@@ -91,7 +95,7 @@ scrolling:
 # Font configuration
 font:
   # Normal (roman) font face
-  size: 6.5
+  size: 10
   normal:
     # Font family
     #
@@ -99,7 +103,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: MesloLGS NF 
+    family: MesloLGS NF
 
     # The `style` can be specified to pick a specific face.
     #style: Regular
@@ -138,7 +142,7 @@ font:
     #style: Bold Italic
 
   # Point size
-    size: 9.0
+    size: 7.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -273,12 +277,6 @@ draw_bold_text_with_bright_colors: true
 #  animation: EaseOutExpo
 #  duration: 0
 #  color: '#ffffff'
-
-# Background opacity
-#
-# Window opacity as a floating point number from `0.0` to `1.0`.
-# The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.9
 
 #selection:
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
@@ -580,12 +578,8 @@ key_bindings:
 # Custom colorscheme fitting my own theme
 colors:
   primary:
-    # background: '0x0a1124'
-    backgrand: '0x0a1124'
+    background: '0x0a1124'
     foreground: '0x71c5f8'
-  cursor:
-    text:       '0x2aa6ef'
-    cursor:     '0x064469'
   normal:
     black:        '0x1b326c'
     red:          '0xcb6d7b'
