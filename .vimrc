@@ -117,6 +117,7 @@ call plug#begin()
     Plug 'dense-analysis/ale'
     Plug 'pixelneo/vim-python-docstring'
     Plug 'davidhalter/jedi-vim'
+    Plug 'ycm-core/YouCompleteMe'
 
     " Prettifier
     Plug 'prettier/vim-prettier', {
@@ -168,6 +169,7 @@ let g:airline#extensions#bufferline#enabled = 1
 let g:airline_left_sep = ''
 " let g:airline_right_alt_sep = ''
 let g:airline_right_sep = ''
+let g:airline#extensions#tabline#fnamemod = ":t"
 
 " fzf.vim
 let g:fzf_colors= {
@@ -218,6 +220,10 @@ let g:ale_fixers = {
 
 let g:python_style = 'google'
 
+" Jedi config
+let g:pymode_rope = 0
+let g:jedi#completion_command = "<tab>"
+
 " Line lengths
 au BufRead,BufNewFile *.rst setlocal textwidth=90
 au BufRead,BufNewFile *.py setlocal textwidth=120
@@ -229,3 +235,5 @@ au BufRead,BufNewFile *.md setlocal tabstop=2
 " Autocompletion
 set wildmenu
 set wildmode=list:longest
+
+set omnifunc=syntaxcomplete#Complete
