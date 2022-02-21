@@ -82,8 +82,8 @@ call plug#begin()
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'ggreer/the_silver_searcher'
-    Plug 'preservim/nerdtree'
-    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+    "Plug 'preservim/nerdtree'
+    "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
     Plug 'tpope/vim-fugitive'
     Plug 'preservim/nerdcommenter'
     Plug 'vim-airline/vim-airline'
@@ -97,18 +97,19 @@ call plug#begin()
     Plug 'akinsho/bufferline.nvim'
 
     " colorschemes
-    Plug 'srcery-colors/srcery-vim'
-    Plug 'pacokwon/onedarkpaco.vim'
-    Plug 'bluz71/vim-moonfly-colors'
+    "Plug 'srcery-colors/srcery-vim'
+    "Plug 'pacokwon/onedarkpaco.vim'
+    "Plug 'bluz71/vim-moonfly-colors'
     Plug 'sainnhe/sonokai'
-    Plug 'joshdick/onedark.vim'
-    Plug 'yassinebridi/vim-purpura'
-    Plug 'lifepillar/vim-wwdc16-theme'
-    Plug 'tckmn/hotdog.vim'
-    Plug 'rakr/vim-one'
-    Plug 'arcticicestudio/nord-vim'
-    Plug 'sonph/onehalf'
-    Plug 'rafi/awesome-vim-colorschemes'
+    Plug 'jnurmine/Zenburn'
+    " Plug 'joshdick/onedark.vim'
+    "Plug 'yassinebridi/vim-purpura'
+    "Plug 'lifepillar/vim-wwdc16-theme'
+    "Plug 'tckmn/hotdog.vim'
+    "Plug 'rakr/vim-one'
+    "Plug 'arcticicestudio/nord-vim'
+    "Plug 'sonph/onehalf'
+    "Plug 'rafi/awesome-vim-colorschemes'
 
     " VimWiki
     " Plug 'vimwiki/vimwiki'
@@ -125,6 +126,7 @@ call plug#begin()
       \ 'for': ['javascript', 'typescript', 'markdown', 'python'] }
 call plug#end()
 
+let g:sonokai_theme = 'andromeda'
 colorscheme sonokai
 
 let NERDTreeMinimalUI=1
@@ -231,9 +233,9 @@ au BufRead,BufNewFile *.md setlocal textwidth=100
 
 " Tab lengths
 au BufRead,BufNewFile *.md setlocal tabstop=2
+au BufRead,BufNewFile *.rst setlocal tabstop=4
 
 " Autocompletion
 set wildmenu
-set wildmode=list:longest
 
 set omnifunc=syntaxcomplete#Complete
