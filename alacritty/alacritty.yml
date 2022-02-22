@@ -53,7 +53,7 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
-  decorations: none
+  decorations: full
 
   background-blur: true
 
@@ -69,7 +69,8 @@ window:
   #startup_mode: Windowed
 
   # Window title
-  title: Alacritty@Garuda
+  # title: Alacritty@Garuda
+  dynamic_title: true
 
   # Window class (Linux/BSD only):
   class:
