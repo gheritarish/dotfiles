@@ -9,7 +9,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/telmar/.oh-my-zsh"
+export ZSH="/home/bmarlet/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -118,19 +118,15 @@ alias ping="grc ping"
 alias ps="grc ps"
 alias pgadmin="source ~/pgadmin4/bin/activate && pgadmin4"
 alias sshgit="~/.git.sh"
-alias java11="sudo archlinux-java set java-11-openjdk"
-alias java8="sudo archlinux-java set java-8-openjdk"
-alias java17="sudo archlinux-java set java-17-openjdk"
-alias undesix="cd ~/Documents/JDR/DnD/Les_undésix/Undesix"
-alias pedestres="cd ~/Documents/JDR/Centrale/Dernier-Souffle/Dernier-souffle"
+alias offgrid="~/.offgrid.sh"
 alias clscr="~/clean_screenshots"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-export PATH=/home/telmar/.local/bin:/home/telmar/.local/share/gem/ruby/3.0.0/bin:/home/telmar/.cargo/bin:/home/telmar/.dotnet:$PATH
+export PATH=/home/bmarlet/.local/bin:/home/bmarlet/.local/share/gem/ruby/3.0.0/bin:/home/bmarlet/.cargo/bin:/home/bmarlet/.dotnet:$PATH
 export GPG_TTY=$(tty)
-export XDG_CONFIG_HOME=/home/telmar/.config
+export XDG_CONFIG_HOME=/home/bmarlet/.config
 export PAGER=most
 export EDITOR=vim
 
@@ -141,4 +137,3 @@ fi
 eval "$(ssh-agent -s)" > /dev/null
 
 export _JAVA_AWT_WM_NONREPARENTING=1
-export XDG_CURRENT_DESKTOP=sway
