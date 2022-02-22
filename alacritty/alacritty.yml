@@ -37,9 +37,9 @@ window:
   #
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
-  #padding:
-  #  x: 0
-  #  y: 0
+  # padding:
+   # x: 0
+   # y: 0
 
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: true
@@ -53,7 +53,7 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
-  decorations: full
+  decorations: none
 
   background-blur: true
 
@@ -142,7 +142,7 @@ font:
     #style: Bold Italic
 
   # Point size
-    size: 7.0
+    size: 9.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -278,6 +278,7 @@ draw_bold_text_with_bright_colors: true
 #  duration: 0
 #  color: '#ffffff'
 
+
 #selection:
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
 
@@ -325,9 +326,7 @@ live_config_reload: true
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
 shell:
-  program: /usr/bin/zsh
-  args:
-    - --login
+  program: /usr/bin/tmux
 
 # Startup directory
 #
@@ -589,16 +588,6 @@ colors:
     magenta:      '0x7c3e8c'
     cyan:         '0x31c9d9'
     white:        '0xe0dab6'
-    # black:      '0x0a1124'
-    # red:        '0x0c4d75'
-    # green:      '0x156190'
-    # yellow:     '0x2279ae'
-    # blue:       '0x2c84b9'
-    # magenta:    '0x3a9ad5'
-    # cyan:       '0x47adeb'
-      # cyan:       '0x3c87b4'
-      # white:      '0x71c5f8'
-      # white:      '0x5295bb'
   bright:
     black:        '0x131724'
     red:          '0xcb6d7b'
@@ -608,11 +597,3 @@ colors:
     magenta:      '0x7c3e8c'
     cyan:         '0x31c9d9'
     white:        '0xe0dab6'
-    # black:      '0x1b205a'
-    # red:        '0x0c4d75'
-    # green:      '0x156190'
-    # yellow:     '0x2279ae'
-    # blue:       '0x2c84b9'
-    # magenta:    '0x3a9bd5'
-    # cyan:       '0x47adeb'
-    # white:      '0x71c5f8'
