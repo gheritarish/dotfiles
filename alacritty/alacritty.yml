@@ -15,7 +15,7 @@ env:
 window:
   # Window opacity as a floating point number from `0.0` to `1.0`.
   # The value `0.0` is completely transparent and `1.0` is opaque.
-  opacity: 0.95
+  opacity: 1.0
 
   # Window dimensions (changes require restart)
   #
@@ -576,25 +576,56 @@ key_bindings:
 
 
 # Custom colorscheme fitting my own theme
+#colors:
+  #primary:
+    #background: '0x0a1124'
+    #foreground: '0x71c5f8'
+  #normal:
+    #black:        '0x1b326c'
+    #red:          '0xcb6d7b'
+    #green:        '0x2bce98'
+    #yellow:       '0xf6b517'
+    #blue:         '0x306bd1'
+    #magenta:      '0x7c3e8c'
+    #cyan:         '0x31c9d9'
+    #white:        '0xe0dab6'
+  #bright:
+    #black:        '0x131724'
+    #red:          '0xcb6d7b'
+    #green:        '0x2bce98'
+    #yellow:       '0xf6b517'
+    #blue:         '0x306bd1'
+    #magenta:      '0x7c3e8c'
+    #cyan:         '0x31c9d9'
+    #white:        '0xe0dab6'
+
+# Colors (Gruvbox dark)
 colors:
+  # Default colors
   primary:
-    background: '0x0a1124'
-    foreground: '0x71c5f8'
+    # hard contrast: background = '#1d2021'
+    background: '#1d2021'
+    # soft contrast: background = '#32302f'
+    foreground: '#ebdbb2'
+
+  # Normal colors
   normal:
-    black:        '0x1b326c'
-    red:          '0xcb6d7b'
-    green:        '0x2bce98'
-    yellow:       '0xf6b517'
-    blue:         '0x306bd1'
-    magenta:      '0x7c3e8c'
-    cyan:         '0x31c9d9'
-    white:        '0xe0dab6'
+    black:   '#282828'
+    red:     '#cc241d'
+    green:   '#98971a'
+    yellow:  '#d79921'
+    blue:    '#458588'
+    magenta: '#b16286'
+    cyan:    '#689d6a'
+    white:   '#a89984'
+
+  # Bright colors
   bright:
-    black:        '0x131724'
-    red:          '0xcb6d7b'
-    green:        '0x2bce98'
-    yellow:       '0xf6b517'
-    blue:         '0x306bd1'
-    magenta:      '0x7c3e8c'
-    cyan:         '0x31c9d9'
-    white:        '0xe0dab6'
+    black:   '#928374'
+    red:     '#fb4934'
+    green:   '#b8bb26'
+    yellow:  '#fabd2f'
+    blue:    '#83a598'
+    magenta: '#d3869b'
+    cyan:    '#8ec07c'
+    white:   '#ebdbb2'

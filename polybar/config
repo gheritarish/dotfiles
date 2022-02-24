@@ -4,17 +4,17 @@
 
 ; color scheme based on nord
 [colors]
-background = #0a1124
-background-alt = #4c566a
-foreground = #71c5f8
-foreground-alt = #4c566a
+background = #1d2021
+background-alt = #32302f
+foreground = #ebdbb2
+foreground-alt = #a89984
 
-low = #2bce98
-medium = #f6b517
-high = #cb6d7b
+low = #458588
+medium = #d79921
+high = #cc241d
 
-accent = #f6b517
-alert = #cb6d7b
+accent = #d79921
+alert = #cc241d
 
 [bar/main]
 ; ipc is used with pomobar
@@ -23,7 +23,7 @@ enable-ipc = true
 ;monitor = ${env:MONITOR:HDMI-1}
 monitor = ${env:MONITOR:}
 width = 100%
-height = 24
+height = 22
 fixed-center = false
 
 background = ${colors.background}
@@ -41,7 +41,7 @@ font-0 = "MesloLGS NF:pixelsize=9;1"
 
 modules-left = i3 title
 modules-center = spotify
-modules-right = pulseaudio cpu backlight battery filesystem wlan eth date
+modules-right = pulseaudio memory cpu backlight battery filesystem wlan eth date
 
 tray-position = right
 tray-padding = 2
@@ -110,6 +110,7 @@ type = custom/script
 tail = true
 format-prefix = " "
 format = <label>
+label-maxlen = 50
 exec = $HOME/.config/polybar/scripts/get_spotify_status.sh
 format-foreground = ${colors.low}
 interval = 1
@@ -224,11 +225,11 @@ bar-used-empty-foreground = ${colors.foreground-alt}
 ;------------------------------------------------------------
 [module/wlan]
 type = internal/network
-interface = wlp0s20f3
+interface = wlp9s0
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
-label-connected = " %essid% • %local_ip% "
+label-connected = " %essid% • %local_ip%"
 ; future implementation - %downspeed% %upspeed%
 
 format-disconnected = <label-disconnected>
@@ -375,10 +376,10 @@ animation-discharging-framerate = 500
 ;-----------------------------------------------------------
 [module/title]
 type = internal/xwindow
-format-foreground = #ab7bec
+format-foreground = #b16286
 format = <label>
 label = %title%
-laber-maxlen = 50
+label-maxlen = 50
 
 ;------------------------------------------------------------
 [settings]

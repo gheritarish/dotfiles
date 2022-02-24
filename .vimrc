@@ -110,6 +110,7 @@ call plug#begin()
     "Plug 'arcticicestudio/nord-vim'
     "Plug 'sonph/onehalf'
     "Plug 'rafi/awesome-vim-colorschemes'
+    Plug 'morhetz/gruvbox'
 
     " VimWiki
     " Plug 'vimwiki/vimwiki'
@@ -126,8 +127,12 @@ call plug#begin()
       \ 'for': ['javascript', 'typescript', 'markdown', 'python'] }
 call plug#end()
 
-let g:sonokai_theme = 'andromeda'
-colorscheme sonokai
+" let g:sonokai_theme = 'andromeda'
+set background=dark
+colorscheme gruvbox
+let g:gruvbox_bold = 1
+let g:gruvbox_italic = 1
+let g:gruvbox_underline = 1
 
 let NERDTreeMinimalUI=1
 autocmd BufEnter * if tabpagenr('$') == 1
@@ -164,14 +169,15 @@ let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['webpack\.'] = 'ﰩ'
 let g:DevIconsEnableFoldersOpenClose = 1
 
 " vim-airlines
-let g:airline_theme='sonokai'
+let g:airline_theme='gruvbox'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#enabled = 1
 " let g:airline_left_alt_sep = ''
 let g:airline_left_sep = ''
 " let g:airline_right_alt_sep = ''
-let g:airline_right_sep = ''
+let g:airline_right_sep = ''
 let g:airline#extensions#tabline#fnamemod = ":t"
+let g:gruvbox_contrast_dark = 'hard'
 
 " fzf.vim
 let g:fzf_colors= {
