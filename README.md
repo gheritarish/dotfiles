@@ -30,6 +30,7 @@
 * spicetify (configure Spotify)
 * zathura, zathura-pdf-mupdf (read pdf and epub)
 * ranger (explore files)
+* redshift
 
 ## zsh config
 * oh-my-zsh => activate `colored-man-pages` and `fzf`
