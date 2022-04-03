@@ -22,6 +22,13 @@ set ignorecase
 set incsearch
 set smartcase
 
+" Folds
+augroup remember_folds
+    autocmd!
+    autocmd BufWinLeave * mkview
+    autocmd BufWinEnter * silent! loadview
+augroup END
+
 " Text rendering
 set display+=lastline " to always show the last line of a paragraph
 set linebreak
@@ -173,11 +180,11 @@ let g:airline_theme='gruvbox'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#enabled = 1
 " let g:airline_left_alt_sep = ''
-let g:airline_left_sep = ''
+" let g:airline_left_sep = ''
 " let g:airline_right_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline#extensions#tabline#fnamemod = ":t"
-let g:gruvbox_contrast_dark = 'hard'
+" let g:airline_right_sep = ''
+" let g:airline#extensions#tabline#fnamemod = ":t"
+" let g:gruvbox_contrast_dark = 'hard'
 
 " fzf.vim
 let g:fzf_colors= {
@@ -245,3 +252,46 @@ au BufRead,BufNewFile *.rst setlocal tabstop=4
 set wildmenu
 
 set omnifunc=syntaxcomplete#Complete
+
+
+" Arch global vimrc
+"
+" Added here for a manual vim configuration
+"
+" Use Vim defaults instead of 100% vi compatibility
+" Avoid side-effects when nocompatible has already been set.
+if &compatible
+  set nocompatible
+endif
+
+set backspace=indent,eol,start
+set ruler
+set suffixes+=.aux,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.inx,.jpg,.log,.out,.png,.toc
+set suffixes-=.h
+set suffixes-=.obj
+
+" Move temporary files to a secure location to protect against CVE-2017-1000382
+if exists('$XDG_CACHE_HOME')
+  let &g:directory=$XDG_CACHE_HOME
+else
+  let &g:directory=$HOME . '/.cache'
+endif
+let &g:undodir=&g:directory . '/vim/undo//'
+let &g:backupdir=&g:directory . '/vim/backup//'
+let &g:directory.='/vim/swap//'
+" Create directories if they doesn't exist
+if ! isdirectory(expand(&g:directory))
+  silent! call mkdir(expand(&g:directory), 'p', 0700)
+endif
+if ! isdirectory(expand(&g:backupdir))
+  silent! call mkdir(expand(&g:backupdir), 'p', 0700)
+endif
+if ! isdirectory(expand(&g:undodir))
+  silent! call mkdir(expand(&g:undodir), 'p', 0700)
+endif
+
+" Make shift-insert work like in Xterm
+if has('gui_running')
+  map <S-Insert> <MiddleMouse>
+  map! <S-Insert> <MiddleMouse>
+endif
