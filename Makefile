@@ -11,3 +11,14 @@ vim:
 		sudo make install
 	rm -rf vim
 	@echo "vim compiled"
+
+ncspot:
+	@echo "Building ncspot"
+	-git clone https://github.com/hrkfdn/ncspot.git git-ncspot
+	cd git-ncspot && \
+		cargo build --release --features cover && \
+		sudo mv target/release/ncspot /usr/local/bin
+	rm -rf ncspot
+	@echo "ncspot compiled"
+
+.PHONY: vim ncspot
