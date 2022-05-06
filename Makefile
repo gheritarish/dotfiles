@@ -18,7 +18,7 @@ ncspot:
 	cd git-ncspot && \
 		cargo build --release --features cover && \
 		sudo mv target/release/ncspot /usr/local/bin
-	rm -rf ncspot
+	rm -rf git-ncspot
 	@echo "ncspot compiled"
 
 .PHONY: vim ncspot
