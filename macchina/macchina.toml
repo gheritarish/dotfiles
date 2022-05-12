@@ -15,4 +15,4 @@ physical_cores = true
 
 theme = "Uranium"
 
-show = ["Host", "Kernel", "Packages", "Distribution", "WindowManager", "Resolution", "Backlight", "Terminal", "Uptime",  "ProcessorLoad"]
+show = ["Host", "Kernel", "Packages", "Distribution", "WindowManager", "Resolution", "Backlight", "Terminal", "Uptime",  "ProcessorLoad", "Processor"]
