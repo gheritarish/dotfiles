@@ -81,6 +81,8 @@ plugins=(
     fzf
     git
     colored-man-pages
+    grc
+    sudo
     zsh-autosuggestions
     zsh-syntax-highlighting)
 
@@ -111,15 +113,15 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias ls="colorls"
+alias ls="lsd"
 alias dnd="source ~/dnd/bin/activate"
 alias deact="deactivate"
 alias ping="grc ping"
 alias ps="grc ps"
 alias pgadmin="source ~/pgadmin4/bin/activate && pgadmin4"
 alias sshgit="~/.git.sh"
-alias offgrid="~/.offgrid.sh"
 alias clscr="~/clean_screenshots"
+alias srce="source /etc/grc.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -137,3 +139,7 @@ fi
 eval "$(ssh-agent -s)" > /dev/null
 
 export _JAVA_AWT_WM_NONREPARENTING=1
+
+export ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets regexp)
+typeset -A ZSH_HIGHLIGHT_REGEXP
+ZSH_HIGHLIGHT_REGEXP+=(' -{1,2}[a-zA-Z0-9_-]*' fg=008)
