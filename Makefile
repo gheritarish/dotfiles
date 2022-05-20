@@ -6,7 +6,7 @@ vim:
 			--enable-python3interp=yes --with-python3-command=python3 \
 			--enable-luainterp=yes --enable-cscope --enable-perlinterp=yes \
 			--enable-tclinterp=yes --enable-rubyinterp=yes --enable-largefile \
-			--enable-fail-if-missing --with-compiledby=telmar && \
+			--enable-fail-if-missing --enable-terminal --with-compiledby=telmar && \
 		make && \
 		sudo make install
 	rm -rf vim
