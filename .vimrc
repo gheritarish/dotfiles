@@ -143,6 +143,10 @@ call plug#begin()
     " Plug 'ryanoasis/vim-devicons' Icons without colours
     Plug 'akinsho/bufferline.nvim'
 
+    " Brackets
+    Plug 'LunarWatcher/auto-pairs'
+    Plug 'frazrepo/vim-rainbow'
+
     " colorschemes
     "Plug 'srcery-colors/srcery-vim'
     "Plug 'pacokwon/onedarkpaco.vim'
@@ -180,6 +184,7 @@ colorscheme gruvbox
 let g:gruvbox_bold = 1
 let g:gruvbox_italic = 1
 let g:gruvbox_underline = 1
+let g:gruvbox_invert_selection = 0
 
 let NERDTreeMinimalUI=1
 autocmd BufEnter * if tabpagenr('$') == 1
@@ -288,6 +293,9 @@ au BufRead,BufNewFile *.md setlocal textwidth=100
 au BufRead,BufNewFile *.md setlocal tabstop=2
 au BufRead,BufNewFile *.rst setlocal tabstop=4
 au BufRead,BufNewFile *.sql setlocal tabstop=4
+
+" Brackets config
+au FileType python,markdown,rst,sql,c,ts,html,make,groovy call rainbow#load()
 
 " Autocompletion
 set wildmenu
