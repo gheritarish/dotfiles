@@ -14,6 +14,7 @@ syntax on
 set autoindent
 set expandtab	" convert tabs to space
 set tabstop=4
+set shiftwidth=4
 " set smarttab
 
 " Search options
@@ -178,6 +179,9 @@ call plug#begin()
       \ 'for': ['javascript', 'typescript', 'markdown', 'python'] }
 call plug#end()
 
+" auto-pairs
+let g:AutoPairsCompatibleMaps = 0
+
 " let g:sonokai_theme = 'andromeda'
 set background=dark
 colorscheme gruvbox
@@ -291,11 +295,10 @@ au BufRead,BufNewFile *.md setlocal textwidth=100
 
 " Tab lengths
 au BufRead,BufNewFile *.md setlocal tabstop=2
-au BufRead,BufNewFile *.rst setlocal tabstop=4
-au BufRead,BufNewFile *.sql setlocal tabstop=4
+au BufRead,BufNewFile *.md setlocal shiftwidth=2
 
 " Brackets config
-au FileType python,markdown,rst,sql,c,ts,html,make,groovy call rainbow#load()
+au FileType python,rst,sql,c,ts,html,make,groovy call rainbow#load()
 
 " Autocompletion
 set wildmenu
