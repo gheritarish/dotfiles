@@ -121,6 +121,12 @@ noremap <C-w>k <C-w>r
 " l => new file
 noremap <C-w>l <C-w>n
 
+" Resize windows by 5 lines / columns
+noremap <C-w>+ :resize +5<CR>
+noremap <C-w>- :resize -5<CR>
+noremap <C-w>< :vertical:resize -5<CR>
+noremap <C-w>> :vertical:resize +5<CR>
+
 " Terminal: 20 rows, called with leader-t
 nnoremap <leader>t :term ++rows=20<CR>
 
@@ -296,6 +302,8 @@ au BufRead,BufNewFile *.md setlocal textwidth=100
 " Tab lengths
 au BufRead,BufNewFile *.md setlocal tabstop=2
 au BufRead,BufNewFile *.md setlocal shiftwidth=2
+au BufRead,BufNewFile *.rst setlocal tabstop=4
+au BufRead,BufNewFile *.sql setlocal tabstop=4
 
 " Brackets config
 au FileType python,rst,sql,c,ts,html,make,groovy call rainbow#load()
