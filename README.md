@@ -28,6 +28,7 @@
 * brightnessctl (change screen brightness)
 * playerctl (change sound volume)
 * spicetify (configure Spotify)
+* delta (`git-delta`): diff for git
 * zathura, zathura-pdf-mupdf (read pdf and epub)
 * ranger (explore files)
 * redshift

@@ -1,0 +1,32 @@
+[core]
+    editor = vim
+    pager = delta
+
+[blame]
+    ignoreRevsFile = .git-blame-ignore-revs
+
+[alias]
+    assume = update-index --assume-unchanged
+    assumed = "!git ls-files -v | grep ^h | cut -c 3-"
+    unassume = update-index --no-assume-unchanged
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    light = false    # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+    side-by-side = true
+    line-numbers = true
+    file-decoration-style = "#689d6a" box
+    file-style = "#689d6a" box
+    hunk-header-decoration-style = "#b16286" ul
+    minus-style = "#cc241d"
+    plus-style = "#98971a"
+    syntax-theme = gruvbox-dark
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
