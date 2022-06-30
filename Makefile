@@ -45,8 +45,8 @@ config-base:
 	cp ./.zshrc ../.zshrc
 	co ./redshift.conf ../.config/redshift.conf
 	@echo "Copying wallpapers to Pictures folder"
-	cp ./lock.png ../Pictures
-	cp ./Whitestone.png ../Pictures
+	cp ./Pictures/*.png ../Pictures
+	cp ./Pictures/*.jpg ../Pictures
 	@echo "Files copied"
 
 # Install all i3 related configuration files
