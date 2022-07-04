@@ -9,7 +9,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/bmarlet/.oh-my-zsh"
+export ZSH="/home/telmar/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -67,7 +67,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="yyyy-mm-dd"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -79,12 +79,13 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     fzf
+    fzf-tab
     git
     colored-man-pages
-    grc
     sudo
-    zsh-autosuggestions
-    zsh-syntax-highlighting)
+    warhol
+    zsh-syntax-highlighting
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -116,8 +117,6 @@ source $ZSH/oh-my-zsh.sh
 alias ls="lsd"
 alias dnd="source ~/dnd/bin/activate"
 alias deact="deactivate"
-alias ping="grc ping"
-alias ps="grc ps"
 alias pgadmin="source ~/pgadmin4/bin/activate && pgadmin4"
 alias sshgit="~/.git.sh"
 alias clscr="~/clean_screenshots"
@@ -126,10 +125,9 @@ alias srce="source /etc/grc.zsh"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-export PATH=/home/bmarlet/.local/bin:/home/bmarlet/.local/share/gem/ruby/3.0.0/bin:/home/bmarlet/.cargo/bin:/home/bmarlet/.dotnet:$PATH
+export PATH=/home/telmar/.local/bin:/home/telmar/.local/share/gem/ruby/3.0.0/bin:/home/telmar/.cargo/bin:/home/telmar/.dotnet:$PATH
 export GPG_TTY=$(tty)
-export XDG_CONFIG_HOME=/home/bmarlet/.config
-export PAGER=most
+export XDG_CONFIG_HOME=/home/telmar/.config
 export EDITOR=vim
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
