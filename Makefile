@@ -32,7 +32,7 @@ base:
 
 # Install all packages needed for i3
 i3:
-	sudo pacman -S brightnessctl dunst i3-gaps picom playerctl polybar rofi scrot
+	sudo pacman -S brightnessctl dunst i3-gaps picom playerctl polybar rofi scrot
 
 # Install all base configuration files
 config-base:
