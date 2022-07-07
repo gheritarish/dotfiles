@@ -308,6 +308,9 @@ au BufRead,BufNewFile *.sql setlocal tabstop=4
 " Brackets config
 au FileType python,rst,sql,c,ts,html,make,groovy call rainbow#load()
 
+" Jenkinsfile
+autocmd BufRead,BufNewFile Jenkinsfile set filetype=groovy
+
 " Autocompletion
 set wildmenu
 
