@@ -9,7 +9,7 @@ background-alt = #32302f
 foreground = #ebdbb2
 foreground-alt = #a89984
 
-low = #458588
+low = #98971a
 medium = #d79921
 high = #cc241d
 
@@ -41,7 +41,7 @@ font-0 = "MesloLGS NF:pixelsize=9;1"
 
 modules-left = i3 title
 modules-center = spotify
-modules-right = pulseaudio memory cpu backlight battery filesystem wlan eth date
+modules-right = pulseaudio memory cpu backlight battery filesystem docker wlan eth date powermenu
 
 tray-position = right
 tray-padding = 2
@@ -112,7 +112,7 @@ format-prefix = " "
 format = <label>
 label-maxlen = 50
 exec = $HOME/.config/polybar/scripts/get_spotify_status.sh
-format-foreground = ${colors.low}
+format-foreground = #98971a
 interval = 1
 
 ;------------------------------------------------------------
@@ -160,36 +160,11 @@ bar-volume-empty-foreground = ${colors.foreground-alt}
 ;------------------------------------------------------------
 [module/cpu]
 type = internal/cpu
-
-; Seconds to sleep between updates
 interval = 2
-
-format = <ramp-coreload>
-ramp-coreload-spacing = 1
-ramp-coreload-0 = ▁
-ramp-coreload-0-font = 2
-ramp-coreload-0-foreground = ${colors.low}
-ramp-coreload-1 = ▂
-ramp-coreload-1-font = 2
-ramp-coreload-1-foreground = ${colors.low}
-ramp-coreload-2 = ▃
-ramp-coreload-2-font = 2
-ramp-coreload-2-foreground = ${colors.low}
-ramp-coreload-3 = ▄
-ramp-coreload-3-font = 2
-ramp-coreload-3-foreground = ${colors.low}
-ramp-coreload-4 = ▅
-ramp-coreload-4-font = 2
-ramp-coreload-4-foreground = ${colors.medium}
-ramp-coreload-5 = ▆
-ramp-coreload-5-font = 2
-ramp-coreload-5-foreground = ${colors.medium}
-ramp-coreload-6 = ▇
-ramp-coreload-6-font = 2
-ramp-coreload-6-foreground = ${colors.high}
-ramp-coreload-7 = █
-ramp-coreload-7-font = 2
-ramp-coreload-7-foreground = ${colors.high}
+format-prefix = ""
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #fb4934
+label = %percentage:3%%
 
 ;------------------------------------------------------------
 [module/temperature]
@@ -207,25 +182,17 @@ label-warn-foreground = ${colors.high}
 ;------------------------------------------------------------
 [module/memory]
 type = internal/memory
-format = <label> <bar-used>
-label = "RAM "
-
-bar-used-width = 10
-bar-used-foreground-0 = ${colors.low}
-bar-used-foreground-1 = ${colors.low}
-bar-used-foreground-2 = ${colors.medium}
-bar-used-foreground-3 = ${colors.high}
-bar-used-indicator = +
-bar-used-indicator-foreground = ${colors.foreground}
-bar-used-fill = ─
-bar-used-empty = ─
-bar-used-empty-foreground = ${colors.foreground-alt}
+interval = 2
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #689d6a
+label = %percentage_used%%
 
 
 ;------------------------------------------------------------
 [module/wlan]
 type = internal/network
-interface = wlp9s0
+interface = wlan0
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
@@ -380,6 +347,52 @@ format-foreground = #b16286
 format = <label>
 label = %title%
 label-maxlen = 50
+
+;------------------ docker module --------------------------
+[module/docker]
+type = custom/script
+exec = docker ps -q | wc -l
+interval = 1
+label =  %output%
+format-foreground = #458588
+
+;------------------- powermenu ------------------------------
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+
+format-spacing = 1
+
+label-open = 襤
+label-open-foreground = ${colors.secondary}
+label-close =  cancel
+label-close-foreground = ${colors.secondary}
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+
+menu-0-0 = reboot
+menu-0-0-exec = menu-open-3
+menu-0-1 = hibernate
+menu-0-1-exec = menu-open-1
+menu-0-2 = power off
+menu-0-2-exec = menu-open-2
+
+menu-1-0 = hibernate
+menu-1-0-exec = i3lock -i ~/Pictures/Hadestown.jpg -F --indicator -k --time-color=f6b517 --date-color=306bd1 && systemctl hibernate
+menu-1-1 = cancel
+menu-1-1-exec = menu-open-0
+
+menu-2-0 = power off
+menu-2-0-exec = systemctl poweroff
+menu-2-1 = cancel
+menu-2-1-exec = menu-open-0
+
+menu-3-0 = cancel
+menu-3-0-exec = menu-open-0
+menu-3-1 = reboot
+menu-3-1-exec = reboot
+
 
 ;------------------------------------------------------------
 [settings]
