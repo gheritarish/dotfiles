@@ -41,7 +41,7 @@ font-0 = "MesloLGS NF:pixelsize=9;1"
 
 modules-left = i3 title
 modules-center = spotify
-modules-right = pulseaudio memory cpu backlight battery filesystem docker wlan eth date powermenu
+modules-right = temperature pulseaudio memory cpu backlight battery filesystem docker wlan eth date powermenu
 
 tray-position = right
 tray-padding = 2
@@ -136,26 +136,20 @@ interval = 2
 use-ui-max = true
 click-right = pavucontrol
 
-format-volume = <label-volume> <bar-volume>
-label-volume = "%percentage%% "
+format-volume = <ramp-volume> <label-volume>
+label-volume = "%percentage%%"
 label-volume-foreground = ${colors.foreground}
 
-label-muted = MUTE
+label-muted = 婢
 label-muted-foreground = ${colors.foreground-alt}
 
-bar-volume-width = 10
-bar-volume-foreground-0 = ${colors.low}
-bar-volume-foreground-1 = ${colors.low}
-bar-volume-foreground-2 = ${colors.low}
-bar-volume-foreground-3 = ${colors.low}
-bar-volume-foreground-4 = ${colors.medium}
-bar-volume-foreground-5 = ${colors.medium}
-bar-volume-foreground-6 = ${colors.high}
-bar-volume-gradient = false
-bar-volume-indicator = +
-bar-volume-fill = ─
-bar-volume-empty = ─
-bar-volume-empty-foreground = ${colors.foreground-alt}
+ramp-volume-0 = 
+ramp-volume-1 = 墳
+ramp-volume-2 = 
+
+ramp-volume-0-foreground = ${colors.low}
+ramp-volume-1-foreground = ${colors.medium}
+ramp-volume-2-foreground = ${colors.high}
 
 ;------------------------------------------------------------
 [module/cpu]
@@ -170,10 +164,18 @@ label = %percentage:3%%
 [module/temperature]
 type = internal/temperature
 thermal-zone = 0
-warn-temperature = 60
+warn-temperature = 70
 
-format = <label>
+format = <ramp> <label>
 format-warn = <label-warn>
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+
+ramp-0-foreground = ${colors.low}
+ramp-1-foreground = ${colors.medium}
+ramp-2-foreground = ${colors.high}
 
 label = %temperature-c%
 label-warn = %temperature-c%
