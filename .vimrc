@@ -32,6 +32,10 @@ augroup remember_folds
     autocmd BufWinEnter * silent! loadview
 augroup END
 
+augroup vimQuit
+    autocmd QuitPre * silent! q
+augroup END
+
 augroup vimStartup
     au!
 
@@ -124,8 +128,8 @@ noremap <C-w>l <C-w>n
 " Resize windows by 5 lines / columns
 noremap <C-w>+ :resize +5<CR>
 noremap <C-w>- :resize -5<CR>
-noremap <C-w>< :vertical:resize -5<CR>
-noremap <C-w>> :vertical:resize +5<CR>
+noremap <C-w>< :vertical<CR>:resize -5<CR>
+noremap <C-w>> :vertical<CR>:resize +5<CR>
 
 " Terminal: 20 rows, called with leader-t
 nnoremap <leader>t :term ++rows=20<CR>
@@ -183,6 +187,9 @@ call plug#begin()
     Plug 'prettier/vim-prettier', {
       \ 'do': 'yarn install',
       \ 'for': ['javascript', 'typescript', 'markdown', 'python'] }
+
+    " Justfile
+    Plug 'NoahTheDuke/vim-just'
 call plug#end()
 
 " auto-pairs
