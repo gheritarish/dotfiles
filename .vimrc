@@ -28,12 +28,12 @@ set viewoptions=folds
 " Folds
 augroup remember_folds
     autocmd!
-    autocmd BufWinLeave * mkview
+    autocmd BufWinLeave * silent! mkview
     autocmd BufWinEnter * silent! loadview
 augroup END
 
 augroup vimQuit
-    autocmd QuitPre * silent! q
+    autocmd ExitPre * silent! qa
 augroup END
 
 augroup vimStartup
@@ -133,6 +133,11 @@ noremap <C-w>> :vertical<CR>:resize +5<CR>
 
 " Terminal: 20 rows, called with leader-t
 nnoremap <leader>t :term ++rows=20<CR>
+
+" Tabs
+nnoremap <C-p> :tabprev<CR>
+nnoremap <C-n> :tabnext<CR>
+nnoremap <leader>s :tabnew<CR>
 
 " Plugins
 call plug#begin()
