@@ -128,8 +128,8 @@ noremap <C-w>l <C-w>n
 " Resize windows by 5 lines / columns
 noremap <C-w>+ :resize +5<CR>
 noremap <C-w>- :resize -5<CR>
-noremap <C-w>< :vertical<CR>:resize -5<CR>
-noremap <C-w>> :vertical<CR>:resize +5<CR>
+noremap <C-w>< :vertical resize -5<CR>
+noremap <C-w>> :vertical resize +5<CR>
 
 " Terminal: 20 rows, called with leader-t
 nnoremap <leader>t :term ++rows=20<CR>
