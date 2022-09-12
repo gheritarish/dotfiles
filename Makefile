@@ -37,10 +37,10 @@ i3:
 # Install all base configuration files
 config-base:
 	@echo "Copying configurations where they should"
-	cp ./alacritty ../.config
-	cp ./bat ../.config/
-	cp ./macchina ../.config
-	cp ./zathura ../.config
+	cp -r ./alacritty ../.config
+	cp -r ./bat ../.config
+	cp -r ./macchina ../.config
+	cp -r ./zathura ../.config
 	cp ./.vimrc ../.vimrc
 	cp ./.zshrc ../.zshrc
 	co ./redshift.conf ../.config/redshift.conf
@@ -52,11 +52,11 @@ config-base:
 # Install all i3 related configuration files
 config-i3:
 	@echo "Copying i3 configurations where they should"
-	cp ./dunst ../.config
-	cp ./i3 ../.config
-	cp ./picom ../.config
-	cp ./polybar ../.config
-	cp ./rofi ../.config
+	cp -r ./dunst ../.config
+	cp -r ./i3 ../.config
+	cp -r ./picom ../.config
+	cp -r ./polybar ../.config
+	cp -r ./rofi ../.config
 	@echo "Saving script to remove scrot screenshots"
 	cp ./clean_screenshots ../clean_screenshots
 	@echo "Files compiled"
