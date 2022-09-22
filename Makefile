@@ -43,7 +43,7 @@ config-base:
 	cp -r ./zathura ../.config
 	cp ./.vimrc ../.vimrc
 	cp ./.zshrc ../.zshrc
-	co ./redshift.conf ../.config/redshift.conf
+	cp ./redshift.conf ../.config/redshift.conf
 	@echo "Copying wallpapers to Pictures folder"
 	cp ./Pictures/*.png ../Pictures
 	cp ./Pictures/*.jpg ../Pictures
@@ -59,6 +59,7 @@ config-i3:
 	cp -r ./rofi ../.config
 	@echo "Saving script to remove scrot screenshots"
 	cp ./clean_screenshots ../clean_screenshots
+	chmod +x ../clean_screenshots
 	@echo "Files compiled"
 
 .PHONY: vim ncspot dev-env base i3 config-base config-i3
