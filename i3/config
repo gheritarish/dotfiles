@@ -20,7 +20,8 @@ bindsym $mod+space exec "rofi -show drun"
 # is used in the bar {} block below.
 font pango:monospace 8
 # for_window [class=".*"] border pixel 2
-default_border pixel 1
+# default_border pixel 1
+for_window [all] border pixel 1
 client.focused          #458588 #458588 #458588 #458588 #458588
 client.focused_inactive #282828 #282828 #282828 #282828 #282828
 client.urgent           #cc241d #cc241d #cc241d #cc241d #cc241d
