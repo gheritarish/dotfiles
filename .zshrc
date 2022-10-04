@@ -4,6 +4,7 @@ ZI[BIN_DIR]="${HOME}/.zi/bin"
 source "${ZI[BIN_DIR]}/zi.zsh"
 
 # Plugins
+zi ice wait'1' lucid
 zi snippet OMZP::fzf
 zi ice wait'1' lucid
 zi snippet OMZP::git
@@ -28,6 +29,9 @@ zi snippet OMZL::directories.zsh
 zi snippet OMZL::functions.zsh
 zi snippet OMZL::grep.zsh
 zi snippet OMZL::git.zsh
+zi snippet OMZL::key-bindings.zsh
+
+setopt auto_cd
 
 # Powerlevel10k
 setopt prompt_subst
@@ -61,10 +65,8 @@ export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;31m'
 export LESS_TERMCAP_me=$'\E[0m'
 export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;47;34m'
-export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
-export LESS=-r
+export LESS=-R
 
 [[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
 
@@ -77,8 +79,10 @@ typeset -A ZSH_HIGHLIGHT_REGEXP
 ZSH_HIGHLIGHT_REGEXP+=(' -{1,2}[a-zA-Z0-9_-]*' fg=008)
 
 # Fzf tab configuration
-# disable sort when completing `git checkout`
+# disable sort when completing `git checkout/show/commit`
 zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':completion:*:git-show:*' sort false
+zstyle ':completion:*:git-commit:*' sort false
 # set descriptions format to enable group support
 zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
