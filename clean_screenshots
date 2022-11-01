@@ -1,6 +1,6 @@
 #!/bin/sh
 
-FILES=$(find . -maxdepth 1 -regextype posix-extended -regex '.*scrot[_]?[0-9]{3}?.png')
+FILES=$(fd ".*scrot[_]?([0-9]{3})?.png" -d 1)
 
 for FILE in $FILES; do
     if [[ $1 == "-d" || $1 == "--delete" ]]; then
