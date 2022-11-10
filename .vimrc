@@ -5,6 +5,7 @@ set wrap linebreak nolist
 
 " Activate mouse in vim
 set mouse=a
+set ttymouse=sgr
 
 " Filetype & syntax
 filetype indent plugin on
@@ -64,7 +65,7 @@ set noerrorbells
 set title
 set splitright " New tab open on the right
 set splitbelow " New tab open below
-set cmdheight=2 " Two lines for commands
+set cmdheight=1 " Two lines for commands
 
 " Automatically strip trailing spaces on buffer write
 autocmd BufWritePre * :%s/\s\+$//e
@@ -316,6 +317,10 @@ au BufRead,BufNewFile *.md setlocal tabstop=2
 au BufRead,BufNewFile *.md setlocal shiftwidth=2
 au BufRead,BufNewFile *.rst setlocal tabstop=4
 au BufRead,BufNewFile *.sql setlocal tabstop=4
+
+" Spelling
+au BufRead, BufNewFile *.md set spell spelllang=fr,en_gb
+au BufRead, BufNewFile *.rst set spell spelllang=fr,en_gb
 
 " Brackets config
 au FileType python,rst,sql,c,ts,html,make,groovy call rainbow#load()
