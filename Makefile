@@ -2,9 +2,8 @@ vim:
 	@echo "Building vim"
 	-git clone https://github.com/vim/vim.git
 	cd vim && \
-		./configure --enable-gui=gtk3 --with-features=huge --enable-multibyte \
-			--enable-python3interp=yes --with-python3-command=python3 \
-			--enable-luainterp=yes --enable-cscope --enable-perlinterp=yes \
+		./configure --enable-gui=gtk4 --with-features=huge --enable-multibyte \
+			--enable-python3interp=yes --enable-luainterp=yes --enable-cscope \
 			--enable-tclinterp=yes --enable-rubyinterp=yes --enable-largefile \
 			--enable-fail-if-missing --enable-terminal --with-compiledby=telmar && \
 		make && \
