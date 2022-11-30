@@ -61,4 +61,11 @@ config-i3:
 	chmod +x ../clean_screenshots
 	@echo "Files compiled"
 
+i3-lock:
+	@echo "Building i3lock-color"
+	-git clone https://github.com/Raymo111/i3lock-color.git
+	cd i3lock-color && ./install-i3lock-color.sh
+	@echo "i3lock-color installed"
+	rm -rf i3lock-color
+
 .PHONY: vim ncspot dev-env base i3 config-base config-i3
