@@ -27,7 +27,7 @@ require('packer').startup(function(use)
     }
 
     -- Telescope
-    use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+    use { 'nvim-telescope/telescope.nvim', requires = { { 'nvim-lua/plenary.nvim' } , { 'kdheepak/lazygit.nvim' } } }
     use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     use { "nvim-telescope/telescope-file-browser.nvim" }
 
@@ -138,7 +138,8 @@ telescope.setup {
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 require('telescope').load_extension('fzf')
-require("telescope").load_extension "file_browser"
+require("telescope").load_extension("file_browser")
+require("telescope").load_extension("lazygit")
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers)
 vim.keymap.set('n', '<leader>sf', function()
     require('telescope.builtin').find_files { previewer = false }
@@ -213,7 +214,7 @@ require('lspconfig')['pylsp'].setup{
             plugins = {
                 flake8 = { enabled = true, config = '~/Documents/Git/paylead_flask/.flake8' },
                 pycodestyle = { enabled = false },
-                rope_autoimport = { enabled = true },
+                rope_autoimport = { enabled = true, memory = true },
                 rope_completion = { enabled = true },
                 autopep8 = { enabled = false },
                 yapf = { enabled = false },
@@ -291,6 +292,24 @@ cmp.setup({
     })
 })
 
+local function getWords()
+  if vim.bo.filetype == "md" or vim.bo.filetype == "txt" or vim.bo.filetype == "markdown" or vim.bo.filetype == "rst" then
+    if vim.fn.wordcount().visual_words == 1 then
+      return tostring(vim.fn.wordcount().visual_words) .. " word"
+    elseif not (vim.fn.wordcount().visual_words == nil) then
+      return tostring(vim.fn.wordcount().visual_words) .. " words"
+    else
+      if vim.fn.wordcount().words == 1 then
+        return tostring(vim.fn.wordcount().words) .. " word"
+      else
+          return tostring(vim.fn.wordcount().words) .. " words"
+      end
+    end
+  else
+    return ""
+  end
+end
+
 require('lualine').setup {
     options = {
       icons_enabled = true,
@@ -314,8 +333,8 @@ require('lualine').setup {
       lualine_a = {'mode'},
       lualine_b = {'branch', 'diff', 'diagnostics'},
       lualine_c = { {'filename', path=1}},
-      lualine_x = {'encoding', 'fileformat', 'filetype'},
-      lualine_y = {'progress'},
+      lualine_x = {'searchcount', 'encoding', 'fileformat', 'filetype'},
+      lualine_y = {'progress', getWords},
       lualine_z = {'location'}
     },
     inactive_sections = {
@@ -327,6 +346,7 @@ require('lualine').setup {
       lualine_z = {}
     },
     tabline = {},
+    inactive_tabline = {},
     winbar = {},
     inactive_winbar = {},
     extensions = {}

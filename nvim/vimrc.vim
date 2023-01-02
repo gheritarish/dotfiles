@@ -143,59 +143,23 @@ nnoremap <leader>s :tabnew<CR>
 " Plugins
 call plug#begin()
 
-    "Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    " Plug 'junegunn/fzf.vim'
-    " Plug 'ggreer/the_silver_searcher'
-    "Plug 'preservim/nerdtree'
-    "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-    Plug 'tpope/vim-fugitive'
+    " Writing code
+    Plug 'LunarWatcher/auto-pairs'
+    Plug 'frazrepo/vim-rainbow'
     Plug 'preservim/nerdcommenter'
-    "Plug 'vim-airline/vim-airline'
-    "Plug 'vim-airline/vim-airline-themes'
-    "Plug 'ryanoasis/vim-devicons'
-    " Plug 'jiangmiao/auto-pairs'
 
     " Open several files in tabs
     Plug 'kyazdani42/nvim-web-devicons' " Recommended (for coloured icons)
-    " Plug 'ryanoasis/vim-devicons' Icons without colours
     Plug 'akinsho/bufferline.nvim'
 
-    " Brackets
-    Plug 'LunarWatcher/auto-pairs'
-    Plug 'frazrepo/vim-rainbow'
-
-    " colorschemes
-    "Plug 'srcery-colors/srcery-vim'
-    "Plug 'pacokwon/onedarkpaco.vim'
-    "Plug 'bluz71/vim-moonfly-colors'
-    " Plug 'sainnhe/sonokai'
-    " Plug 'jnurmine/Zenburn'
-    " Plug 'joshdick/onedark.vim'
-    "Plug 'yassinebridi/vim-purpura'
-    "Plug 'lifepillar/vim-wwdc16-theme'
-    "Plug 'tckmn/hotdog.vim'
-    "Plug 'rakr/vim-one'
-    "Plug 'arcticicestudio/nord-vim'
-    "Plug 'sonph/onehalf'
-    "Plug 'rafi/awesome-vim-colorschemes'
-    Plug 'morhetz/gruvbox'
+    " Git
+    Plug 'tpope/vim-fugitive'
+    Plug 'APZelos/blamer.nvim'
     Plug 'jreybert/vimagit'
 
-    " VimWiki
-    " Plug 'vimwiki/vimwiki'
-
     " Python
-    " Plug 'dense-analysis/ale'
     Plug 'pixelneo/vim-python-docstring'
-    " Plug 'davidhalter/jedi-vim'
-    "Plug 'ycm-core/YouCompleteMe'
     Plug 'SirVer/ultisnips'
-    " Plug 'honza/vim-snippets'
-
-    " Prettifier
-    " Plug 'prettier/vim-prettier', {
-    "   \ 'do': 'yarn install',
-    "   \ 'for': ['javascript', 'typescript', 'markdown', 'python'] }
 
     " Justfile
     Plug 'NoahTheDuke/vim-just'
@@ -204,9 +168,6 @@ call plug#end()
 " auto-pairs
 let g:AutoPairsCompatibleMaps = 0
 
-" let g:sonokai_theme = 'andromeda'
-" set background=dark
-" colorscheme gruvbox
 let g:gruvbox_bold = 1
 let g:gruvbox_italic = 1
 let g:gruvbox_underline = 1
@@ -251,12 +212,6 @@ let g:airline_theme='gruvbox'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#enabled = 1
 let g:airline_detect_spell = 0
-" let g:airline_left_alt_sep = ''
-" let g:airline_left_sep = ''
-" let g:airline_right_alt_sep = ''
-" let g:airline_right_sep = ''
-" let g:airline#extensions#tabline#fnamemod = ":t"
-" let g:gruvbox_contrast_dark = 'hard'
 
 " fzf.vim
 let g:fzf_colors= {
@@ -274,10 +229,6 @@ let g:ale_fixers = {
 
 let g:python_style = 'google'
 
-" YouCompleteMe
-"nnoremap <leader>d :YcmCompleter GoToDefinition<CR>
-"nnoremap <leader>n :YcmCompleter GoToReferences<CR>
-
 " Jedi config
 let g:pymode_rope = 0
 let g:jedi#completion_command = "<tab>"
@@ -294,8 +245,16 @@ au FileType python,rst,sql,c,ts,html,make,groovy call rainbow#load()
 " Jenkinsfile
 autocmd BufRead,BufNewFile Jenkinsfile* set filetype=groovy
 
-" Autocompletion
-" set wildmenu
+" Blamer config
+let g:blamer_enabled = 1
+let g:blamer_show_in_visual_modes = 0
+let g:blamer_show_in_insert_modes = 1
+let g:blamer_show_in_normal_modes = 0
+let g:blamer_delay = 500
+let g:blamer_prefix = '  > '
+let g:blamer_template = '<committer>, <committer-time> • <summary>'
+let g:blamer_date_format = '%y-%m-%d'
+highlight Blamer guifg=lightgrey
 
 " Snippets
 let g:UltiSnipsExpandTrigger="<C-s>"
