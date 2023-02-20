@@ -11,6 +11,15 @@ vim:
 	rm -rf vim
 	@echo "vim compiled"
 
+neovim:
+	@echo "Building nvim"
+	-git clone https://github.com/neovim/neovim
+	cd neovim && \
+		make CMAKE_BUILD_TYPE=RelWithDebInfo && \
+		sudo make install
+	rm -rf neovim
+	echo "neovim compiled"
+
 ncspot:
 	@echo "Building ncspot"
 	-git clone https://github.com/hrkfdn/ncspot.git git-ncspot
@@ -68,4 +77,4 @@ i3-lock:
 	@echo "i3lock-color installed"
 	rm -rf i3lock-color
 
-.PHONY: vim ncspot dev-env base i3 config-base config-i3
+.PHONY: vim neovim ncspot dev-env base i3 config-base config-i3
