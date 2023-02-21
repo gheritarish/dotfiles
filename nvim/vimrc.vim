@@ -140,6 +140,9 @@ nnoremap <C-p> :tabprev<CR>
 nnoremap <C-n> :tabnext<CR>
 nnoremap <leader>s :tabnew<CR>
 
+" Git
+nnoremap <leader>g :Workspace RightPanelToggle<CR>
+
 " Plugins
 call plug#begin()
 
@@ -154,7 +157,6 @@ call plug#begin()
 
     " Git
     Plug 'tpope/vim-fugitive'
-    Plug 'APZelos/blamer.nvim'
     Plug 'jreybert/vimagit'
 
     " Python
@@ -245,16 +247,6 @@ au FileType python,rst,sql,c,ts,html,make,groovy call rainbow#load()
 " Jenkinsfile
 autocmd BufRead,BufNewFile Jenkinsfile* set filetype=groovy
 
-" Blamer config
-let g:blamer_enabled = 1
-let g:blamer_show_in_visual_modes = 0
-let g:blamer_show_in_insert_modes = 1
-let g:blamer_show_in_normal_modes = 0
-let g:blamer_delay = 500
-let g:blamer_prefix = '  > '
-let g:blamer_template = '<committer>, <committer-time> • <summary>'
-let g:blamer_date_format = '%y-%m-%d'
-highlight Blamer guifg=lightgrey
 
 " Snippets
 let g:UltiSnipsExpandTrigger="<C-s>"

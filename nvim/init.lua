@@ -11,6 +11,12 @@ require('packer').startup(function(use)
     -- colorscheme
     use 'luisiacc/gruvbox-baby'
 
+    -- panels
+    use 'ldelossa/nvim-ide'
+
+    -- git
+    use 'lewis6991/gitsigns.nvim'
+
     -- LSP
     use {
         "neovim/nvim-lspconfig",
@@ -197,6 +203,10 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>n', vim.lsp.buf.references, bufopts)
 end
 
+-- nvim-cmp supports additional completion capabilities
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
 local lsp_flags = {
   -- This is the default in Nvim 0.7+
   debounce_text_changes = 150,
@@ -209,27 +219,29 @@ local lsp_flags = {
 require('lspconfig')['pylsp'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
+    capabilities = capabilities,
     settings = {
         pylsp = {
             plugins = {
-                flake8 = { enabled = true, config = '~/Documents/Git/paylead_flask/.flake8' },
+                -- flake8 = { enabled = true, config = '~/Documents/Git/paylead_flask/.flake8' },
                 pycodestyle = { enabled = false },
-                rope_autoimport = { enabled = true, memory = true },
-                rope_completion = { enabled = true },
+                rope_autoimport = { enabled = false, memory = true },
+                rope_completion = { enabled = false },
                 autopep8 = { enabled = false },
                 yapf = { enabled = false },
                 mccabe = { enabled = false },
-                pyflakes = { enabled = false }
+                pyflakes = { enabled = false },
+                ruff = { enabled = true, config = '~/Documents/Git/paylead_flask/pyproject.toml' },
             },
-        }
+        },
     },
 }
 
 local null_ls = require("null-ls")
 
 local sources = {
-    null_ls.builtins.formatting.isort,
     null_ls.builtins.formatting.black,
+    null_ls.builtins.formatting.ruff,
 }
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -287,8 +299,6 @@ cmp.setup({
       -- { name = 'luasnip' }, -- For luasnip users.
       { name = 'ultisnips' }, -- For ultisnips users.
       -- { name = 'snippy' }, -- For snippy users.
-    }, {
-      { name = 'buffer' },
     })
 })
 
@@ -331,7 +341,7 @@ require('lualine').setup {
     },
     sections = {
       lualine_a = {'mode'},
-      lualine_b = {'branch', 'diff', 'diagnostics'},
+      lualine_b = {'branch', 'diagnostics'},
       lualine_c = { {'filename', path=1}},
       lualine_x = {'searchcount', 'encoding', 'fileformat', 'filetype'},
       lualine_y = {'progress', getWords},
@@ -351,3 +361,108 @@ require('lualine').setup {
     inactive_winbar = {},
     extensions = {}
   }
+
+
+require('gitsigns').setup {
+  signs = {
+    add          = { text = '│' },
+    change       = { text = '│' },
+    delete       = { text = '_' },
+    topdelete    = { text = '‾' },
+    changedelete = { text = '~' },
+    untracked    = { text = '┆' },
+  },
+  signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
+  numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
+  linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
+  word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
+  watch_gitdir = {
+    interval = 1000,
+    follow_files = true
+  },
+  attach_to_untracked = true,
+  current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+  current_line_blame_opts = {
+    virt_text = true,
+    virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+    delay = 500,
+    ignore_whitespace = false,
+  },
+  current_line_blame_formatter = '   > <author>, <author_time:%Y-%m-%d> • <summary>',
+  sign_priority = 6,
+  update_debounce = 100,
+  status_formatter = nil, -- Use default
+  max_file_length = 40000, -- Disable if file is longer than this (in lines)
+  preview_config = {
+    -- Options passed to nvim_open_win
+    border = 'single',
+    style = 'minimal',
+    relative = 'cursor',
+    row = 0,
+    col = 1
+  },
+  yadm = {
+    enable = false
+  },
+}
+
+-- default IDE components
+local bufferlist      = require('ide.components.bufferlist')
+local explorer        = require('ide.components.explorer')
+local outline         = require('ide.components.outline')
+local callhierarchy   = require('ide.components.callhierarchy')
+local timeline        = require('ide.components.timeline')
+local terminal        = require('ide.components.terminal')
+local terminalbrowser = require('ide.components.terminal.terminalbrowser')
+local changes         = require('ide.components.changes')
+local commits         = require('ide.components.commits')
+local branches        = require('ide.components.branches')
+local bookmarks       = require('ide.components.bookmarks')
+
+require('ide').setup({
+    -- The global icon set to use.
+    -- values: "nerd", "codicon", "default"
+    icon_set = "default",
+    -- Set the log level for nvim-ide's log. Log can be accessed with
+    -- 'Workspace OpenLog'. Values are 'debug', 'warn', 'info', 'error'
+    log_level = "info",
+    -- Component specific configurations and default config overrides.
+    components = {
+        -- The global keymap is applied to all Components before construction.
+        -- It allows common keymaps such as "hide" to be overridden, without having
+        -- to make an override entry for all Components.
+        --
+        -- If a more specific keymap override is defined for a specific Component
+        -- this takes precedence.
+        global_keymaps = {
+            -- example, change all Component's hide keymap to "h"
+            -- hide = h
+        },
+        -- example, prefer "x" for hide only for Explorer component.
+        -- Explorer = {
+        --     keymaps = {
+        --         hide = "x",
+        --     }
+        -- }
+    },
+    -- default panel groups to display on left and right.
+    panels = {
+        right = "git"
+    },
+    -- panels defined by groups of components, user is free to redefine the defaults
+    -- and/or add additional.
+    panel_groups = {
+        git = { changes.Name, commits.Name }
+    },
+    -- workspaces config
+    workspaces = {
+        -- which panels to open by default, one of: 'left', 'right', 'both', 'none'
+        auto_open = 'none',
+    },
+    -- default panel sizes for the different positions
+    panel_sizes = {
+        left = 30,
+        right = 90,
+        bottom = 15
+    }
+})
