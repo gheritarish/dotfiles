@@ -381,6 +381,7 @@ require('gitsigns').setup {
     follow_files = true
   },
   attach_to_untracked = true,
+
   current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
   current_line_blame_opts = {
     virt_text = true,
@@ -405,6 +406,8 @@ require('gitsigns').setup {
     enable = false
   },
 }
+vim.cmd([[highlight GitGutterChange guifg=#b16286]])
+
 
 -- default IDE components
 local bufferlist      = require('ide.components.bufferlist')
