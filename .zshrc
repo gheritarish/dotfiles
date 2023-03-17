@@ -9,6 +9,9 @@ zi snippet OMZP::fzf
 zi ice wait'1' lucid
 zi snippet OMZP::git
 
+zi ice wait'1' lucid
+zinit light sunlei/zsh-ssh
+
 zi ice wait'2' lucid
 zi snippet OMZP::sudo
 
@@ -50,11 +53,12 @@ alias clscr="~/clean_screenshots"
 alias srce="source /etc/grc.zsh"
 alias jdr="cd ~/Documents/JDR/DnD/New_campaign"
 alias emacs="emacs -nw"
+alias vim="nvim"
 
 export PATH=/home/telmar/.local/bin:/home/telmar/.local/share/gem/ruby/3.0.0/bin:/home/telmar/.cargo/bin:/home/telmar/.dotnet:$PATH
 export GPG_TTY=$(tty)
 export XDG_CONFIG_HOME=/home/telmar/.config
-export EDITOR=vim
+export EDITOR=nvim
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
@@ -83,6 +87,8 @@ ZSH_HIGHLIGHT_REGEXP+=(' -{1,2}[a-zA-Z0-9_-]*' fg=008)
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:git-show:*' sort false
 zstyle ':completion:*:git-commit:*' sort false
+zstyle ':completion:*:git-diff:*' sort false
+zstyle ':completion:*:git-format-patch:*' sort false
 # set descriptions format to enable group support
 zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
