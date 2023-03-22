@@ -93,7 +93,9 @@ zstyle ':completion:*:git-format-patch:*' sort false
 zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# preview directory's content with exa when completing cd
+# preview directory's content with exa when completing cd, ls and vim
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:vim:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:lsd:*' fzf-preview 'exa -1 --color=always $realpath'
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
