@@ -32,6 +32,9 @@ require('packer').startup(function(use)
         'onsails/lspkind.nvim',
     }
 
+    -- indent line
+    use "lukas-reineke/indent-blankline.nvim"
+
     -- Telescope
     use { 'nvim-telescope/telescope.nvim', requires = { { 'nvim-lua/plenary.nvim' } , { 'kdheepak/lazygit.nvim' } } }
     use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
@@ -48,6 +51,12 @@ require('packer').startup(function(use)
     }
 
 end)
+
+require("indent_blankline").setup {
+    -- for example, context is off by default, use this to turn it on
+    show_current_context = true,
+    show_current_context_start = false,
+}
 
 --Set colorscheme
 vim.opt.background = "dark" -- or "light" for light mode
@@ -223,7 +232,6 @@ require('lspconfig')['pylsp'].setup{
     settings = {
         pylsp = {
             plugins = {
-                -- flake8 = { enabled = true, config = '~/Documents/Git/paylead_flask/.flake8' },
                 pycodestyle = { enabled = false },
                 rope_autoimport = { enabled = false, memory = true },
                 rope_completion = { enabled = false },
