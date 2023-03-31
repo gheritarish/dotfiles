@@ -19,8 +19,10 @@ zi ice wait lucid
 zi light Aloxaf/fzf-tab
 zi wait lucid atload"zicompinit; zicdreplay" blockf for Aloxaf/fzf-tab
 
-zi light zsh-users/zsh-syntax-highlighting
+zi ice wait'1' lucid
+zi load ellie/atuin
 
+zi light zsh-users/zsh-syntax-highlighting
 
 zi ice as"completion"
 zi snippet OMZP::docker-compose/_docker-compose
@@ -96,6 +98,8 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # preview directory's content with exa when completing cd, ls and vim
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:vim:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:vi:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:nvim:*' fzf-preview 'exa -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:lsd:*' fzf-preview 'exa -1 --color=always $realpath'
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
