@@ -39,8 +39,8 @@ client.unfocused        #282828 #282828 #282828 #282828 #282828
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # Lock
-bindsym $mod+l "exec i3lock -i /home/telmar/Pictures/lock.png -F --indicator -k --time-color=f6b517 --date-color=306bd1"
-bindsym $mod+Shift+l "exec i3lock -i /home/telmar/Pictures/lock.png -F --indicator -k --time-color=f6b517 --date-color=306bd1 & systemctl suspend"
+bindsym $mod+l "exec i3lock -i /home/telmar/Pictures/lock.png -F --indicator -k --time-color=f6b517 --date-color=306bd1 --date-str='%Y-%m-%d'"
+bindsym $mod+Shift+l "exec i3lock -i /home/telmar/Pictures/lock.png -F --indicator -k --time-color=f6b517 --date-color=306bd1 --date-str='%Y-%m-%d' & systemctl suspend"
 
 # Wallpaper
 exec "feh --bg-fill /home/telmar/Pictures/Home.png"
@@ -54,9 +54,9 @@ exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.config/i3/volume_brightness.sh volume_up
+bindsym XF86AudioLowerVolume exec --no-startup-id ~/.config/i3/volume_brightness.sh volume_down
+bindsym XF86AudioMute exec --no-startup-id ~/.config/i3/volume_brightness.sh volume_mute
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
@@ -64,19 +64,19 @@ bindsym XF86AudioPrev exec playerctl previous
 bindsym $mod+m exec playerctl play-pause
 
 # Brightness
-bindsym XF86MonBrightnessUp exec brightnessctl set +5%
-bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
-bindsym F7 exec brightnessctl set +5%
-bindsym F6 exec brightnessctl set 5%-
+bindsym XF86MonBrightnessUp exec --no-startup-id ~/.config/i3/volume_brightness.sh brightness_up
+bindsym XF86MonBrightnessDown exec --no-startup-id ~/.config/i3/volume_brightness.sh brightness_down
+bindsym F7 exec --no-startup-id ~/.config/i3/volume_brightness.sh brightness_up
+bindsym F6 exec --no-startup-id ~/.config/i3/volume_brightness.sh brightness_down
 
 # Use Mouse+$mod to drag floating windows to their wanted position
-# floating_modifier $mod
+floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec WINIT_X11_SCALE_FACTOR=1 alacritty --embed='telmar'
+bindsym $mod+Return exec WINIT_X11_SCALE_FACTOR=0.9 alacritty --embed='telmar'
 
 # start ranger
-bindsym $mod+Shift+Return exec WINIT_X11_SCALE_FACTOR=1 alacritty -e ranger
+bindsym $mod+Shift+Return exec WINIT_X11_SCALE_FACTOR=0.9 alacritty -e ranger
 
 # kill focused window
 # bindsym $mod+Shift+b kill
@@ -156,6 +156,19 @@ set $ws10 "10"
 assign [class="Firefox.*"] $ws1
 assign [class="Discord.*"] $ws3
 assign [class="Thunderbird.*"] $ws4
+
+# Monitors
+exec_always --no-startup-id xrandr --output DP1 --auto --right-of eDP1
+
+# Assign workspaces to output
+workspace $ws1 output DP1
+workspace $ws2 output eDP1
+workspace $ws3 output eDP1
+workspace $ws4 output DP1
+workspace $ws5 output DP1
+workspace $ws6 output eDP1
+workspace $ws7 output eDP1
+workspace $ws8 output DP1
 
 
 # switch to workspace
