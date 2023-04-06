@@ -1,6 +1,6 @@
 [global]
 
-font = Cantarell
+font = "Jet Brains Mono Nerd Font"
 origin = top-center
 timeout = 2
 alignment = center
@@ -8,16 +8,16 @@ frame_width = 0
 corner_radius = 4
 
 [urgency_low]
-background = "#ab7bec"
-foreground = "#282828"
+background = "#202426"
+foreground = "#b3cfa7"
 timeout = 3
 
 [urgency_normal]
-background = "#ab7bec"
-foreground = "#282828"
+background = "#202426"
+foreground = "#b3cfa7"
 timeout = 4
 
 [urgency_critical]
-background = "#ab7bec"
-foreground = "#282828"
+background = "#202426"
+foreground = "#b3cfa7"
 timeout = 5
