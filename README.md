@@ -1,7 +1,10 @@
 # Dotfiles
+Simple dotfiles that should be able to run both sway and i3wm, though the configurations will
+differ.
 
 ## Fonts to install
 * MesloLGS NF
+* Jet Brains Mono Nerd Font
 
 ## Sway
 ### Packages to install
@@ -18,7 +21,6 @@
 * dunst (notifications)
 * xclip (copy to clipboard)
 * scrot (screenshots)
-* kitty (for ranger)
 
 ## All
 * Terminal: alacritty
@@ -32,17 +34,6 @@
 * zathura, zathura-pdf-mupdf (read pdf and epub)
 * ranger (explore files)
 * redshift
-
-## zsh config
-* oh-my-zsh => activate `colored-man-pages` and `fzf`
-* powerlevel10k
-* zsh-autosuggestions
-* zsh-syntax-highlighting
-
-## Nice VIM stuff
-```
-:%s/\(pattern\)/`\1`/g  " will enclose the pattern with ` => \1 takes \(...\), if several, use 1, 2, ...
-```
 
 ## Screen sharing for Wayland
 Pray. Use Chromium-based navigator, with Opera, sharing one X window will work
