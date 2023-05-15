@@ -54,17 +54,17 @@ font:
   # Normal (roman) font face
   size: 10
   normal:
-    family: JetBrains Mono Nerd Font
+    family: JetBrainsMonoNLNerdFont
 
   # Bold font face
   bold:
-    family:  JetBrains Mono Nerd Font
+    family: JetBrainsMonoNLNerdFont
 
   italic:
-    family:  JetBrains Mono Nerd Font
+    family: JetBrainsMonoNLNerdFont
 
   bold_italic:
-    family:  JetBrains Mono Nerd Font
+    family: JetBrainsMonoNLNerdFont
 
     size: 9.0
 
