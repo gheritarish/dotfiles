@@ -11,6 +11,9 @@ vim:
 	rm -rf vim
 	@echo "vim compiled"
 
+prep-neovim:
+	brew install ninja cmake gettext curl
+
 neovim:
 	@echo "Building nvim"
 	-git clone https://github.com/neovim/neovim
@@ -19,6 +22,8 @@ neovim:
 		sudo make install
 	rm -rf neovim
 	echo "neovim compiled"
+
+full-neovim: prep-neovim neovim
 
 ncspot:
 	@echo "Building ncspot"
@@ -31,16 +36,11 @@ ncspot:
 
 # Packages for development. Note: need pikaur to work!
 dev-env:
-	sudo pacman -S fzf ripgrep tig git-delta ctags
+	brew install fzf ripgrep tig git-delta ctags
 
-# Base packages: to install before i3. Doesn't install zsh
+# Base packages: to install before i3. Doesn't install zsh, nor alacritty
 base:
-	sudo pacman -S alacritty bat dfc dust feh ranger redshift tmux vlc xclip zathura zathura-pdf-mupdf
-	pikaur -S macchina
-
-# Install all packages needed for i3
-i3:
-	sudo pacman -S brightnessctl dunst i3-gaps picom playerctl polybar rofi scrot xorg-xbacklight
+	brew install bat dfc dust feh ranger redshift tmux xclip macchina
 
 # Install all base configuration files
 config-base:
@@ -48,7 +48,6 @@ config-base:
 	cp -r ./alacritty ../.config
 	cp -r ./bat ../.config
 	cp -r ./macchina ../.config
-	cp -r ./zathura ../.config
 	cp ./.vimrc ../.vimrc
 	cp ./.zshrc ../.zshrc
 	cp ./redshift.conf ../.config/redshift.conf
@@ -77,4 +76,4 @@ i3-lock:
 	@echo "i3lock-color installed"
 	rm -rf i3lock-color
 
-.PHONY: vim neovim ncspot dev-env base i3 config-base config-i3
+.PHONY: vim prep-neovim neovim ncspot dev-env base i3 config-base config-i3
