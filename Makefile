@@ -51,6 +51,7 @@ config-base:
 	cp -r ./zathura ../.config
 	cp ./.vimrc ../.vimrc
 	cp ./.zshrc ../.zshrc
+	cp ./.tigrc ../.tigrc
 	cp ./redshift.conf ../.config/redshift.conf
 	@echo "Copying wallpapers to Pictures folder"
 	cp ./Pictures/*.png ../Pictures
