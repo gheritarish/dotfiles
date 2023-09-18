@@ -45,6 +45,10 @@ require('packer').startup(function(use)
         'nvim-treesitter/nvim-treesitter',
         run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
     }
+    -- Rainbow Highlighting
+    use {
+        "HiPhish/nvim-ts-rainbow2",
+    }
     use {
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
@@ -83,6 +87,27 @@ require'nvim-treesitter.configs'.setup {
   ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
   -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
 
+   rainbow = {
+    enable = true,
+    -- list of languages you want to disable the plugin for
+    disable = { "jsx", "cpp", "markdown" },
+    -- Which query to use for finding delimiters
+    query = 'rainbow-parens',
+    -- Highlight the entire buffer all at once
+    strategy = require 'ts-rainbow.strategy.global',
+    -- Do not enable for files with more than n lines
+    max_file_lines = 3000,
+    hlgroups = {
+      'TSRainbowYellow',
+      'TSRainbowBlue',
+      'TSRainbowOrange',
+      'TSRainbowGreen',
+      'TSRainbowRed',
+      'TSRainbowViolet',
+      'TSRainbowCyan',
+    },
+  },
+
   highlight = {
     -- `false` will disable the whole extension
     enable = true,
@@ -91,7 +116,7 @@ require'nvim-treesitter.configs'.setup {
     -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
     -- the name of the parser)
     -- list of language that will be disabled
-    disable = { "c", "rust", "markdown", "sql", "gitcommit", "htmldjango", "git", "diff" },
+    disable = { "c", "rust", "markdown", "sql", "gitcommit", "htmldjango", "git", "diff", "vim" },
     -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     --disable = function(lang, buf)
         --local max_filesize = 100 * 1024 -- 100 KB
@@ -364,7 +389,14 @@ require('lualine').setup {
       lualine_y = {},
       lualine_z = {}
     },
-    tabline = {},
+    tabline = {
+        lualine_a = {},
+        lualine_b = {{'filetype', icon_only = true}},
+        lualine_c = {{'filename', path=1}},
+        lualine_x = {},
+        lualine_y = {},
+        lualine_z = {}
+    },
     inactive_tabline = {},
     winbar = {},
     inactive_winbar = {},
