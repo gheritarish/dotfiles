@@ -56,10 +56,33 @@ require('packer').startup(function(use)
 
 end)
 
-require("indent_blankline").setup {
-    -- for example, context is off by default, use this to turn it on
-    show_current_context = true,
-    show_current_context_start = false,
+local highlight = {
+    "RainbowRed",
+    "RainbowYellow",
+    "RainbowBlue",
+    "RainbowGreen",
+    "RainbowViolet",
+    "RainbowCyan",
+}
+
+local hooks = require "ibl.hooks"
+-- create the highlight groups in the highlight setup hook, so they are reset
+-- every time the colorscheme changes
+hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+    vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#CC241D" })
+    vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#D79921" })
+    vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#458588" })
+    vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98971A" })
+    vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#B16286" })
+    vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#689D6A" })
+end)
+
+require("ibl").setup {
+    indent = {
+        char = "▏",
+        highlight = highlight
+    },
+    scope = { enabled = false }
 }
 
 --Set colorscheme
@@ -422,7 +445,6 @@ require('gitsigns').setup {
     follow_files = true
   },
   attach_to_untracked = true,
-
   current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
   current_line_blame_opts = {
     virt_text = true,
