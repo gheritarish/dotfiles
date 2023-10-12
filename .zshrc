@@ -46,7 +46,7 @@ zi light romkatv/powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Aliases
-alias ls="lsd"
+alias ls="eza --icons"
 alias dnd="source ~/dnd/bin/activate"
 alias deact="deactivate"
 alias pgadmin="source ~/pgadmin4/bin/activate && pgadmin4"
@@ -95,10 +95,10 @@ zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # preview directory's content with exa when completing cd, ls and vim
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
-zstyle ':fzf-tab:complete:vim:*' fzf-preview 'exa -1 --color=always $realpath'
-zstyle ':fzf-tab:complete:vi:*' fzf-preview 'exa -1 --color=always $realpath'
-zstyle ':fzf-tab:complete:nvim:*' fzf-preview 'exa -1 --color=always $realpath'
-zstyle ':fzf-tab:complete:lsd:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --icons --color=always $realpath'
+zstyle ':fzf-tab:complete:vim:*' fzf-preview 'eza -1 --icons --color=always $realpath'
+zstyle ':fzf-tab:complete:vi:*' fzf-preview 'eza -1 --icons --color=always $realpath'
+zstyle ':fzf-tab:complete:nvim:*' fzf-preview 'eza -1 --icons --color=always $realpath'
+zstyle ':fzf-tab:complete:lsd:*' fzf-preview 'eza -1 --icons --color=always $realpath'
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
