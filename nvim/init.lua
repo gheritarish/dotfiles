@@ -1,12 +1,10 @@
 local vimrc = vim.fn.stdpath("config") .. "/vimrc.vim"
 vim.cmd.source(vimrc)
 
-require('impatient').enable_profile()
+vim.loader.enable()
 
 require('packer').startup(function(use)
-
     use 'wbthomason/packer.nvim'
-    use 'lewis6991/impatient.nvim'
 
     -- colorscheme
     use 'luisiacc/gruvbox-baby'
