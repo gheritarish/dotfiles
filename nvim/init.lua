@@ -21,7 +21,7 @@ require('packer').startup(function(use)
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
     }
-    use 'jose-elias-alvarez/null-ls.nvim'
+    use "stevearc/conform.nvim"
     use {
         'hrsh7th/nvim-cmp',
         'hrsh7th/cmp-nvim-lsp',
@@ -279,36 +279,46 @@ require('lspconfig')['pylsp'].setup{
         pylsp = {
             plugins = {
                 pycodestyle = { enabled = false },
+                flake8 = { enabled = false },
                 rope_autoimport = { enabled = false, memory = true },
                 rope_completion = { enabled = false },
                 autopep8 = { enabled = false },
                 yapf = { enabled = false },
                 mccabe = { enabled = false },
+                mypy = { enabled = false },
                 pyflakes = { enabled = false },
-                ruff = { enabled = true, config = '~/Documents/Git/paylead_flask/pyproject.toml' },
+                ruff = { enabled = true },
+                isort = { enabled = false },
             },
         },
     },
 }
 
-local null_ls = require("null-ls")
-
-local sources = {
-    null_ls.builtins.formatting.black,
-    null_ls.builtins.formatting.ruff,
-}
-
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-require("null-ls").setup({
-    -- you can reuse a shared lspconfig on_attach callback here
-    sources = sources,
-    on_attach = function(client, bufnr)
-        if client.supports_method("textDocument/formatting") then
-            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-        end
-        vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-    end,
+require("conform").setup({
+  formatters_by_ft = {
+    -- Conform will run multiple formatters sequentially
+    python = { "black", "ruff" },
+  },
 })
+
+vim.api.nvim_create_user_command("Format", function(args)
+  local range = nil
+  if args.count ~= -1 then
+    local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+    range = {
+      start = { args.line1, 0 },
+      ["end"] = { args.line2, end_line:len() },
+    }
+  end
+  require("conform").format({ async = true, lsp_fallback = true, range = range })
+end, { range = true })
+
+vim.api.nvim_set_keymap(
+    "n",
+    "<leader>f",
+    ":Format<CR>",
+    { noremap = true }
+)
 
 local cmp = require'cmp'
 local lspkind = require'lspkind'
