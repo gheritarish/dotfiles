@@ -55,6 +55,7 @@ alias srce="source /etc/grc.zsh"
 alias jdr="cd ~/Documents/JDR/DnD/New_campaign"
 alias emacs="emacs -nw"
 alias vim="nvim"
+alias vimdiff="nvim -d"
 
 export PATH=/home/telmar/.local/bin:/home/telmar/.local/share/gem/ruby/3.0.0/bin:/home/telmar/.cargo/bin:/home/telmar/.dotnet:$PATH
 export GPG_TTY=$(tty)
