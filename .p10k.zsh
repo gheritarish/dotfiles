@@ -1501,7 +1501,7 @@
   # Show battery in yellow when it's discharging.
   typeset -g POWERLEVEL9K_BATTERY_DISCONNECTED_FOREGROUND=11
   # Battery pictograms going from low to high level of charge.
-  typeset -g POWERLEVEL9K_BATTERY_STAGES='\uf233\uf243\uf242\uf241b\uf240'
+  typeset -g POWERLEVEL9K_BATTERY_STAGES='\uf233\uf243\uf242\uf241\uf240'
   # Don't show the remaining time to charge/discharge.
   typeset -g POWERLEVEL9K_BATTERY_VERBOSE=false
 
