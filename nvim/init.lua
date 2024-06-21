@@ -223,7 +223,7 @@ vim.api.nvim_set_keymap(
 
 require("mason").setup()
 require("mason-lspconfig").setup({
-    ensure_installed = { "pyright", "pylsp" }
+    ensure_installed = { "pyright", "pylsp", "solargraph" }
 })
 
 -- Mappings.
@@ -292,6 +292,12 @@ require('lspconfig')['pylsp'].setup{
             },
         },
     },
+}
+
+require('lspconfig')['solargraph'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+    capabilities = capabilities
 }
 
 require("conform").setup({
