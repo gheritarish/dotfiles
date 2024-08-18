@@ -156,7 +156,7 @@ set $ws10 "10"
 
 # Assign window to workspace
 assign [class="Firefox.*"] $ws1
-assign [class="Discord.*"] $ws3
+assign [class="discord.*"] $ws3
 assign [class="Thunderbird.*"] $ws4
 
 # Monitors
@@ -245,8 +245,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-bindsym --release Print exec scrot -e 'xclip -selection clipboard -t image/png < $f'
-bindsym --release $mod+Print exec scrot -s -e 'xclip -selection clipboard -t image/png < $f'
+bindsym --release Print exec scrot ~/screenshots/%Y-%m-%d_%H%M%S_'$wx$h'_scrot.png -e 'xclip -selection clipboard -t image/png < $f'
+bindsym --release $mod+Print exec scrot ~/screenshots/%Y-%m-%d_%H%M%S_'$wx$h'_scrot.png -s -e 'xclip -selection clipboard -t image/png < $f'
 
 
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
