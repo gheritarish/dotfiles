@@ -6,7 +6,7 @@ vim:
 			--enable-python3interp=yes --with-python3-command=python3 --enable-luainterp=yes \
 			--enable-cscope --enable-tclinterp=yes --enable-rubyinterp=yes --enable-largefile \
 			--enable-fail-if-missing --enable-terminal --with-compiledby=telmar --with-vim-name=vi && \
-		make && \
+		make -j $$(nproc) && \
 		sudo make install
 	rm -rf vim
 	@echo "vim compiled"
