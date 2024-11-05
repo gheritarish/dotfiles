@@ -7,7 +7,7 @@ require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
 
     -- colorscheme
-    use 'luisiacc/gruvbox-baby'
+    use { "catppuccin/nvim", as = "catppuccin" }
 
     -- panels
     use 'ldelossa/nvim-ide'
@@ -184,7 +184,7 @@ telescope.setup {
         }
     },
     file_browser = {
-        theme = "gruvbox-baby",
+        theme = "catppuccin",
         hijack_netrw = true, -- disables netrw and use telescope-file-browser in its place
         mappings = {
             ["i"] = {
@@ -223,7 +223,7 @@ vim.api.nvim_set_keymap(
 
 require("mason").setup()
 require("mason-lspconfig").setup({
-    ensure_installed = { "pyright", "pylsp", "ruby_lsp" }
+    ensure_installed = { "pylsp" }
 })
 
 -- Mappings.
@@ -401,7 +401,7 @@ end
 require('lualine').setup {
     options = {
       icons_enabled = true,
-      theme = 'gruvbox-material',
+      theme = 'catppuccin',
       component_separators = { left = '', right = ''},
       section_separators = { left = '', right = ''},
       disabled_filetypes = {
@@ -485,10 +485,7 @@ require('gitsigns').setup {
     relative = 'cursor',
     row = 0,
     col = 1
-  },
-  yadm = {
-    enable = false
-  },
+  }
 }
 vim.cmd([[highlight GitGutterChange guifg=#b16286]])
 
