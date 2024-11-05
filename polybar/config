@@ -37,7 +37,7 @@ padding-right = 2
 module-margin-left = 1
 module-margin-right = 1
 
-font-0 = "MesloLGS NF:pixelsize=9"
+font-0 = "MesloLGSNerdFont:pixelsize=9"
 font-1 = "JetBrainsMonoNLNerdFont:pixelsize=8"
 
 modules-left = i3 title
@@ -146,11 +146,11 @@ ramp-volume-font = 2
 label-volume = "%percentage%%"
 label-volume-foreground = ${colors.foreground}
 
-label-muted = 婢
+label-muted = 
 label-muted-foreground = ${colors.foreground-alt}
 
 ramp-volume-0 = 
-ramp-volume-1 = 墳
+ramp-volume-1 = 
 ramp-volume-2 = 
 
 ramp-volume-0-foreground = ${colors.low}
@@ -217,19 +217,19 @@ label-connected-font = 2
 ; future implementation - %downspeed% %upspeed%
 
 format-disconnected = <label-disconnected>
-label-disconnected = 睊 wifi
+label-disconnected = 󰖪 wifi
 label-disconnected-foreground = ${colors.foreground-alt}
 label-disconnected-font = 2
 
-ramp-signal-0 = 直
+ramp-signal-0 = 
 ramp-signal-0-foreground = ${colors.high}
-ramp-signal-1 = 直
+ramp-signal-1 = 
 ramp-signal-1-foreground = ${colors.medium}
-ramp-signal-2 = 直
+ramp-signal-2 = 
 ramp-signal-2-foreground = ${colors.alert}
-ramp-signal-3 = 直
+ramp-signal-3 = 
 ramp-signal-3-foreground = ${colors.low}
-ramp-signal-4 = 直
+ramp-signal-4 = 
 ramp-signal-4-foreground = ${colors.accent}
 ramp-signal-foreground = ${colors.foreground}
 ramp-signal-font = 2
@@ -395,10 +395,10 @@ expand-right = true
 
 format-spacing = 1
 
-label-open = 襤
+label-open = 
 label-open-foreground = ${colors.secondary}
 label-open-font = 2
-label-close =  cancel
+label-close = 󰜺 cancel
 label-close-foreground = ${colors.secondary}
 label-close-font = 2
 label-separator = |
