@@ -56,6 +56,7 @@ config-base:
 	@echo "Copying wallpapers to Pictures folder"
 	cp ./Pictures/*.png ../Pictures
 	cp ./Pictures/*.jpg ../Pictures
+	cp -r ./nvim ../.config
 	@echo "Files copied"
 
 # Install all i3 related configuration files
