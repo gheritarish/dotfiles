@@ -52,6 +52,9 @@ require('packer').startup(function(use)
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
 
+    -- Typst
+    use {'kaarmu/typst.vim', ft = {'typst'}}
+
 end)
 
 local highlight = {
@@ -74,6 +77,9 @@ hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
     vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#B16286" })
     vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#689D6A" })
 end)
+
+-- Typst
+vim.g.typst_pdf_viewer = "zathura"
 
 require("ibl").setup {
     indent = {
