@@ -75,7 +75,7 @@ bindsym F6 exec --no-startup-id ~/.config/i3/volume_brightness.sh brightness_dow
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec WINIT_X11_SCALE_FACTOR=0.9 alacritty --embed='telmar'
+bindsym $mod+Return exec WINIT_X11_SCALE_FACTOR=0.8 ghostty
 
 # start ranger
 bindsym $mod+Shift+Return exec WINIT_X11_SCALE_FACTOR=0.9 alacritty -e ranger

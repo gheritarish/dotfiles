@@ -1,0 +1,10 @@
+font-family = "FiraCode Nerd Font"
+font-size = 9
+
+theme = catppuccin-longo
+shell-integration-features = no-cursor
+cursor-style = block
+cursor-style-blink = false
+
+window-decoration = false
+background-opacity = 0.95
