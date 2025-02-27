@@ -22,13 +22,8 @@ require('packer').startup(function(use)
         "williamboman/mason-lspconfig.nvim",
     }
     use "stevearc/conform.nvim"
-    use {
-        'hrsh7th/nvim-cmp',
-        'hrsh7th/cmp-nvim-lsp',
-        'hrsh7th/cmp-buffer',
-        'hrsh7th/cmp-path',
-        'onsails/lspkind.nvim',
-    }
+
+    use {'neoclide/coc.nvim', branch = 'release'}
 
     -- indent line
     use "lukas-reineke/indent-blankline.nvim"
@@ -264,10 +259,6 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>n', vim.lsp.buf.references, bufopts)
 end
 
--- nvim-cmp supports additional completion capabilities
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
 local lsp_flags = {
   -- This is the default in Nvim 0.7+
   debounce_text_changes = 150,
@@ -300,23 +291,10 @@ require('lspconfig')['pylsp'].setup{
     },
 }
 
-require('lspconfig')['ruby_lsp'].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-    settings = {
-        ruby_lsp = {
-            diagnostics = true,
-            completion = true
-        }
-    },
-    capabilities = capabilities
-}
-
 require("conform").setup({
   formatters_by_ft = {
     -- Conform will run multiple formatters sequentially
     python = { "black", "ruff" },
-    ruby = { "rubocop" },
   },
 })
 
@@ -338,53 +316,6 @@ vim.api.nvim_set_keymap(
     ":Format<CR>",
     { noremap = true }
 )
-
-local cmp = require'cmp'
-local lspkind = require'lspkind'
-
-cmp.setup({
-    snippet = {
-      -- REQUIRED - you must specify a snippet engine
-      expand = function(args)
-        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-        vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-      end,
-    },
-    window = {
-      -- completion = cmp.config.window.bordered(),
-      -- documentation = cmp.config.window.bordered(),
-    },
-    formatting = {
-         format = lspkind.cmp_format {
-            with_text = true,
-            mode = 'symbol_text',
-            menu = {
-               buffer   = "[buf]",
-               nvim_lsp = "[LSP]",
-               path     = "[path]",
-            },
-        },
-    },
-    mapping = cmp.mapping.preset.insert({
-      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<C-e>'] = cmp.mapping.abort(),
-      ['<Tab>'] = cmp.mapping.select_next_item(),
-      ['<S-Tab>'] = cmp.mapping.select_prev_item(),
-      ['<C-Tab>'] = cmp.mapping.select_next_item(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    }),
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      -- { name = 'vsnip' }, -- For vsnip users.
-      -- { name = 'luasnip' }, -- For luasnip users.
-      { name = 'ultisnips' }, -- For ultisnips users.
-      -- { name = 'snippy' }, -- For snippy users.
-    })
-})
 
 local function getWords()
   if vim.bo.filetype == "md" or vim.bo.filetype == "txt" or vim.bo.filetype == "markdown" or vim.bo.filetype == "rst" then
@@ -556,3 +487,30 @@ require('ide').setup({
         bottom = 15
     }
 })
+
+-- CoC
+local opts = {silent = true, noremap = true, expr = true, replace_keycodes = false}
+vim.keymap.set("i", "<TAB>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
+vim.keymap.set("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
+
+-- Make <CR> to accept selected completion item or notify coc.nvim to format
+-- <C-g>u breaks current undo, please make your own choice
+vim.keymap.set("i", "<cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
+
+vim.keymap.set("n", "<leader>d", "<Plug>(coc-definition)", {silent = true})
+vim.keymap.set("n", "<leader>y", "<Plug>(coc-type-definition)", {silent = true})
+vim.keymap.set("n", "<leader>n", "<Plug>(coc-implementation)", {silent = true})
+vim.keymap.set("n", "gr", "<Plug>(coc-references)", {silent = true})
+
+-- Use `[d` and `]d` to navigate diagnostics
+-- Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
+vim.keymap.set("n", "[d", "<Plug>(coc-diagnostic-prev)", {silent = true})
+vim.keymap.set("n", "]d", "<Plug>(coc-diagnostic-next)", {silent = true})
+
+-- Symbol renaming
+vim.keymap.set("n", "<leader>rn", "<Plug>(coc-rename)", {silent = true})
+
+-- Remap keys for apply refactor code actions.
+vim.keymap.set("n", "<leader>re", "<Plug>(coc-codeaction-refactor)", { silent = true })
+vim.keymap.set("x", "<leader>r", "<Plug>(coc-codeaction-refactor-selected)", { silent = true })
+vim.keymap.set("n", "<leader>r", "<Plug>(coc-codeaction-refactor-selected)", { silent = true })
