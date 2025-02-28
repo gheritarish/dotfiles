@@ -1,0 +1,29 @@
+{
+  "coc.preferences.formatOnSave": false,
+  "pyright.enable": true,
+  "python.linting.ruffEnabled": false,
+  "python.linting.enabled": false,
+  "python.linting.pylintEnabled": false,
+  "ruff.autoFixOnSave": false,
+  "python.analysis.autoImportCompletions": true,
+  "ruff.trace.server": "verbose",
+  "ruff.enableExperimentalFormatter": true,
+  "python.formatting.provider": "none",
+  "python.analysis.diagnosticMode": "workspace",
+  "python.organizeimports.provider": "ruff",
+  "pyright.inlayHints.variableTypes": false,
+  "pyright.inlayHints.parameterTypes": false,
+  "pyright.inlayHints.functionReturnTypes": false,
+  "languageserver": {
+    "bash": {
+      "command": "bash-language-server",
+      "args": [
+        "start"
+      ],
+      "filetypes": [
+        "sh"
+      ],
+      "ignoredRootPaths": []
+    }
+  }
+}
