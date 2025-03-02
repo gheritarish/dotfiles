@@ -46,6 +46,7 @@ require('packer').startup(function(use)
     -- Rainbow Highlighting
     use {
         "HiPhish/nvim-ts-rainbow2",
+        "HiPhish/rainbow-delimiters.nvim"
     }
     use {
         'nvim-lualine/lualine.nvim',
@@ -77,6 +78,34 @@ hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
     vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#B16286" })
     vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#689D6A" })
 end)
+
+-- This module contains a number of default definitions
+local rainbow_delimiters = require 'rainbow-delimiters'
+
+---@type rainbow_delimiters.config
+vim.g.rainbow_delimiters = {
+    strategy = {
+        [''] = rainbow_delimiters.strategy['global'],
+        vim = rainbow_delimiters.strategy['local'],
+    },
+    query = {
+        [''] = 'rainbow-delimiters',
+        lua = 'rainbow-blocks',
+    },
+    priority = {
+        [''] = 110,
+        lua = 210,
+    },
+    highlight = {
+        'RainbowDelimiterRed',
+        'RainbowDelimiterYellow',
+        'RainbowDelimiterBlue',
+        'RainbowDelimiterOrange',
+        'RainbowDelimiterGreen',
+        'RainbowDelimiterViolet',
+        'RainbowDelimiterCyan',
+    },
+}
 
 -- Typst
 vim.g.typst_pdf_viewer = "zathura"
