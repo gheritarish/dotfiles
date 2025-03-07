@@ -38,12 +38,14 @@
 
 (custom-set-faces
  '(org-header-face ((t (:inherit doom-font :weight bold :family "FiraCode Nerd Font"))))
- '(org-level-1 ((t (:inherit org-header-face :height 1.6))))
- '(org-level-2 ((t (:inherit org-header-face :height 1.5))))
- '(org-level-3 ((t (:inherit org-header-face :height 1.4))))
- '(org-level-4 ((t (:inherit org-header-face :height 1.3))))
- '(org-level-5 ((t (:inherit org-header-face :height 1.2))))
- '(org-level-6 ((t (:inherit org-header-face :height 1.1)))))
+ '(org-level-1 ((t (:inherit org-header-face :height 1.8))))
+ '(org-level-2 ((t (:inherit org-header-face :height 1.7))))
+ '(org-level-3 ((t (:inherit org-header-face :height 1.6))))
+ '(org-level-4 ((t (:inherit org-header-face :height 1.5))))
+ '(org-level-5 ((t (:inherit org-header-face :height 1.4))))
+ '(org-level-6 ((t (:inherit org-header-face :height 1.3))))
+ '(org-level-7 ((t (:inherit org-header-face :height 1.2))))
+ '(org-level-8 ((t (:inherit org-header-face :height 1.1)))))
 
 (remove-hook! 'doom-first-buffer-hook #'smartparens-global-mode)
 
@@ -71,6 +73,7 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+(map! :n "SPC -" #'org-cycle-list-bullet)
 
 (setq select-enable-clipboard t)
 (global-set-key (kbd "C-S-C") 'kill-ring-save)
@@ -137,12 +140,13 @@
 (map! :n "N" #'evil-end-of-line)
 ;; (map! :n  (kbd "C-j") #'evil-lookup)
 (map! :n "S" #'evil-scroll-down)
-(map! :n "l" #'evil-search-next)
-(map! :n "L" #'evil-search-previous)
+(map! :n "l" #'evil-ex-search-next)
+(map! :n "L" #'evil-ex-search-previous)
 (map! :n "j" #'evil-find-char-to)
 (map! :n "J" #'evil-find-char-to-backward)
 
 (map! :n ", t" #'vterm)
+(map! :n ", s p" #'consult-ripgrep)
 
 ;; pylsp
 (setq lsp-pylsp-plugins-flake8-enabled nil)
@@ -155,13 +159,35 @@
 (setq lsp-pylsp-plugins-ruff-format t)
 (setq lsp-pylsp-plugins-mypy-live-mode nil)
 (setq lsp-pylsp-configuration-sources ["ruff"])
-(setq lsp-pylsp-plugins-ruff-config "~/Documents/Code/paylead_flask-develop/pyproject.toml")
+(setq lsp-pylsp-plugins-ruff-config "~/Documents/Code/padam-dispatch/ruff.toml")
+
+(defcustom ruff-format-import-command "ruff"
+  "Ruff command to use for formatting."
+  :type 'string
+  :group 'ruff-format-import)
+
+;;;###autoload (autoload 'ruff-format-import-buffer "ruff-format-import" nil t)
+;;;###autoload (autoload 'ruff-format-import-region "ruff-format-import" nil t)
+;;;###autoload (autoload 'ruff-format-import-on-save-mode "ruff-format-import" nil t)
+(reformatter-define ruff-format-import
+  :program ruff-format-import-command
+  :args (list "check" "--fix" "--select=I" "--stdin-filename" (or (buffer-file-name) input-file))
+  :lighter " RuffFmt"
+  :group 'ruff-format-import)
+
+(add-hook 'python-mode-hook 'eglot-ensure)
+
+(map! :n ", f" #'ruff-format-buffer)
+(map! :n ", i" #'ruff-format-import-buffer)
 
 ;; tree-sitter
 (global-tree-sitter-mode)
 (add-hook! 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
-(map! :n ", c c" #'comment-dwim)
+(map! :n ", c c" #'comment-line)
+(map! :v ", c c" #'comment-line)
+
+(map! :i "C-s" #'yas-expand)
 
 (provide 'config)
 ;;; config.el ends here
