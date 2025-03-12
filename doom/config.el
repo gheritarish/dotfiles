@@ -24,7 +24,10 @@
 ;;
 ;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
 
-(setq doom-font (font-spec :family "FiraCode Nerd Font" :size 11 :weight 'semi-light))
+(setq doom-font (font-spec :family "FiraCode Nerd Font" :size 11 :weight 'regular)
+      doom-variable-pitch-font (font-spec :family "Cantarell" :size 12 :weight 'regular))
+
+(add-hook 'org-mode-hook 'variable-pitch-mode)
 
 
 (custom-set-faces
