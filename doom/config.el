@@ -24,14 +24,12 @@
 ;;
 ;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
 
-(setq doom-font (font-spec :family "FiraCode Nerd Font" :size 11 :weight 'regular)
+(setq doom-font (font-spec :family "FantasqueSansM Nerd Font" :size 13 :weight 'regular)
       doom-variable-pitch-font (font-spec :family "Cantarell" :size 12 :weight 'regular))
-
-(add-hook 'org-mode-hook 'variable-pitch-mode)
 
 
 (custom-set-faces
- '(markdown-header-face ((t (:inherit doom-font :weight bold :family "FiraCode Nerd Font"))))
+ '(markdown-header-face ((t (:inherit doom-font :weight bold :family "FantasqueSansM Nerd Font"))))
  '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.6))))
  '(markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.5))))
  '(markdown-header-face-3 ((t (:inherit markdown-header-face :height 1.4))))
@@ -77,6 +75,9 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 (map! :n "SPC -" #'org-cycle-list-bullet)
+(map! :n "C-c l" #'org-store-link)
+(map! :i "C-c l" #'org-store-link)
+(map! :v "C-c l" #'org-store-link)
 
 (setq select-enable-clipboard t)
 (global-set-key (kbd "C-S-C") 'kill-ring-save)
