@@ -30,22 +30,22 @@
 
 (custom-set-faces
  '(markdown-header-face ((t (:inherit doom-font :weight bold :family "FantasqueSansM Nerd Font"))))
- '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.6))))
- '(markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.5))))
- '(markdown-header-face-3 ((t (:inherit markdown-header-face :height 1.4))))
- '(markdown-header-face-4 ((t (:inherit markdown-header-face :height 1.3))))
- '(markdown-header-face-5 ((t (:inherit markdown-header-face :height 1.2))))
+ '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.35))))
+ '(markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.3))))
+ '(markdown-header-face-3 ((t (:inherit markdown-header-face :height 1.25))))
+ '(markdown-header-face-4 ((t (:inherit markdown-header-face :height 1.2))))
+ '(markdown-header-face-5 ((t (:inherit markdown-header-face :height 1.15))))
  '(markdown-header-face-6 ((t (:inherit markdown-header-face :height 1.1)))))
 
 (custom-set-faces
- '(org-header-face ((t (:inherit doom-font :weight bold :family "FiraCode Nerd Font"))))
- '(org-level-1 ((t (:inherit org-header-face :height 1.8))))
- '(org-level-2 ((t (:inherit org-header-face :height 1.7))))
- '(org-level-3 ((t (:inherit org-header-face :height 1.6))))
- '(org-level-4 ((t (:inherit org-header-face :height 1.5))))
- '(org-level-5 ((t (:inherit org-header-face :height 1.4))))
- '(org-level-6 ((t (:inherit org-header-face :height 1.3))))
- '(org-level-7 ((t (:inherit org-header-face :height 1.2))))
+ '(org-header-face ((t (:inherit doom-font :weight bold :family "FantasqueSansM Nerd Font"))))
+ '(org-level-1 ((t (:inherit org-header-face :height 1.35))))
+ '(org-level-2 ((t (:inherit org-header-face :height 1.3))))
+ '(org-level-3 ((t (:inherit org-header-face :height 1.25))))
+ '(org-level-4 ((t (:inherit org-header-face :height 1.2))))
+ '(org-level-5 ((t (:inherit org-header-face :height 1.15))))
+ '(org-level-6 ((t (:inherit org-header-face :height 1.1))))
+ '(org-level-7 ((t (:inherit org-header-face :height 1.1))))
  '(org-level-8 ((t (:inherit org-header-face :height 1.1)))))
 
 (remove-hook! 'doom-first-buffer-hook #'smartparens-global-mode)
@@ -78,6 +78,9 @@
 (map! :n "C-c l" #'org-store-link)
 (map! :i "C-c l" #'org-store-link)
 (map! :v "C-c l" #'org-store-link)
+
+(setq-default org-display-custom-times t)
+(setq org-time-stamp-custom-formats '("<%Y-%m-%d>" . "<%Y-%m-%d %H:%M>"))
 
 (setq select-enable-clipboard t)
 (global-set-key (kbd "C-S-C") 'kill-ring-save)
@@ -149,6 +152,15 @@
 (map! :n "j" #'evil-find-char-to)
 (map! :n "J" #'evil-find-char-to-backward)
 
+(map! :v "T" #'evil-beginning-of-line)
+(map! :v "t" #'evil-backward-char)
+(map! :v "R" #'evil-scroll-up)
+(map! :v "s" #'evil-next-line)
+(map! :v "r" #'evil-previous-line)
+(map! :v "n" #'evil-forward-char)
+(map! :v "N" #'evil-end-of-line)
+(map! :v "S" #'evil-scroll-down)
+
 (map! :n ", t" #'vterm)
 (map! :n ", s p" #'consult-ripgrep)
 
@@ -192,6 +204,9 @@
 (map! :v ", c c" #'comment-line)
 
 (map! :i "C-s" #'yas-expand)
+
+;; rainbow-delimiters
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 (provide 'config)
 ;;; config.el ends here
