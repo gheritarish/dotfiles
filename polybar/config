@@ -110,12 +110,12 @@ format-padding = 3
 [module/spotify]
 type = custom/script
 tail = true
-format-prefix = " "
+format-prefix = "󰽰 "
 format = <label>
 label-font = 2
 label-maxlen = 50
 exec = $HOME/.config/polybar/scripts/get_spotify_status.sh
-format-foreground = #98971a
+format-foreground = #cba6f7
 interval = 1
 
 ;------------------------------------------------------------
