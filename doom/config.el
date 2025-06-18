@@ -25,7 +25,7 @@
 ;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
 
 (setq doom-font (font-spec :family "FantasqueSansM Nerd Font" :size 13 :weight 'regular)
-      doom-variable-pitch-font (font-spec :family "Cantarell" :size 12 :weight 'regular))
+      doom-variable-pitch-font (font-spec :family "FantasqueSansM Nerd Font" :size 13 :weight 'regular))
 
 
 (custom-set-faces
@@ -78,7 +78,7 @@
 (map! :n "C-c l" #'org-store-link)
 (map! :i "C-c l" #'org-store-link)
 (map! :v "C-c l" #'org-store-link)
-
+(require 'ox-beamer)
 (setq-default org-display-custom-times t)
 (setq org-time-stamp-custom-formats '("<%Y-%m-%d>" . "<%Y-%m-%d %H:%M>"))
 
@@ -192,6 +192,7 @@
   :group 'ruff-format-import)
 
 (add-hook 'python-mode-hook 'eglot-ensure)
+(add-hook! (python-mode . lsp))
 
 (map! :n ", f" #'ruff-format-buffer)
 (map! :n ", i" #'ruff-format-import-buffer)
@@ -202,6 +203,8 @@
 
 (map! :n ", c c" #'comment-line)
 (map! :v ", c c" #'comment-line)
+(map! :n ", n" #'lsp-find-references)
+(map! :v ", n" #'lsp-find-references)
 
 (map! :i "C-s" #'yas-expand)
 
@@ -210,3 +213,14 @@
 
 (provide 'config)
 ;;; config.el ends here
+
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+
+(setq read-process-output-max (* 512 1024)) ;; increase process read limits for better lsp performance
