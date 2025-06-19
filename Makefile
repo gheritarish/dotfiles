@@ -4,7 +4,7 @@ vim:
 	cd vim && \
 		./configure --enable-gui=gtk4 --with-features=huge --enable-multibyte \
 			--enable-python3interp=yes --with-python3-command=python3 --enable-luainterp=yes \
-			--enable-cscope --enable-tclinterp=yes --enable-rubyinterp=yes --enable-largefile \
+			--enable-cscope --enable-rubyinterp=yes --enable-largefile \
 			--enable-fail-if-missing --enable-terminal --with-compiledby=telmar --with-vim-name=vi && \
 		make -j $$(nproc) && \
 		sudo make install
@@ -31,16 +31,17 @@ ncspot:
 
 # Packages for development. Note: need pikaur to work!
 dev-env:
-	sudo pacman -S fzf ripgrep tig git-delta ctags
+	sudo apt install fzf ripgrep tig universal-ctags
 
 # Base packages: to install before i3. Doesn't install zsh
 base:
-	sudo pacman -S alacritty bat dfc dust feh ranger redshift tmux vlc xclip zathura zathura-pdf-mupdf
-	pikaur -S macchina
+	sudo apt install bat dfc feh ranger redshift tmux vlc xclip zathura alacritty
+	# sudo pacman -S alacritty bat dfc dust feh ranger redshift tmux vlc xclip zathura zathura-pdf-mupdf
 
 # Install all packages needed for i3
 i3:
-	sudo pacman -S brightnessctl dunst i3-gaps picom playerctl polybar rofi scrot xorg-xbacklight
+	sudo apt install brightnessctl dunst i3 picom playerctl polybar rofi scrot xbacklight light
+	# sudo pacman -S brightnessctl dunst i3-gaps picom playerctl polybar rofi scrot xorg-xbacklight
 
 # Install all base configuration files
 config-base:
