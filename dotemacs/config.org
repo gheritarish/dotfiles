@@ -1,0 +1,1304 @@
+#+TITLE: Emacs Literate Configuration
+#+AUTHOR: telmar
+#+PROPERTY: header-args :tangle config.el :results silent
+
+* Table of Contents :TOC_3:
+- [[#introduction][Introduction]]
+- [[#basic-settings][Basic Settings]]
+  - [[#personal-information][Personal information]]
+  - [[#performance-tuning][Performance tuning]]
+  - [[#message-inhibition][Message inhibition]]
+  - [[#backup-and-auto-save-of-files][Backup and auto-save of files]]
+  - [[#save-cursor-position][Save cursor position]]
+- [[#package-management][Package management]]
+- [[#evil-mode][Evil mode]]
+  - [[#core-evil-setup][Core evil setup]]
+  - [[#leader-keys-setup][Leader keys setup]]
+  - [[#custom-keybindings][Custom keybindings]]
+  - [[#window-navigation][Window navigation]]
+- [[#ui-configuration][UI configuration]]
+  - [[#theme][Theme]]
+  - [[#fonts][Fonts]]
+  - [[#line-and-column-numbers][Line and column numbers]]
+  - [[#modeline][Modeline]]
+  - [[#visual-enhancements][Visual enhancements]]
+- [[#completion-framework][Completion framework]]
+  - [[#vertico][Vertico]]
+  - [[#corfu][Corfu]]
+  - [[#orderless][Orderless]]
+  - [[#consult][Consult]]
+  - [[#marginalia][Marginalia]]
+  - [[#embark][Embark]]
+- [[#editor-enhancements][Editor enhancements]]
+  - [[#which-key][Which-Key]]
+  - [[#search-highlighting][Search highlighting]]
+  - [[#rainbow-delimiters][Rainbow delimiters]]
+  - [[#indent-guides][Indent guides]]
+  - [[#tree-sitter][Tree-sitter]]
+  - [[#snippets][Snippets]]
+  - [[#file-templates][File templates]]
+  - [[#emojis][Emojis]]
+  - [[#highlight-todo-keywords][Highlight TODO keywords]]
+- [[#version-control][Version control]]
+  - [[#magit][Magit]]
+  - [[#git-commit-mode][Git commit mode]]
+  - [[#diff-hl][Diff-HL]]
+- [[#programming-languages][Programming languages]]
+  - [[#python][Python]]
+    - [[#lsp-configuration][LSP configuration]]
+    - [[#ruff-formatting][Ruff formatting]]
+    - [[#python-hooks][Python hooks]]
+  - [[#emacs-lisp][Emacs lisp]]
+  - [[#shell-scripts][Shell scripts]]
+  - [[#markdown][Markdown]]
+  - [[#yaml][YAML]]
+  - [[#rst][RST]]
+- [[#org-mode][Org mode]]
+  - [[#basic-org-settings][Basic org settings]]
+  - [[#org-roam][Org roam]]
+  - [[#org-export][Org export]]
+- [[#tools][Tools]]
+  - [[#vterm][Vterm]]
+  - [[#docker][Docker]]
+  - [[#pdf-tools][PDF tools]]
+  - [[#elfeed-rss-reader][Elfeed (RSS reader)]]
+- [[#remote-file-access][Remote file access]]
+  - [[#tramp][TRAMP]]
+- [[#ai-integration][AI integration]]
+  - [[#gptel-github-copilot][GPtel (GitHub Copilot)]]
+- [[#additional-utilities][Additional utilities]]
+
+* Introduction
+
+This is a try to have a literate ~emacs~ configuration, made to be used similar to how I was using doom, written mostly by LLM (which is bad, but I didn't have time to make it all myself). It is an evil config, made for the bépo keyboard layout.
+
+* Basic Settings
+
+** Personal information
+
+#+begin_src emacs-lisp
+;;; config.el --- Literate Configuration -*- lexical-binding: t; -*-
+;;; Commentary:
+;; This file is generated from config.org - DO NOT EDIT MANUALLY
+
+;;; Code:
+
+(setq user-full-name "telmar")
+#+end_src
+
+** Performance tuning
+
+Some performance, especially concerning LSP and messages it gave me at file opening.
+
+#+begin_src emacs-lisp
+  ;; Increase process output read limit for better LSP performance
+  (setq read-process-output-max (* 512 1024)) ;; 512kb
+
+  ;; LSP file watchers
+  (setq lsp-enable-file-watchers t
+        lsp-file-watch-threshold nil)
+#+end_src
+
+** Message inhibition
+
+Inhibit some messages I do not care about, especially information that a file has been written, or its undo-tree, or whatever.
+
+#+begin_src emacs-lisp
+  ;; Suppress informational messages - only show warnings and errors
+  (setq warning-minimum-level :warning)
+
+  ;; Suppress "Wrote..." messages
+  (advice-add 'write-region :around
+              (lambda (orig-fun &rest args)
+                (let ((inhibit-message t))
+                  (apply orig-fun args))))
+#+end_src
+
+** Backup and auto-save of files
+
+Config to put all backup files in the ~~/.emacs.d/.history/~ folder. It allows for cleaner ~ls~ everywhere, and for projects where emacs files are not ignored, it's good.
+
+#+begin_src emacs-lisp
+;; Save all backup, auto-save, and undo-tree files to ~/.emacs.d/.history/
+(defvar my-history-directory
+  (expand-file-name ".history/" user-emacs-directory)
+  "Directory to store backup, auto-save, and undo-tree files.")
+
+;; Create the directory if it doesn't exist
+(unless (file-exists-p my-history-directory)
+  (make-directory my-history-directory t))
+
+;; Configure auto-save file locations (files ending with #)
+(setq auto-save-file-name-transforms
+      `((".*" ,my-history-directory t)))
+
+;; Configure backup file locations (files ending with ~)
+(setq backup-directory-alist
+      `((".*" . ,my-history-directory)))
+
+;; Enable auto-save and backup modes
+(setq auto-save-default t
+      backup-by-copying t
+      version-control t
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2)
+#+end_src
+
+** Save cursor position
+
+Setting to remember the cursor position in files, so that they re-open at the same place.
+
+#+begin_src emacs-lisp
+;; Save and restore cursor position in files
+(save-place-mode 1)
+#+end_src
+
+* Package management
+
+Package management is made with ~straight.el~, and with ~use-package~ for declarative package management.
+
+#+begin_src emacs-lisp
+;; use-package is already configured in init.el with straight.el
+;; straight-use-package-by-default is already set to t
+(require 'use-package)
+(setq use-package-always-defer t)  ; Defer loading by default for faster startup
+#+end_src
+
+* Evil mode
+
+I come from ~neovim~, of course I use evil!
+
+** Core evil setup
+
+#+begin_src emacs-lisp
+(use-package evil
+  :demand t
+  :init
+  (setq evil-want-keybinding nil
+        evil-want-integration t
+        evil-undo-system 'undo-tree
+        evil-vsplit-window-right t
+        evil-split-window-below t)
+  :config
+  (evil-mode 1)
+
+  ;; Cursor shapes for different states
+  (setq evil-insert-state-cursor 'box
+        evil-replace-state-cursor 'box
+        evil-visual-state-cursor 'box
+        evil-operator-state-cursor 'box))
+
+(use-package evil-collection
+  :after evil
+  :demand t
+  :config
+  (evil-collection-init))
+
+(use-package undo-tree
+  :demand t
+  :config
+  ;; Store undo-tree history files in .history directory
+  (setq undo-tree-history-directory-alist
+        `((".*" . ,my-history-directory)))
+  (setq undo-tree-auto-save-history t)
+  ;; Suppress undo-tree save messages
+  (setq undo-tree-verbose nil)
+  (global-undo-tree-mode 1))
+#+end_src
+
+** Leader keys setup
+
+Set up SPC as the leader key (like Doom Emacs) and comma as the local leader key.
+
+#+begin_src emacs-lisp
+(use-package general
+  :demand t
+  :config
+  ;; Set up SPC as the global leader key
+  (general-create-definer my/leader-keys
+    :states '(normal visual insert emacs)
+    :keymaps 'override
+    :prefix "SPC"
+    :global-prefix "M-SPC")
+
+  ;; Set up comma as the local leader key
+  (general-create-definer my/local-leader-keys
+    :states '(normal visual)
+    :keymaps 'override
+    :prefix ","
+    :global-prefix "M-,")
+
+  ;; Load keybindings from separate file
+  (load (expand-file-name "keybindings.el" user-emacs-directory)))
+#+end_src
+
+** Custom keybindings
+
+As I am in bépo, use tsrn instead of hjkl: [HJKL] -> [TSRN], and [TSRN] -> [HJKL].
+
+#+begin_src emacs-lisp
+  (use-package evil
+    :config
+    ;; Basic movement remapping (trsn layout)
+    (define-key evil-normal-state-map (kbd "t") 'evil-backward-char)
+    (define-key evil-normal-state-map (kbd "r") 'evil-previous-line)
+    (define-key evil-normal-state-map (kbd "s") 'evil-next-line)
+    (define-key evil-normal-state-map (kbd "n") 'evil-forward-char)
+
+    (define-key evil-normal-state-map (kbd "T") 'evil-beginning-of-line)
+    (define-key evil-normal-state-map (kbd "N") 'evil-end-of-line)
+
+    (define-key evil-normal-state-map (kbd "R") 'evil-scroll-up)
+    (define-key evil-normal-state-map (kbd "S") 'evil-scroll-down)
+
+    ;; Remap replaced functions
+    (define-key evil-normal-state-map (kbd "k") 'evil-substitute)
+    (define-key evil-normal-state-map (kbd "K") 'evil-change-whole-line)
+    (define-key evil-normal-state-map (kbd "h") 'evil-replace)
+    (define-key evil-normal-state-map (kbd "H") 'evil-enter-replace-state)
+
+  ;; Smart search next/previous that works with both Evil and Emacs search
+  (defun my/search-next ()
+    "Search next occurrence, works with both Evil and Emacs search."
+    (interactive)
+    (if (and (boundp 'evil-ex-search-pattern) evil-ex-search-pattern)
+        (evil-ex-search-next)
+      (evil-search-next))
+    ;; Re-apply highlights after navigation
+    (run-with-idle-timer 0.05 nil 'my/rehighlight-search))
+
+  (defun my/search-previous ()
+    "Search previous occurrence, works with both Evil and Emacs search."
+    (interactive)
+    (if (and (boundp 'evil-ex-search-pattern) evil-ex-search-pattern)
+        (evil-ex-search-previous)
+      (evil-search-previous))
+    ;; Re-apply highlights after navigation
+    (run-with-idle-timer 0.05 nil 'my/rehighlight-search))
+
+    (define-key evil-normal-state-map (kbd "l") 'my/search-next)
+    (define-key evil-normal-state-map (kbd "L") 'my/search-previous)
+
+    (define-key evil-normal-state-map (kbd "j") 'evil-find-char-to)
+    (define-key evil-normal-state-map (kbd "J") 'evil-find-char-to-backward)
+
+    ;; Enable C-w and C-u in Evil search mode
+    ;; Evil's / search uses isearch, so we bind to isearch-mode-map
+    (defun my/isearch-delete-word ()
+      "Delete word backward in isearch."
+      (interactive)
+      (let ((len (length isearch-string)))
+        (when (> len 0)
+          (let* ((str isearch-string)
+                 (new-str (replace-regexp-in-string "\\w+\\W*$" "" str)))
+            (setq isearch-string new-str)
+            (setq isearch-message new-str)
+            (isearch-search-and-update)))))
+
+    (defun my/isearch-delete-line ()
+      "Clear search string in isearch."
+      (interactive)
+      (setq isearch-string "")
+      (setq isearch-message "")
+      (isearch-search-and-update))
+
+    (define-key isearch-mode-map (kbd "C-w") 'my/isearch-delete-word)
+    (define-key isearch-mode-map (kbd "C-u") 'my/isearch-delete-line)
+
+    ;; Visual mode mappings
+    (define-key evil-visual-state-map (kbd "t") 'evil-backward-char)
+    (define-key evil-visual-state-map (kbd "r") 'evil-previous-line)
+    (define-key evil-visual-state-map (kbd "s") 'evil-next-line)
+    (define-key evil-visual-state-map (kbd "n") 'evil-forward-char)
+
+    (define-key evil-visual-state-map (kbd "T") 'evil-beginning-of-line)
+    (define-key evil-visual-state-map (kbd "N") 'evil-end-of-line)
+
+    (define-key evil-visual-state-map (kbd "R") 'evil-scroll-up)
+    (define-key evil-visual-state-map (kbd "S") nil)
+    (define-key evil-visual-state-map (kbd "S") 'evil-scroll-down))
+#+end_src
+
+** Window navigation
+
+Similar config as for navigation, but for window navigation.
+
+#+begin_src emacs-lisp
+(use-package evil
+  :config
+  ;; Window navigation with trsn layout
+  (define-key evil-normal-state-map (kbd "C-w t") 'evil-window-left)
+  (define-key evil-normal-state-map (kbd "C-w T") 'evil-window-move-far-left)
+  (define-key evil-normal-state-map (kbd "C-w r") 'evil-window-up)
+  (define-key evil-normal-state-map (kbd "C-w R") 'evil-window-move-very-top)
+  (define-key evil-normal-state-map (kbd "C-w s") 'evil-window-down)
+  (define-key evil-normal-state-map (kbd "C-w S") 'evil-window-move-very-bottom)
+  (define-key evil-normal-state-map (kbd "C-w n") 'evil-window-right)
+  (define-key evil-normal-state-map (kbd "C-w N") 'evil-window-move-far-right)
+  (define-key evil-normal-state-map (kbd "C-w l") 'evil-window-new)
+  (define-key evil-normal-state-map (kbd "C-w k") 'evil-window-rotate-downwards)
+  (define-key evil-normal-state-map (kbd "C-w K") 'evil-window-rotate-upwards)
+  (define-key evil-normal-state-map (kbd "C-w h") 'evil-window-split)
+  (define-key evil-normal-state-map (kbd "C-w H") 'evil-window-split)
+  (define-key evil-normal-state-map (kbd "C-w j") 'evil-window-top-left))
+#+end_src
+
+* UI configuration
+
+** Theme
+
+Catppuccin theme!
+
+#+begin_src emacs-lisp
+(use-package catppuccin-theme
+  :demand t
+  :config
+  (load-theme 'catppuccin t))
+#+end_src
+
+** Fonts
+
+Use FantasqueSansM Nerd Font, with ligatures everywhere, and define bigger titles in markdown and org-mode.
+
+#+begin_src emacs-lisp
+  ;; Set fonts
+  (set-face-attribute 'default nil
+                      :family "FantasqueSansM Nerd Font"
+                      :height 90
+                      :weight 'regular)
+
+  (set-face-attribute 'variable-pitch nil
+                      :family "FantasqueSansM Nerd Font"
+                      :height 90
+                      :weight 'regular)
+
+  ;; Font size adjustment functions
+  (defvar my/default-font-size 100
+    "Default font height (in 1/10th of a point, so 130 = size 13).")
+
+  (defun my/increase-font-size ()
+    "Increase font size by 1."
+    (interactive)
+    (let* ((current-height (face-attribute 'default :height))
+           (new-height (+ current-height 10)))
+      (set-face-attribute 'default nil :height new-height)
+      (message "Font size: %d" (/ new-height 10))))
+
+  (defun my/decrease-font-size ()
+    "Decrease font size by 1."
+    (interactive)
+    (let* ((current-height (face-attribute 'default :height))
+           (new-height (max 10 (- current-height 10))))
+      (set-face-attribute 'default nil :height new-height)
+      (message "Font size: %d" (/ new-height 10))))
+
+  (defun my/reset-font-size ()
+    "Reset font size to default."
+    (interactive)
+    (set-face-attribute 'default nil :height my/default-font-size)
+    (message "Font size reset to: %d" (/ my/default-font-size 10)))
+
+  ;; Font size keybindings
+  (global-set-key (kbd "C-+") 'my/increase-font-size)
+  (global-set-key (kbd "C--") 'my/decrease-font-size)
+  (global-set-key (kbd "C-=") 'my/reset-font-size)
+
+  ;; Enable ligatures
+  (use-package ligature
+  :demand t
+  :config
+  ;; Enable ligatures in programming modes
+  (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+                                          ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+                                          "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+                                          "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+                                          "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+                                          "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+                                          "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+                                          "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+                                          ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+                                          "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+                                          "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+                                          "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+                                          "\\\\" "://"))
+  ;; Enable ligatures globally
+  (global-ligature-mode t))
+
+  ;; Custom faces for markdown headers
+  (custom-set-faces
+  '(markdown-header-face ((t (:weight bold :family "FantasqueSansM Nerd Font"))))
+  '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.35))))
+  '(markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.3))))
+  '(markdown-header-face-3 ((t (:inherit markdown-header-face :height 1.25))))
+  '(markdown-header-face-4 ((t (:inherit markdown-header-face :height 1.2))))
+  '(markdown-header-face-5 ((t (:inherit markdown-header-face :height 1.15))))
+  '(markdown-header-face-6 ((t (:inherit markdown-header-face :height 1.1))))
+
+  '(org-level-1 ((t (:weight bold :family "FantasqueSansM Nerd Font" :height 1.35))))
+  '(org-level-2 ((t (:weight bold :family "FantasqueSansM Nerd Font" :height 1.3))))
+  '(org-level-3 ((t (:weight bold :family "FantasqueSansM Nerd Font" :height 1.25))))
+  '(org-level-4 ((t (:weight bold :family "FantasqueSansM Nerd Font" :height 1.2))))
+  '(org-level-5 ((t (:weight bold :family "FantasqueSansM Nerd Font" :height 1.15))))
+  '(org-level-6 ((t (:weight bold :family "FantasqueSansM Nerd Font" :height 1.1))))
+  '(org-level-7 ((t (:weight bold :family "FantasqueSansM Nerd Font" :height 1.1))))
+  '(org-level-8 ((t (:weight bold :family "FantasqueSansM Nerd Font" :height 1.1)))))
+#+end_src
+
+** Line and column numbers
+Show the line and column numbers in the modeline (see just after its configuration).
+
+#+begin_src emacs-lisp
+(setq display-line-numbers-type t)
+(global-display-line-numbers-mode 1)
+
+;; Enable column number display globally
+(setq column-number-mode t)
+
+;; Disable in some modes
+(dolist (mode '(term-mode-hook
+                shell-mode-hook
+                eshell-mode-hook
+                vterm-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+#+end_src
+
+** Modeline
+
+Use doom-modeline, since it works nicely. Show wordcount in text documents, and show the relative path for files.
+
+#+begin_src emacs-lisp
+(use-package doom-modeline
+  :demand t
+  :init
+  (setq doom-modeline-enable-word-count t
+        doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode)
+        doom-modeline-buffer-file-name-style 'relative-from-project)
+  :config
+  (doom-modeline-mode 1))
+
+(use-package nerd-icons
+  :demand t)
+#+end_src
+
+** Visual enhancements
+
+Some enhancements, to remove the menu-bar, the tool-bar, the scroll-bar, to make the cursor non-blinking, to highlihgt parentheses…
+
+#+begin_src emacs-lisp
+  ;; Disable menu bar, tool bar, scroll bar, cursor blinking
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (blink-cursor-mode 0)
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  ;; Better looking UI
+  (setq inhibit-startup-message t)
+
+  ;; Highlight current line
+  (global-hl-line-mode 1)
+
+  ;; Show matching parentheses
+  (show-paren-mode 1)
+
+  ;; Smooth scrolling
+  (setq scroll-conservatively 101
+        scroll-margin 3)
+
+  ;; Fringe settings
+  (fringe-mode '(4 . 4))
+
+  ;; Clipboard integration
+  (setq select-enable-clipboard t)
+  (global-set-key (kbd "C-S-C") 'kill-ring-save)
+  (global-set-key (kbd "C-S-V") 'yank)
+#+end_src
+
+* Completion framework
+
+General config for completion.
+
+** Vertico
+
+#+begin_src emacs-lisp
+(use-package vertico
+  :demand t
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
+  :config
+  (vertico-mode 1)
+  ;; Load vertico-directory (built-in extension)
+  (require 'vertico-directory))
+#+end_src
+
+** Corfu
+
+#+begin_src emacs-lisp
+(use-package corfu
+  :demand t
+  :custom
+  (corfu-auto t)
+  (corfu-quit-no-match 'separator)
+  :config
+  (global-corfu-mode))
+
+(use-package cape
+  :after corfu
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file))
+#+end_src
+
+** Orderless
+
+#+begin_src emacs-lisp
+(use-package orderless
+  :demand t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+#+end_src
+
+** Consult
+
+#+begin_src emacs-lisp
+(use-package consult
+  :bind (("C-s" . consult-line)
+         ("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame)
+         ("M-y" . consult-yank-pop))
+  :config
+  ;; Configure display for consult commands
+  (add-to-list 'display-buffer-alist
+               '("\\*consult-ripgrep\\*"
+                 (display-buffer-reuse-window display-buffer-at-bottom)
+                 (window-height . 10))))
+#+end_src
+
+** Marginalia
+
+#+begin_src emacs-lisp
+(use-package marginalia
+  :demand t
+  :config
+  (marginalia-mode 1))
+#+end_src
+
+** Embark
+
+#+begin_src emacs-lisp
+(use-package embark
+  :bind
+  (("C-." . embark-act)
+   ("C-;" . embark-dwim))
+  :config
+  (setq prefix-help-command #'embark-prefix-help-command))
+
+(use-package embark-consult
+  :after (embark consult))
+#+end_src
+
+* Editor enhancements
+
+** Which-Key
+
+#+begin_src emacs-lisp
+(use-package which-key
+  :demand t
+  :config
+  (which-key-mode 1)
+  (setq which-key-idle-delay 0.3))
+#+end_src
+
+** Search highlighting
+
+Configure isearch to highlight all matches like Vim's hlsearch, with the current match being more visible.
+
+#+begin_src emacs-lisp
+;; Enable lazy highlighting of all search matches
+(setq lazy-highlight-initial-delay 0
+      lazy-highlight-cleanup nil  ; Keep highlights after exiting search
+      lazy-highlight-max-at-a-time nil)
+
+;; Customize search highlighting faces
+(custom-set-faces
+ ;; Current match - make it highly visible with bold and distinct colors
+ '(isearch ((t (:background "#fab387" :foreground "#1e1e2e" :weight bold))))
+ ;; Other matches - dimmer background so current match stands out
+ '(lazy-highlight ((t (:background "#45475a" :foreground "#cdd6f4")))))
+
+;; Variable to store the last search string
+(defvar my/last-search-string nil
+  "Store the last search string for persistent highlighting.")
+
+;; Hook to capture search string when exiting isearch
+(add-hook 'isearch-mode-end-hook
+          (lambda ()
+            (when (> (length isearch-string) 0)
+              (setq my/last-search-string isearch-string))))
+
+;; Function to manually re-highlight all matches
+(defun my/rehighlight-search ()
+  "Re-apply lazy highlights for the last search."
+  (when my/last-search-string
+    (let ((isearch-string my/last-search-string)
+          (isearch-regexp nil)
+          (isearch-regexp-function nil)
+          (isearch-forward t)
+          (isearch-case-fold-search isearch-case-fold-search))
+      (isearch-lazy-highlight-new-loop))))
+
+;; Function to clear search highlights manually (like Vim's :nohl)
+(defun my/clear-search-highlights ()
+  "Clear search highlights manually."
+  (interactive)
+  (lazy-highlight-cleanup t)
+  (setq my/last-search-string nil)
+  (setq isearch-lazy-highlight-last-string nil))
+
+;; Bind to <Esc> in normal mode to clear highlights
+(with-eval-after-load 'evil
+  (define-key evil-normal-state-map (kbd "<escape>") 
+    (lambda () 
+      (interactive)
+      (my/clear-search-highlights)
+      (keyboard-quit))))
+#+end_src
+
+** Rainbow delimiters
+
+Nicer parentheses (and brackets and everything). Very useful in ~elisp-mode~ :stuck_out_tongue:.
+
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+#+end_src
+
+** Indent guides
+
+Show indent guides, and highlight the level at which I am. Very useful when coding in ~python~ and other languages.
+
+#+begin_src emacs-lisp
+(use-package highlight-indent-guides
+  :hook (prog-mode . highlight-indent-guides-mode)
+  :config
+  (setq highlight-indent-guides-method 'character
+        highlight-indent-guides-responsive 'top
+        highlight-indent-guides-auto-character-face-perc 30
+        highlight-indent-guides-auto-enabled nil
+        highlight-indent-guides-character ?│)
+
+  ;; Rainbow colors for indent guides
+  (defun my-rainbow-indent-face (level)
+    (let* ((rainbow-colors '("red" "orange" "yellow" "green" "blue" "violet" "purple"))
+           (color (nth (mod (- level 1) (length rainbow-colors)) rainbow-colors)))
+      (list :foreground color)))
+
+  (setq highlight-indent-guides-custom-character-face-function 'my-rainbow-indent-face))
+#+end_src
+
+** Tree-sitter
+
+We are in 2025, nearly 2026. Use tree-sitter.
+
+#+begin_src emacs-lisp
+(use-package tree-sitter
+  :demand t
+  :config
+  (global-tree-sitter-mode))
+
+(use-package tree-sitter-langs
+  :after tree-sitter
+  :config
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+#+end_src
+
+** Snippets
+
+I don't use much snippets, but when I want them, I am happy to have them available.
+
+#+begin_src emacs-lisp
+(use-package yasnippet
+  :demand t
+  :config
+  (yas-global-mode 1)
+  (define-key yas-minor-mode-map (kbd "C-s") 'yas-expand))
+
+(use-package yasnippet-snippets
+  :after yasnippet)
+#+end_src
+
+** File templates
+
+#+begin_src emacs-lisp
+(use-package autoinsert
+  :straight nil
+  :demand t
+  :config
+  (auto-insert-mode 1))
+#+end_src
+
+** Emojis
+
+Use emojis, with github unicode (making them easy to type).
+
+#+begin_src emacs-lisp
+(use-package emojify
+  :demand t
+  :config
+  (setq emojify-display-style 'unicode)
+  (setq emojify-emoji-styles '(unicode github))
+  (global-emojify-mode 1))
+#+end_src
+
+** Highlight TODO keywords
+
+See easily some comments, especially those hinted at future actions.
+
+#+begin_src emacs-lisp
+(use-package hl-todo
+  :demand t
+  :config
+  (setq hl-todo-keyword-faces
+        '(("TODO"   . (:foreground "#FF6C6B" :weight bold))
+          ("FIXME"  . (:foreground "#FF6C6B" :weight bold))
+          ("DEBUG"  . (:foreground "#63B3E8" :weight bold))
+          ("GOTCHA" . (:foreground "#FF6C6B" :weight bold))
+          ("STUB"   . (:foreground "#F99157" :weight bold))
+          ("DONE"   . (:foreground "#99CC99" :weight bold))
+          ("NOTE"   . (:foreground "#F8C471" :weight bold))
+          ("DEPRECATED" . (:foreground "#BFBFBF" :weight bold))
+          ("BUG"    . (:foreground "#FF6C6B" :weight bold))
+          ("HACK"   . (:foreground "#F99157" :weight bold))))
+  (global-hl-todo-mode 1))
+#+end_src
+
+* Version control
+
+** Magit
+
+#+begin_src emacs-lisp
+(use-package magit
+  :commands magit-status
+  :bind ("C-x g" . magit-status)
+  :config
+  ;; Enable autosquash and interactive rebase by default
+  (setq magit-rebase-arguments '("--autosquash" "--interactive"))
+  
+  ;; Use git's configured diff and merge tools
+  (setq magit-diff-refine-hunk t))
+#+end_src
+
+** Git commit mode
+
+I still make my commits from the terminal, but my git editor opens an ~emacs~ client. Make them work as they were doing when I was using Doom.
+
+#+begin_src emacs-lisp
+;; Configure git-commit-mode like Doom Emacs
+(use-package git-commit
+  :straight (:type built-in)  ; Part of magit
+  :hook (after-init . global-git-commit-mode)
+  :config
+  ;; Enforce git commit conventions (like Doom Emacs)
+  ;; See https://chris.beams.io/posts/git-commit/
+  (setq git-commit-summary-max-length 50
+        git-commit-style-convention-checks '(overlong-summary-line non-empty-second-line))
+
+  ;; Set fill-column to 72 for commit messages
+  (add-hook 'git-commit-mode-hook
+            (lambda () (setq fill-column 72)))
+
+  ;; Enable auto-fill-mode for automatic line wrapping at 72 characters
+  (add-hook 'git-commit-setup-hook 'git-commit-turn-on-auto-fill)
+
+  ;; Enable spell checking for commit messages
+  (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
+
+  ;; Start in insert state if commit message is empty (Doom behavior)
+  (add-hook 'git-commit-setup-hook
+            (lambda ()
+              (when (and (bound-and-true-p evil-local-mode)
+                         (not (evil-emacs-state-p))
+                         (bobp) (eolp))
+                (evil-insert-state))))
+
+  ;; Focus on the commit message buffer when opened with emacsclient
+  (add-hook 'git-commit-setup-hook
+            (lambda ()
+              (when (display-graphic-p)
+                (select-frame-set-input-focus (selected-frame))))))
+#+end_src
+
+** Diff-HL
+
+Highlight diff lines when writing.
+
+#+begin_src emacs-lisp
+  (use-package diff-hl
+    :demand t
+    :config
+    (global-diff-hl-mode)
+    (setq-default left-fringe-width 4)
+    (diff-hl-flydiff-mode)
+    (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+#+end_src
+
+* Programming languages
+
+** Python
+
+*** LSP configuration
+
+Nothing major: use python-lsp-language, ruff for linting.
+
+#+begin_src emacs-lisp
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  ;; pylsp settings
+  (setq lsp-pylsp-plugins-flake8-enabled nil
+        lsp-pylsp-plugins-autopep8-enabled nil
+        lsp-pylsp-plugins-pylint-enabled nil
+        lsp-pylsp-plugins-mccabe-enabled nil
+        lsp-pylsp-plugins-pydocstyle-enabled nil
+        lsp-pylsp-plugins-pycodestyle-enabled nil
+        lsp-pylsp-plugins-ruff-enabled t
+        lsp-pylsp-plugins-ruff-format t
+        lsp-pylsp-plugins-mypy-live-mode nil
+        lsp-pylsp-configuration-sources ["ruff"]
+        lsp-pylsp-plugins-ruff-config "~/Documents/Code/padam-dispatch/ruff.toml")
+
+  ;; UI settings
+  (setq lsp-ui-doc-enable t
+        lsp-ui-doc-show-with-cursor t
+        lsp-ui-doc-position 'at-point
+        lsp-ui-sideline-enable t
+        lsp-ui-sideline-show-diagnostics t))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :after lsp-mode)
+
+(use-package lsp-pyright
+  :after lsp-mode)
+
+;; Eglot is built-in from Emacs 29+, but we can still use it
+(use-package eglot
+  :straight nil)
+#+end_src
+
+*** Ruff formatting
+
+Easy formatting and import sorting with ruff.
+
+#+begin_src emacs-lisp
+(use-package reformatter
+  :demand t)
+
+(use-package ruff-format
+  :after reformatter
+  :config
+  (defcustom ruff-format-import-command "ruff"
+    "Ruff command to use for formatting."
+    :type 'string
+    :group 'ruff-format-import)
+
+  (reformatter-define ruff-format-import
+    :program ruff-format-import-command
+    :args (list "check" "--fix" "--select=I" "--stdin-filename"
+                (or (buffer-file-name) input-file))
+    :lighter " RuffFmt"
+    :group 'ruff-format-import))
+#+end_src
+
+*** Python hooks
+
+Ensure I have LSP in ~python~.
+
+#+begin_src emacs-lisp
+(use-package python
+  :straight nil
+  :config
+  (add-hook 'python-mode-hook 'lsp-deferred)
+  (add-hook 'python-mode-hook 'eglot-ensure))
+
+(use-package pyvenv
+  :after python)
+#+end_src
+
+** Emacs lisp
+
+#+begin_src emacs-lisp
+(use-package elisp-mode
+  :straight nil
+  :config
+  (add-hook 'emacs-lisp-mode-hook 'eldoc-mode))
+#+end_src
+
+** Shell scripts
+
+#+begin_src emacs-lisp
+(use-package sh-script
+  :straight nil
+  :mode (("\\.sh\\'" . sh-mode)
+         ("\\.bash\\'" . sh-mode)))
+#+end_src
+
+** Markdown
+
+#+begin_src emacs-lisp
+(use-package markdown-mode
+  :mode (("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :hook (markdown-mode . visual-line-mode)
+  :init
+  (setq markdown-command "multimarkdown"
+        markdown-fontify-code-blocks-natively t))
+#+end_src
+
+** YAML
+
+#+begin_src emacs-lisp
+(use-package yaml-mode
+  :mode ("\\.ya?ml\\'" . yaml-mode))
+#+end_src
+
+** RST
+
+#+Begin_src emacs-lisp
+(use-package rst
+  :straight nil
+  :mode ("\\.rst\\'" . rst-mode))
+#+end_src
+
+* Org mode
+
+If I made the switch to ~emacs~, it was for org-mode, so use it.
+
+** Basic org settings
+
+#+begin_src emacs-lisp
+    (use-package org
+      :straight nil
+      :mode ("\\.org\\'" . org-mode)
+      :hook (org-mode . visual-line-mode)
+      :config
+      (setq org-directorY "~/org/"
+            org-display-custom-times t
+            org-time-stamp-Custom-formats '("<%Y-%m-%d>" . "<%Y-%m-%d %H:%M>")
+
+            ;; Prettify settings (like Doom Emacs)
+            org-hide-emphasis-markers t          ; Hide markup characters
+            org-pretty-entities t                ; Show LaTeX symbols as Unicode
+            org-ellipsis " ▾"                    ; Nicer ellipsis
+            org-startup-indented t               ; Enable org-indent-mode by default
+            org-adapt-indentation nil)           ; Don't indent content with headings
+
+      ;; Allow fuzzy link matching for TOC links
+      (setq org-link-search-must-match-exact-headline nil)
+
+      ;; Auto-insert title in new org files
+      (defun my/org-file-name-to-title ()
+        "Convert filename to a title string."
+        (let* ((filename (file-name-base (buffer-file-name)))
+               (title (replace-regexp-in-string "-" " " filename)))
+          (capitalize title)))
+
+      (define-auto-insert "\\.org\\'"
+        '(nil
+          "#+TITLE: " (my/org-file-name-to-title) "\n"
+          "\n"))
+
+      ;; Keybindings
+      (define-key evil-normal-state-map (kbd "C-c l") 'org-store-link)
+      (define-key evil-insert-state-map (kbd "C-c l") 'org-store-link)
+      (define-key evil-visual-state-map (kbd "C-c l") 'org-store-link)
+
+      ;; Open links with Enter in normal mode
+      (evil-define-key 'normal org-mode-map (kbd "RET") 'org-open-at-point)
+
+      ;; Smart C-RET: insert list item if in list, otherwise insert heading
+      (defun my/org-smart-insert ()
+        "Insert list item if in list, otherwise insert heading."
+        (interactive)
+        (if (org-at-item-p)
+            (org-meta-return)
+          (org-insert-heading-respect-content)))
+
+      (evil-define-key 'insert org-mode-map (kbd "C-<return>") 'my/org-smart-insert)
+      (evil-define-key 'insert org-mode-map (kbd "C-RET") 'my/org-smart-insert)
+
+      ;; Smart backspace for org-mode lists
+      (defun my/org-smart-backspace ()
+        "Delete back to previous indentation level in org lists, or delete one char."
+        (interactive)
+        (if (and (org-in-item-p)
+                 (looking-back "^[[:space:]]+" (line-beginning-position)))
+            ;; At beginning of indented list item - delete to previous indent level
+            (let* ((current-indent (current-indentation))
+                   (target-indent (max 0 (- current-indent 2))))
+              (delete-region (line-beginning-position)
+                             (+ (line-beginning-position) current-indent))
+              (insert (make-string target-indent ?\s)))
+          ;; Otherwise, check for electric-pair deletion or delete one character
+          (let ((before (char-before))
+                (after (char-after)))
+            (when (and electric-pair-mode
+                       before
+                       after
+                       (or (and (eq before ?\() (eq after ?\)))
+                           (and (eq before ?\[) (eq after ?\]))
+                           (and (eq before ?\{) (eq after ?\}))
+                           (and (eq before ?\") (eq after ?\"))
+                           (and (eq before ?\') (eq after ?\'))
+                           (and (eq before ?\`) (eq after ?\`))
+                           (and (eq before ?\<) (eq after ?\>))))
+              (delete-char 1)))
+          (delete-backward-char 1)))
+      
+      ;; Note: DEL binding is now handled globally in electric-pair configuration
+
+      ;; Org babel languages
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((emacs-lisp . t)
+         (python . t)
+         (shell . t))))
+
+  ;; org-modern: Modern styling for org-mode
+  (use-package org-modern
+    :after org
+    :hook (org-mode . org-modern-mode)
+    :config
+    (setq org-modern-star 'replace
+          org-modern-hide-stars t
+          org-modern-table t
+          org-modern-keyword nil
+          org-modern-checkbox nil
+          org-modern-tag t
+          org-modern-timestamp t
+          org-modern-priority nil
+          org-modern-block-fringe nil
+          org-modern-todo nil))
+
+  ;; org-appear: Show emphasis markers only when cursor is on them
+  (use-package org-appear
+    :after org
+    :hook (org-mode . org-appear-mode)
+    :config
+    (setq org-appear-autolinks t
+          org-appear-autosubmarkers t
+          org-appear-autoentities t
+          org-appear-autokeywords t
+          org-appear-inside-latex t))
+
+  ;; toc-org: Automatic table of contents generation
+  (use-package toc-org
+    :after org
+    :hook (org-mode . toc-org-mode))
+#+end_src
+
+** Org roam
+
+#+begin_src emacs-lisp
+(use-package org-roam
+  :after org
+  :custom
+  (org-roam-directory (file-truename "~/org/roam/"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert))
+  :config
+  (org-roam-db-autosync-mode))
+#+end_src
+
+** Org export
+
+#+begin_src emacs-lisp
+;; ox-beamer is built into org-mode
+(with-eval-after-load 'org
+  (require 'ox-beamer))
+
+(use-package ox-hugo
+  :after org)
+#+end_src
+
+* Tools
+
+** Vterm
+
+#+begin_src emacs-lisp
+(use-package vterm
+  :commands vterm)
+#+end_src
+
+** Docker
+
+#+begin_src emacs-lisp
+(use-package docker
+  :commands docker)
+
+(use-package dockerfile-mode
+  :mode "Dockerfile\\'")
+#+end_src
+
+** PDF tools
+
+#+begin_src emacs-lisp
+(use-package pdf-tools
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :config
+  (pdf-tools-install))
+#+end_src
+
+** Elfeed (RSS reader)
+
+#+begin_src emacs-lisp
+(use-package elfeed
+  :commands elfeed)
+
+(use-package elfeed-org
+  :after elfeed
+  :config
+  (elfeed-org))
+#+end_src
+
+* Remote file access
+
+** TRAMP
+
+TRAMP config, to edit files through SSH.
+
+#+begin_src emacs-lisp
+;; TRAMP is built into Emacs
+(use-package tramp
+  :straight nil
+  :config
+  ;; Set default method to SSH
+  (setq tramp-default-method "ssh")
+
+  ;; Enable verbose messages for debugging (set to 0 for production)
+  (setq tramp-verbose 1)
+
+  ;; Disable version control for remote files (improves performance)
+  (setq vc-ignore-dir-regexp
+        (format "\\(%s\\)\\|\\(%s\\)"
+                vc-ignore-dir-regexp
+                tramp-file-name-regexp))
+
+  ;; Use out-of-band method for large files (over 10MB)
+  (setq tramp-copy-size-limit 10240)
+
+  ;; Enable backup for remote files
+  (setq tramp-backup-directory-alist backup-directory-alist)
+
+  ;; Auto-save remote files locally
+  (setq tramp-auto-save-directory my-history-directory)
+
+  ;; Improve connection persistence
+  (setq tramp-use-ssh-controlmaster-options nil)
+
+  ;; Speed up TRAMP by caching
+  (setq remote-file-name-inhibit-cache nil)
+  (setq tramp-completion-reread-directory-timeout nil)
+
+  ;; Exclude .DS_Store and other Mac files from remote ops
+  (setq tramp-completion-use-auth-sources nil))
+#+end_src
+
+* AI integration
+
+** GPtel (GitHub Copilot)
+
+For when I want to use it directly through ~emacs~. Otherwise, ~opencode~ is great.
+
+#+begin_src emacs-lisp
+(use-package gptel
+  :config
+  (gptel-make-gh-copilot "Copilot")
+  (gptel-make-gh-copilot "Copilot"
+    :host "api.business.githubcopilot.com")
+
+  (setq gptel-model 'claude-sonnet-4
+        gptel-backend (gptel-make-gh-copilot "Copilot")))
+#+end_src
+
+* Additional utilities
+
+#+begin_src emacs-lisp
+  ;; Dired settings
+  (use-package dired
+    :straight nil
+    :commands (dired dired-jump)
+    :custom
+    (dired-listing-switches "-agho --group-directories-first"))
+
+  ;; Projectile
+  (use-package projectile
+    :straight nil
+    :config
+    (projectile-mode +1)
+    ;; Recommended keymap prefix on Windows/Linux
+    (define-key projectile-mode-map (kbd "p p") 'projectile-command-map))
+
+  ;; Electric pair mode
+  (use-package electric
+    :straight nil
+    :demand t
+    :config
+    (electric-pair-mode 1)
+    
+    ;; Delete both opening and closing characters when deleting opening character
+    (defun my/electric-pair-delete-pair ()
+      "Delete the pair of characters when deleting the opening character.
+In org-mode, defer to org-mode's smart backspace behavior."
+      (interactive)
+      (if (and (derived-mode-p 'org-mode)
+               (fboundp 'my/org-smart-backspace))
+          ;; Use org-mode's smart backspace
+          (call-interactively 'my/org-smart-backspace)
+        ;; Otherwise, use electric-pair deletion
+        (let ((before (char-before))
+              (after (char-after)))
+          (when (and electric-pair-mode
+                     before
+                     after
+                     (or (and (eq before ?\() (eq after ?\)))
+                         (and (eq before ?\[) (eq after ?\]))
+                         (and (eq before ?\{) (eq after ?\}))
+                         (and (eq before ?\") (eq after ?\"))
+                         (and (eq before ?\') (eq after ?\'))
+                         (and (eq before ?\`) (eq after ?\`))
+                         (and (eq before ?\<) (eq after ?\>))))
+            (delete-char 1)))
+        (delete-backward-char 1)))
+    
+    ;; Bind to backspace in insert mode globally
+    (define-key evil-insert-state-map (kbd "DEL") 'my/electric-pair-delete-pair)
+    (global-set-key (kbd "DEL") 'my/electric-pair-delete-pair))
+
+  ;; Better help
+  (use-package helpful
+    :bind
+    ([remap describe-function] . helpful-callable)
+    ([remap describe-variable] . helpful-variable)
+    ([remap describe-key] . helpful-key)
+    ([remap describe-command] . helpful-command))
+
+  ;; Syntax checking
+  (use-package flycheck
+    :demand t
+    :config
+    (global-flycheck-mode))
+
+  (provide 'config)
+  ;;; config.el ends here
+#+end_src
