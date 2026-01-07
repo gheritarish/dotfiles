@@ -1,7 +1,9 @@
 [core]
-    editor = vim
+    editor = emacsclient -c
     pager = delta
+    excludesfile = ~/.gitignore
 
+# To remember it, but to configure by repo, as all of them won't have this file
 [blame]
     ignoreRevsFile = .git-blame-ignore-revs
 
@@ -27,3 +29,38 @@
 
 [diff]
     colorMoved = default
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
+[scalar]
+	repo = /home/telmar/Documents/Code/padam-dispatch
+	repo = /home/telmar/Documents/Code/padam-qa-orchestrator
+	repo = /home/telmar/Documents/Code/padam-k8s
+
+[column]
+    ui = auto
+[branch]
+    sort = -committerdate
+[tag]
+    sort = version:refname
+[init]
+    defaultBranch = main
+[push]
+    default = simple
+    autoSetupRemote = true
+    followTags = true
+[fetch]
+    prune = true
+    pruneTags = true
+    all = true
+[help]
+    autocorrect = prompt
+[rerere]
+    enabled = true
+    autoupdate = true
+[pull]
+    rebase = true
+[rebase]
+    autoSquash = true
+    autoStash = true
