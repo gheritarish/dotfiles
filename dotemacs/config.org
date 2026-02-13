@@ -57,6 +57,7 @@
   - [[#basic-org-settings][Basic org settings]]
   - [[#org-roam][Org roam]]
   - [[#org-export][Org export]]
+  - [[#org-tempo][Org tempo]]
 - [[#tools][Tools]]
   - [[#vterm][Vterm]]
   - [[#docker][Docker]]
@@ -92,11 +93,10 @@ Some performance, especially concerning LSP and messages it gave me at file open
 
 #+begin_src emacs-lisp
   ;; Increase process output read limit for better LSP performance
-  (setq read-process-output-max (* 512 1024)) ;; 512kb
+  (setq read-process-output-max (* 1024 1024)) ;; 1MB (increased from 512kb)
 
-  ;; LSP file watchers
-  (setq lsp-enable-file-watchers t
-        lsp-file-watch-threshold nil)
+  ;; LSP file watchers - optimize for performance
+  (setq lsp-enable-file-watchers nil)      ; Disable file watchers - major performance improvement
 #+end_src
 
 ** Message inhibition
@@ -504,7 +504,7 @@ Some enhancements, to remove the menu-bar, the tool-bar, the scroll-bar, to make
 
   ;; Smooth scrolling
   (setq scroll-conservatively 101
-        scroll-margin 3)
+        scroll-margin 5)
 
   ;; Fringe settings
   (fringe-mode '(4 . 4))
@@ -583,10 +583,17 @@ General config for completion.
 ** Marginalia
 
 #+begin_src emacs-lisp
-(use-package marginalia
-  :demand t
-  :config
-  (marginalia-mode 1))
+  (use-package marginalia
+    :demand t
+    :config
+    (marginalia-mode 1))
+
+  (use-package nerd-icons-completion
+    :after (marginalia nerd-icons)
+    :demand t
+    :config
+    (nerd-icons-completion-mode 1)
+    (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 #+end_src
 
 ** Embark
@@ -863,6 +870,13 @@ Nothing major: use python-lsp-language, ruff for linting.
   :init
   (setq lsp-keymap-prefix "C-c l")
   :config
+  ;; Performance optimizations
+  (setq lsp-completion-provider :none)       ; Use corfu instead
+  (setq lsp-idle-delay 0.5)                  ; Delay before sending changes
+  (setq lsp-log-io nil)                      ; Disable logging for performance
+  (setq lsp-enable-symbol-highlighting nil)  ; Disable symbol highlighting
+  (setq lsp-signature-auto-activate nil)     ; Disable auto signature help
+  
   ;; pylsp settings
   (setq lsp-pylsp-plugins-flake8-enabled nil
         lsp-pylsp-plugins-autopep8-enabled nil
@@ -876,12 +890,13 @@ Nothing major: use python-lsp-language, ruff for linting.
         lsp-pylsp-configuration-sources ["ruff"]
         lsp-pylsp-plugins-ruff-config "~/Documents/Code/padam-dispatch/ruff.toml")
 
-  ;; UI settings
-  (setq lsp-ui-doc-enable t
-        lsp-ui-doc-show-with-cursor t
+  ;; UI settings - optimized for performance
+  (setq lsp-ui-doc-enable nil              ; Disable doc popup on cursor - major performance drain
+        lsp-ui-doc-show-with-cursor nil
         lsp-ui-doc-position 'at-point
         lsp-ui-sideline-enable t
-        lsp-ui-sideline-show-diagnostics t))
+        lsp-ui-sideline-show-diagnostics t
+        lsp-ui-sideline-delay 0.5))        ; Add delay to reduce constant updates
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -921,14 +936,33 @@ Easy formatting and import sorting with ruff.
 
 *** Python hooks
 
-Ensure I have LSP in ~python~.
+Ensure I have LSP in ~python~. Using only LSP-mode (not Eglot) to avoid conflicts.
 
 #+begin_src emacs-lisp
 (use-package python
   :straight nil
   :config
-  (add-hook 'python-mode-hook 'lsp-deferred)
-  (add-hook 'python-mode-hook 'eglot-ensure))
+  ;; Smart backspace for Python indentation
+  (defun my/python-smart-backspace ()
+    "Delete back to previous indentation level in Python, or delete one char."
+    (interactive)
+    (if (and (looking-back "^[[:space:]]+" (line-beginning-position))
+             (not (bolp)))
+        ;; At beginning of line with only whitespace - delete to previous indent level
+        (let* ((current-indent (current-indentation))
+               (target-indent (max 0 (- current-indent python-indent-offset))))
+          (delete-region (line-beginning-position)
+                         (+ (line-beginning-position) current-indent))
+          (insert (make-string target-indent ?\s)))
+      ;; Otherwise, use the normal electric-pair delete behavior
+      (call-interactively 'my/electric-pair-delete-pair)))
+  
+  ;; Bind smart backspace in Python mode for both Evil and Emacs
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (define-key evil-insert-state-local-map (kbd "DEL") 'my/python-smart-backspace)))
+  
+  (add-hook 'python-mode-hook 'lsp-deferred))
 
 (use-package pyvenv
   :after python)
@@ -1129,6 +1163,13 @@ If I made the switch to ~emacs~, it was for org-mode, so use it.
 
 (use-package ox-hugo
   :after org)
+#+end_src
+
+** Org tempo
+
+#+begin_src emacs-lisp
+(with-eval-after-load 'org
+  (require 'org-tempo))
 #+end_src
 
 * Tools
