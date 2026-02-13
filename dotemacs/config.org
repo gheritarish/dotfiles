@@ -39,6 +39,7 @@
   - [[#file-templates][File templates]]
   - [[#emojis][Emojis]]
   - [[#highlight-todo-keywords][Highlight TODO keywords]]
+  - [[#spellchecking][Spellchecking]]
 - [[#version-control][Version control]]
   - [[#magit][Magit]]
   - [[#git-commit-mode][Git commit mode]]
@@ -783,6 +784,46 @@ See easily some comments, especially those hinted at future actions.
           ("BUG"    . (:foreground "#FF6C6B" :weight bold))
           ("HACK"   . (:foreground "#F99157" :weight bold))))
   (global-hl-todo-mode 1))
+#+end_src
+
+** Spellchecking
+
+On-demand spellchecking for French and English in org-mode documents.
+
+#+begin_src emacs-lisp
+;; Configure ispell to use aspell
+(setq ispell-program-name "aspell"
+      ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
+
+;; Function to toggle flyspell mode with French dictionary
+(defun my/flyspell-french ()
+  "Enable flyspell-mode with French dictionary."
+  (interactive)
+  (ispell-change-dictionary "francais")
+  (flyspell-mode 1)
+  (flyspell-buffer)
+  (message "Flyspell enabled with French dictionary"))
+
+;; Function to toggle flyspell mode with English dictionary
+(defun my/flyspell-english ()
+  "Enable flyspell-mode with English dictionary."
+  (interactive)
+  (ispell-change-dictionary "en_US")
+  (flyspell-mode 1)
+  (flyspell-buffer)
+  (message "Flyspell enabled with English dictionary"))
+
+;; Function to disable flyspell
+(defun my/flyspell-off ()
+  "Disable flyspell-mode and clear highlights."
+  (interactive)
+  (flyspell-mode -1)
+  (message "Flyspell disabled"))
+
+;; Customize flyspell faces to make errors more visible
+(custom-set-faces
+ '(flyspell-incorrect ((t (:underline (:color "#f38ba8" :style wave)))))
+ '(flyspell-duplicate ((t (:underline (:color "#f9e2af" :style wave))))))
 #+end_src
 
 * Version control
