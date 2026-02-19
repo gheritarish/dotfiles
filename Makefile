@@ -35,7 +35,7 @@ dev-env:
 
 # Base packages: to install before i3. Doesn't install zsh
 base:
-	sudo apt install bat dfc feh ranger redshift tmux vlc xclip zathura alacritty
+	sudo apt install bat dfc feh ranger redshift tmux vlc xclip zathura alacritty ueberzug
 	# sudo pacman -S alacritty bat dfc dust feh ranger redshift tmux vlc xclip zathura zathura-pdf-mupdf
 
 # Install all packages needed for i3
@@ -50,6 +50,7 @@ config-base:
 	cp -r ./bat ../.config
 	cp -r ./macchina ../.config
 	cp -r ./zathura ../.config
+	cp -r ./ranger ../.config
 	cp ./.vimrc ../.vimrc
 	cp ./.zshrc ../.zshrc
 	cp ./.tigrc ../.tigrc
