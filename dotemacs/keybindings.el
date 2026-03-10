@@ -214,6 +214,10 @@
   "t F" '(toggle-frame-fullscreen :wk "Frame fullscreen")
   "t l" '(display-line-numbers-mode :wk "Line numbers")
   "t r" '(read-only-mode :wk "Read-only mode")
+  "t s" '(:ignore t :wk "spellcheck")
+  "t s e" '(my/flyspell-english :wk "English spellcheck")
+  "t s f" '(my/flyspell-french :wk "French spellcheck")
+  "t s o" '(my/flyspell-off :wk "Disable spellcheck")
   "t v" '(visible-mode :wk "Visible mode")
   "t w" '(visual-line-mode :wk "Soft line wrapping"))
 
