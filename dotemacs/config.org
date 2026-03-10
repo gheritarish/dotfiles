@@ -756,12 +756,18 @@ I don't use much snippets, but when I want them, I am happy to have them availab
 Use emojis, with github unicode (making them easy to type).
 
 #+begin_src emacs-lisp
-(use-package emojify
-  :demand t
-  :config
-  (setq emojify-display-style 'unicode)
-  (setq emojify-emoji-styles '(unicode github))
-  (global-emojify-mode 1))
+  (use-package emojify
+    :demand t
+    :config
+    ;; Set emoji fallback fonts for proper emoji rendering
+    ;; These fonts will be used when the main font doesn't have emoji glyphs
+    (set-fontset-font t 'symbol "Noto Color Emoji" nil 'prepend)
+    (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend)
+    
+    ;; Configure emojify to use unicode display and support both unicode and github styles
+    (setq emojify-display-style 'unicode)
+    (setq emojify-emoji-styles '(unicode github))
+    (global-emojify-mode 1))
 #+end_src
 
 ** Highlight TODO keywords
@@ -1237,6 +1243,7 @@ If I made the switch to ~emacs~, it was for org-mode, so use it.
 #+begin_src emacs-lisp
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
+  :hook (pdf-view-mode . (lambda () (display-line-numbers-mode -1)))
   :config
   (pdf-tools-install))
 #+end_src
