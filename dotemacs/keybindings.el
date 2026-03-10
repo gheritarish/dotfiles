@@ -200,6 +200,7 @@
   "s" '(:ignore t :wk "search")
   "s b" '(consult-line :wk "Search buffer")
   "s p" '(consult-ripgrep :wk "Search project")
+  "s f" '(consult-fd :wk "Search file")
   "s i" '(imenu :wk "Jump to symbol")
   "s j" '(evil-show-jumps :wk "Jump list")
   "s m" '(bookmark-jump :wk "Jump to bookmark")
@@ -253,6 +254,7 @@
 
 ;;; LSP/References
 (my/local-leader-keys
+  "d" '(lsp-find-definition :wk "Find definition")
   "n" '(lsp-find-references :wk "Find references"))
 
 ;;; Terminal
