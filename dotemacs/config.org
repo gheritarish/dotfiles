@@ -40,6 +40,7 @@
   - [[#emojis][Emojis]]
   - [[#highlight-todo-keywords][Highlight TODO keywords]]
   - [[#spellchecking][Spellchecking]]
+  - [[#folding][Folding]]
 - [[#version-control][Version control]]
   - [[#magit][Magit]]
   - [[#git-commit-mode][Git commit mode]]
@@ -830,6 +831,11 @@ On-demand spellchecking for French and English in org-mode documents.
 (custom-set-faces
  '(flyspell-incorrect ((t (:underline (:color "#f38ba8" :style wave)))))
  '(flyspell-duplicate ((t (:underline (:color "#f9e2af" :style wave))))))
+#+end_src
+
+** Folding
+#+begin_src emacs-lisp
+  (add-hook 'prog-mode-hook #'hs-minor-mode)
 #+end_src
 
 * Version control
