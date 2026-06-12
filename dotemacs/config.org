@@ -43,6 +43,7 @@
   - [[#folding][Folding]]
 - [[#version-control][Version control]]
   - [[#magit][Magit]]
+  - [[#blamer][Blamer]]
   - [[#git-commit-mode][Git commit mode]]
   - [[#diff-hl][Diff-HL]]
 - [[#programming-languages][Programming languages]]
@@ -849,9 +850,24 @@ On-demand spellchecking for French and English in org-mode documents.
   :config
   ;; Enable autosquash and interactive rebase by default
   (setq magit-rebase-arguments '("--autosquash" "--interactive"))
-  
+
   ;; Use git's configured diff and merge tools
   (setq magit-diff-refine-hunk t))
+#+end_src
+
+** Blamer
+#+begin_src emacs-lisp
+  (use-package blamer
+    :ensure t
+    :bind (("C-c g" . blamer-mode))
+    :config
+    (setq blamer-author-formatter "> %s,")
+    (setq blamer-datetime-formatter "%s ")
+    (setq blamer-commit-formatter "• %s")
+    (setq blamer-idle-time 0.5)
+    (setq blamer-max-commit-message-length 100)
+    (setq blamer-prettify-time-p nil)
+    (setq blamer-min-offset 0))
 #+end_src
 
 ** Git commit mode
@@ -1210,12 +1226,53 @@ If I made the switch to ~emacs~, it was for org-mode, so use it.
 ** Org export
 
 #+begin_src emacs-lisp
-;; ox-beamer is built into org-mode
-(with-eval-after-load 'org
-  (require 'ox-beamer))
+  ;; ox-beamer is built into org-mode
+  (with-eval-after-load 'org
+    (require 'ox-beamer))
 
-(use-package ox-hugo
-  :after org)
+  (with-eval-after-load "org"
+   (require 'ox-gfm nil t))
+
+  (use-package ox-rst
+    :after org
+    :demand t  ; override use-package-always-defer — ox-rst must load eagerly after org
+    :custom
+    ;; Use Sphinx's code-block directive (supports :emphasize-lines:, :lineno-start:, etc.)
+    (org-rst-code-block 'code-block)
+    :config
+    (require 'ox-rst)
+    ;; Teach ox-rst to emit :emphasize-lines: from #+ATTR_RST: :emphasize-lines N,M
+    (defun my/org-rst-src-block (src-block _contents info)
+      "Export SRC-BLOCK to RST, supporting :emphasize-lines: from #+ATTR_RST:."
+      (when (org-string-nw-p (org-element-property :value src-block))
+        (let* ((lang      (org-element-property :language src-block))
+               (label     (org-element-property :name src-block))
+               (value     (org-remove-indentation
+                           (org-element-property :value src-block)))
+               (num-start (org-export-get-loc src-block info))
+               (attrs     (org-export-read-attribute :attr_rst src-block))
+               (class     (plist-get attrs :class))
+               (emphasize (plist-get attrs :emphasize-lines))
+               (lst-lang  (or (cadr (assq (intern (or lang ""))
+                                          org-rst-pygments-langs))
+                              lang)))
+          (concat
+           (format ".. code-block:: %s\n" lst-lang)
+           (when num-start
+             (format "    :lineno-start: %s\n" (1+ num-start)))
+           (when emphasize
+             (format "    :emphasize-lines: %s\n" emphasize))
+           (when class
+             (format "    :class: %s\n" class))
+           (when label
+             (format "    :name: %s\n" label))
+           "\n"
+           (org-rst--indent-string value org-rst-quote-margin)))))
+    (advice-add 'org-rst-src-block :override #'my/org-rst-src-block))
+
+  (use-package ox-hugo
+    :after org
+    :demand t)
 #+end_src
 
 ** Org tempo
