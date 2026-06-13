@@ -81,7 +81,7 @@ bindsym $mod+Return exec WINIT_X11_SCALE_FACTOR=0.8 ghostty
 bindsym $mod+Shift+Return exec WINIT_X11_SCALE_FACTOR=0.9 alacritty -e ranger
 
 # kill focused window
-# bindsym $mod+Shift+b kill
+bindsym $mod+Shift+b kill
 
 # start dmenu (a program launcher)
 # bindsym $mod+i exec --no-startup-id dmenu_run
@@ -150,7 +150,7 @@ set $ws4 "4:󰇮"
 set $ws5 "5:󰅴"
 set $ws6 "6:󰝚"
 set $ws7 "7:󰏎"
-set $ws8 "8"
+set $ws8 "8:"
 set $ws9 "9"
 set $ws10 "10"
 
@@ -245,9 +245,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-bindsym --release Print exec scrot ~/screenshots/%Y-%m-%d_%H%M%S_'$wx$h'_scrot.png -e 'xclip -selection clipboard -t image/png < $f'
-bindsym --release $mod+Print exec scrot ~/screenshots/%Y-%m-%d_%H%M%S_'$wx$h'_scrot.png -s -e 'xclip -selection clipboard -t image/png < $f'
-
+bindsym --release Print exec flameshot full -c -p ~/screenshots/
+bindsym --release $mod+Print exec flameshot gui -s -c -p ~/screenshots/
 
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
