@@ -58,6 +58,7 @@
   - [[#rst][RST]]
 - [[#org-mode][Org mode]]
   - [[#basic-org-settings][Basic org settings]]
+  - [[#latex-preview][LaTeX preview]]
   - [[#org-roam][Org roam]]
   - [[#org-export][Org export]]
   - [[#org-tempo][Org tempo]]
@@ -1207,6 +1208,26 @@ If I made the switch to ~emacs~, it was for org-mode, so use it.
   (use-package toc-org
     :after org
     :hook (org-mode . toc-org-mode))
+#+end_src
+
+** LaTeX preview
+
+Typeset LaTeX equations inline without exporting. Org renders a fragment (an
+inline ~$...$~ or a ~\begin{equation}~ block) into an SVG of the typeset math;
+[[https://github.com/io12/org-fragtog][org-fragtog]] auto-toggles it: the equation typesets when the cursor leaves it and
+reverts to editable LaTeX when you enter it.
+
+Uses ~dvisvgm~ for crisp, scalable output (both ~latex~ and ~dvisvgm~ are on PATH).
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (setq org-preview-latex-default-process 'dvisvgm)
+    (setq org-format-latex-options
+          (plist-put org-format-latex-options :scale 1.0)))
+
+  (use-package org-fragtog
+    :after org
+    :hook (org-mode . org-fragtog-mode))
 #+end_src
 
 ** Org roam
