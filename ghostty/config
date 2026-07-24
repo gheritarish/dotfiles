@@ -1,7 +1,7 @@
-font-family = "FiraCode Nerd Font"
-font-size = 9
+font-family = "FantasqueSansM Nerd Font"
+font-size = 10
 
-theme = catppuccin-longo
+theme = modus-vivendi
 shell-integration-features = no-cursor
 cursor-style = block
 cursor-style-blink = false
