@@ -357,8 +357,11 @@ Catppuccin theme!
 #+begin_src emacs-lisp
 (use-package catppuccin-theme
   :demand t
-  :config
-  (load-theme 'catppuccin t))
+  :config)
+#+end_src
+
+#+begin_src emacs-lisp
+  (load-theme 'modus-vivendi)
 #+end_src
 
 ** Fonts
