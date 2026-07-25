@@ -4,17 +4,17 @@
 
 ; color scheme based on nord
 [colors]
-background = #1d2021
+background = #000000
 background-alt = #32302f
-foreground = #ebdbb2
+foreground = #ffffff
 foreground-alt = #a89984
 
-low = #98971a
-medium = #d79921
-high = #cc241d
+low = #44bc44
+medium = #d0bc00
+high = #ff5f59
 
-accent = #d79921
-alert = #cc241d
+accent = #d0bc00
+alert = #ff5f59
 
 [bar/main]
 ; ipc is used with pomobar
@@ -37,8 +37,8 @@ padding-right = 2
 module-margin-left = 1
 module-margin-right = 1
 
-font-0 = "MesloLGSNerdFont:pixelsize=9"
-font-1 = "JetBrainsMonoNLNerdFont:pixelsize=8"
+font-0 = "MesloLGS NF:pixelsize=9"
+font-1 = "FantasqueSansM Nerd Font:pixelsize=9"
 
 modules-left = i3 title
 modules-center = spotify
@@ -115,7 +115,7 @@ format = <label>
 label-font = 2
 label-maxlen = 50
 exec = $HOME/.config/polybar/scripts/get_spotify_status.sh
-format-foreground = #cba6f7
+format-foreground = #b6a0ff
 interval = 1
 
 ;------------------------------------------------------------
@@ -161,10 +161,10 @@ ramp-volume-2-foreground = ${colors.high}
 [module/cpu]
 type = internal/cpu
 interval = 2
-format-prefix = ""
+format-prefix = " "
 format-prefix-font = 2
 format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #fb4934
+format-underline = #ff7f9f
 label = %percentage:3%%
 label-font = 2
 
@@ -200,7 +200,7 @@ interval = 2
 format-prefix = " "
 format-prefix-font = 2
 format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #689d6a
+format-underline = #00c06f
 label = %percentage_used%%  %gb_used%
 label-font = 2
 
@@ -383,9 +383,9 @@ label-font = 2
 type = custom/script
 exec = docker ps -q | wc -l
 interval = 1
-label =  %output%
+label =   %output%
 label-font = 2
-format-foreground = #458588
+format-foreground = #2fafff
 
 ;------------------- powermenu ------------------------------
 [module/powermenu]
@@ -398,7 +398,7 @@ format-spacing = 1
 label-open = 
 label-open-foreground = ${colors.secondary}
 label-open-font = 2
-label-close = 󰜺 cancel
+label-close =  cancel
 label-close-foreground = ${colors.secondary}
 label-close-font = 2
 label-separator = |
