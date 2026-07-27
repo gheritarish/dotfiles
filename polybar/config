@@ -197,7 +197,7 @@ label-warn-font = 2
 [module/memory]
 type = internal/memory
 interval = 2
-format-prefix = " "
+format-prefix = "󰍛 "
 format-prefix-font = 2
 format-prefix-foreground = ${colors.foreground-alt}
 format-underline = #00c06f
@@ -398,7 +398,7 @@ format-spacing = 1
 label-open = 
 label-open-foreground = ${colors.secondary}
 label-open-font = 2
-label-close =  cancel
+label-close = 󰜺 cancel
 label-close-foreground = ${colors.secondary}
 label-close-font = 2
 label-separator = |
